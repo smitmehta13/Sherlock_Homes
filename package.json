@@ -6,9 +6,20 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "axios": "^1.4.0",
+    "crypto-browserify": "^3.12.0",
+    "jquery": "^3.7.0",
+    "mssql": "^9.1.1",
+    "net": "^1.0.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-router-dom": "^5.2.0",
     "react-scripts": "5.0.1",
+    "stream-browserify": "^3.0.0",
+    "timers": "^0.1.1",
+    "tls": "^0.0.1",
+    "url": "^0.11.0",
+    "util": "^0.12.5",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -34,5 +45,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "eslint-plugin-unicorn": "^47.0.0"
   }
 }
