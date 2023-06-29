@@ -1,7 +1,27 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useHistory } from 'react-router-dom';
 
 function SignUp() {
+  const history = useHistory();
+  const [fullName, setFullName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [role, setRole] = useState('');
+
+  const handleRoleChange = (e) => {
+    setRole(e.target.value);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Perform the signup logic here
+    // Assuming the signup is successful
+
+    // Redirect to the login page after successful signup
+    history.push('/login');
+  };
+
   return (
     <div className="login-page">
       <div className="register-box">
@@ -11,9 +31,16 @@ function SignUp() {
         <div className="card">
           <div className="card-body register-card-body">
             <p className="login-box-msg">Register a new membership</p>
-            <form>
+            <form onSubmit={handleSubmit}>
               <div className="input-group mb-3">
-                <input type="text" className="form-control" placeholder="Full name" required />
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Full name"
+                  required
+                  value={fullName}
+                  onChange={(e) => setFullName(e.target.value)}
+                />
                 <div className="input-group-append">
                   <div className="input-group-text">
                     <span className="fas fa-user"></span>
@@ -21,7 +48,14 @@ function SignUp() {
                 </div>
               </div>
               <div className="input-group mb-3">
-                <input type="email" className="form-control" placeholder="Email" required />
+                <input
+                  type="email"
+                  className="form-control"
+                  placeholder="Email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
                 <div className="input-group-append">
                   <div className="input-group-text">
                     <span className="fas fa-envelope"></span>
@@ -29,7 +63,14 @@ function SignUp() {
                 </div>
               </div>
               <div className="input-group mb-3">
-                <input type="password" className="form-control" placeholder="Password" required />
+                <input
+                  type="password"
+                  className="form-control"
+                  placeholder="Password"
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
                 <div className="input-group-append">
                   <div className="input-group-text">
                     <span className="fas fa-lock"></span>
@@ -37,10 +78,35 @@ function SignUp() {
                 </div>
               </div>
               <div className="input-group mb-3">
-                <input type="password" className="form-control" placeholder="Retype password" required />
+                <input
+                  type="password"
+                  className="form-control"
+                  placeholder="Retype password"
+                  required
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                />
                 <div className="input-group-append">
                   <div className="input-group-text">
                     <span className="fas fa-lock"></span>
+                  </div>
+                </div>
+              </div>
+              <div className="input-group mb-3">
+                <select
+                  className="form-control"
+                  value={role}
+                  onChange={handleRoleChange}
+                  required
+                >
+                  <option value="">Select role</option>
+                  <option value="admin">Admin</option>
+                  <option value="manager">Manager</option>
+                  <option value="submanager">Sub Manager</option>
+                </select>
+                <div className="input-group-append">
+                  <div className="input-group-text">
+                    <span className="fas fa-user"></span>
                   </div>
                 </div>
               </div>
@@ -54,12 +120,14 @@ function SignUp() {
                   </div>
                 </div>
                 <div className="col-4">
-                  <button type="submit" className="btn btn-primary btn-block">Register</button>
+                  <button type="submit" className="btn btn-primary btn-block">
+                    Register
+                  </button>
                 </div>
               </div>
             </form>
             <p className="mb-0">
-              Already have an account? <a href="/login">Sign In</a>
+              Already have an account? <Link to="/login">Sign In</Link>
             </p>
           </div>
         </div>

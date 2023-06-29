@@ -28,7 +28,7 @@ function Login({ onLogin }) {
     <div className="login-page">
       <div className="login-box">
         <div className="login-logo">
-          <a href="/">Colorful Admin Panel</a>
+          <Link to="/">Colorful Admin Panel</Link>
         </div>
         <div className="card">
           <div className="card-body login-card-body">
@@ -80,7 +80,7 @@ function Login({ onLogin }) {
             </form>
             {error && <p className="text-danger mt-2">{error}</p>}
             <p className="mb-1">
-              Don't have an account? <a href="/signup">Sign Up</a>
+              Don't have an account? <Link to="/signup">Sign Up</Link>
             </p>
           </div>
         </div>
