@@ -50,6 +50,11 @@ function Navbar({ handleLogout }) {
                   </Link>
                 </li>
                 <li className="nav-item">
+                  <Link to="/events" className="nav-link"> {/* Add the link to the Event page */}
+                    Events
+                  </Link>
+                </li>
+                <li className="nav-item">
                   <Link to="/maintenance" className="nav-link">
                     Maintenance
                   </Link>

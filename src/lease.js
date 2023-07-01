@@ -5,6 +5,7 @@ function Lease() {
   const [leases, setLeases] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
 
   // Fetch leases from the server
   useEffect(() => {
@@ -21,6 +22,18 @@ function Lease() {
 
     fetchLeases();
   }, []);
+
+  // Filter leases based on the search query
+  const filteredLeases = leases.filter((lease) => {
+    const { id, title, url, thumbnailUrl } = lease;
+    const lowerCaseQuery = searchQuery.toLowerCase();
+    return (
+      id.toString().includes(searchQuery) ||
+      title.toLowerCase().includes(lowerCaseQuery) ||
+      url.toLowerCase().includes(lowerCaseQuery) ||
+      thumbnailUrl.toLowerCase().includes(lowerCaseQuery)
+    );
+  });
 
   // Render loading state
   if (loading) {
@@ -44,6 +57,16 @@ function Lease() {
                   <h3 className="card-title">Lease Management</h3>
                 </div>
                 <div className="card-body">
+                  <div className="form-group">
+                    <label htmlFor="searchInput">Search:</label>
+                    <input
+                      type="text"
+                      id="searchInput"
+                      className="form-control"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+                  </div>
                   <table id="leasesTable" className="table table-bordered table-hover">
                     <thead>
                       <tr>
@@ -56,7 +79,7 @@ function Lease() {
                       </tr>
                     </thead>
                     <tbody>
-                      {leases.map((lease) => (
+                      {filteredLeases.map((lease) => (
                         <tr key={lease.id}>
                           <td>{lease.id}</td>
                           <td>{lease.title}</td>
