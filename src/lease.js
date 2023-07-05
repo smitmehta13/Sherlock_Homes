@@ -48,49 +48,66 @@ function Lease() {
   // Render leases
   return (
     <div className="content-wrapper">
+      <div className="content-header">
+        <div className="container-fluid">
+          <div className="row mb-2">
+            <div className="col-sm-6">
+              <h1 className="m-0">Lease Management</h1>
+            </div>
+            <div className="col-sm-6">
+              <ol className="breadcrumb float-sm-right">
+                <li className="breadcrumb-item"><a href="/">Home</a></li>
+                <li className="breadcrumb-item active">Lease Management</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
       <section className="content">
         <div className="container-fluid">
           <div className="row">
             <div className="col-12">
               <div className="card">
                 <div className="card-header">
-                  <h3 className="card-title">Lease Management</h3>
+                  <h3 className="card-title">Leases</h3>
                 </div>
                 <div className="card-body">
-                  <div className="form-group">
-                    <label htmlFor="searchInput">Search:</label>
-                    <input
-                      type="text"
-                      id="searchInput"
-                      className="form-control"
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                    />
-                  </div>
-                  <table id="leasesTable" className="table table-bordered table-hover">
-                    <thead>
-                      <tr>
-                        <th>Lease ID</th>
-                        <th>Tenant Name</th>
-                        <th>Property</th>
-                        <th>Start Date</th>
-                        <th>End Date</th>
-                        <th>Monthly Rent</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {filteredLeases.map((lease) => (
-                        <tr key={lease.id}>
-                          <td>{lease.id}</td>
-                          <td>{lease.title}</td>
-                          <td>{lease.url}</td>
-                          <td>{lease.thumbnailUrl}</td>
-                          <td>{lease.albumId}</td>
-                          <td>{lease.monthlyRent}</td>
+  <div className="form-group">
+    <label htmlFor="searchInput">Search:</label>
+    <input
+      type="text"
+      id="searchInput"
+      className="form-control"
+      value={searchQuery}
+      onChange={(e) => setSearchQuery(e.target.value)}
+    />
+  </div>
+  <div className="table-responsive"> {/* Wrap the table in a div with the "table-responsive" class */}
+    <table className="table table-striped table-bordered table-hover">
+                      <thead>
+                        <tr>
+                          <th>Lease ID</th>
+                          <th>Tenant Name</th>
+                          <th>Property</th>
+                          <th>Start Date</th>
+                          <th>End Date</th>
+                          <th>Monthly Rent</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                      </thead>
+                      <tbody>
+                        {filteredLeases.map((lease) => (
+                          <tr key={lease.id}>
+                            <td>{lease.id}</td>
+                            <td>{lease.title}</td>
+                            <td>{lease.url}</td>
+                            <td>{lease.thumbnailUrl}</td>
+                            <td>{lease.albumId}</td>
+                            <td>{lease.monthlyRent}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
             </div>

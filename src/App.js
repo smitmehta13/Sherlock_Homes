@@ -9,11 +9,11 @@ import Unit from './unit';
 import Signup from './SignUp';
 import Login from './Login';
 import Events from './Events';
+import Home from './Home';
 import Navbar from './Navbar';
 import NotificationForm from './NotificationForm';
 import './AdminLTE-master/dist/css/adminlte.min.css';
 import './AdminLTE-master/dist/js/adminlte.min.js';
-import $ from 'jquery';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(!!localStorage.getItem('loggedIn'));
@@ -55,13 +55,5 @@ function App() {
   );
 }
 
-function Home({ role }) {
-  return (
-    <div>
-      <h1>Welcome to the Home Page!</h1>
-      <p>Your role: {role}</p>
-    </div>
-  );
-}
 
 export default App;

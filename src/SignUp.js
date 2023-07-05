@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
+import axios from 'axios';
 
 function SignUp() {
   const history = useHistory();
@@ -8,18 +9,34 @@ function SignUp() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [role, setRole] = useState('');
+  const [error, setError] = useState('');
 
   const handleRoleChange = (e) => {
     setRole(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Perform the signup logic here
-    // Assuming the signup is successful
 
-    // Redirect to the login page after successful signup
-    history.push('/login');
+    try {
+      // Send the signup data to the server
+      const response = await axios.post('/api/signup', {
+        fullName,
+        email,
+        password,
+        confirmPassword,
+        role,
+      });
+
+      // Assuming the signup is successful
+      console.log(response.data); // Handle the response data if needed
+
+      // Redirect to the login page after successful signup
+      history.push('/login');
+    } catch (error) {
+      console.error(error);
+      setError('Failed to signup. Please try again.'); // Update error state
+    }
   };
 
   return (
@@ -31,6 +48,7 @@ function SignUp() {
         <div className="card">
           <div className="card-body register-card-body">
             <p className="login-box-msg">Register a new membership</p>
+            {error && <div className="alert alert-danger">{error}</div>} {/* Display error message if signup fails */}
             <form onSubmit={handleSubmit}>
               <div className="input-group mb-3">
                 <input

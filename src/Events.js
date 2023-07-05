@@ -80,37 +80,43 @@ function Event() {
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
               </div>
-              <ul className="list-group">
-                {filteredEvents.length > 0 ? (
-                  filteredEvents.map((event) => (
-                    <li className="list-group-item d-flex justify-content-between align-items-center" key={event.id}>
-                      <div>
-                        <span>{event.name}</span>
-                        <br />
-                        <small>Date: {event.date}</small>
-                        <br />
-                        <small>Time: {event.time}</small>
-                      </div>
-                      <div>
-                        <button
-                          className="btn btn-sm btn-primary"
-                          onClick={() => editEvent(event.id)}
-                        >
-                          Edit
-                        </button>
-                        <button
-                          className="btn btn-sm btn-danger"
-                          onClick={() => deleteEvent(event.id)}
-                        >
-                          Delete
-                        </button>
-                      </div>
-                    </li>
-                  ))
-                ) : (
-                  <p>No events found.</p>
-                )}
-              </ul>
+              {filteredEvents.length > 0 ? (
+                <table className="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Event Name</th>
+                      <th>Date</th>
+                      <th>Time</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredEvents.map((event) => (
+                      <tr key={event.id}>
+                        <td>{event.name}</td>
+                        <td>{event.date}</td>
+                        <td>{event.time}</td>
+                        <td>
+                          <button
+                            className="btn btn-sm btn-primary"
+                            onClick={() => editEvent(event.id)}
+                          >
+                            Edit
+                          </button>
+                          <button
+                            className="btn btn-sm btn-danger"
+                            onClick={() => deleteEvent(event.id)}
+                          >
+                            Delete
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              ) : (
+                <p>No events found.</p>
+              )}
             </div>
           </div>
         </div>
