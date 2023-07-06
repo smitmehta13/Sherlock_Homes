@@ -11,6 +11,7 @@ import Login from './Login';
 import Events from './Events';
 import Home from './Home';
 import Navbar from './Navbar';
+import TransactionPage from './Transactions';
 import NotificationForm from './NotificationForm';
 import './AdminLTE-master/dist/css/adminlte.min.css';
 import './AdminLTE-master/dist/js/adminlte.min.js';
@@ -45,6 +46,7 @@ function App() {
           <ProtectedRoute path="/residence" component={Residence} isLoggedIn={loggedIn} allowedRoles={['admin']} />
           <ProtectedRoute path="/unit" component={Unit} isLoggedIn={loggedIn} allowedRoles={['admin', 'manager']} />
           <ProtectedRoute path="/events" component={Events} isLoggedIn={loggedIn} allowedRoles={['admin', 'manager']}/>
+          <ProtectedRoute path="/transactions" component={TransactionPage} isLoggedIn={loggedIn} allowedRoles={['admin', 'manager']} />
           <ProtectedRoute path="/notification" component={NotificationForm} isLoggedIn={loggedIn} allowedRoles={['admin', 'manager', 'submanager']} />
           <Route path="/signup" component={Signup} />
           <Route exact path="/" render={() => (loggedIn ? <Home role={role} /> : <Login onLogin={handleLogin} />)} />

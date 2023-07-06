@@ -1,4 +1,6 @@
 import React from "react";
+import $ from 'jquery';
+
 
 function Home({ role }) {
     return (
