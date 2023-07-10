@@ -1,6 +1,4 @@
-Certainly! Here's an example of a README file content for your project:
 
-```
 # Property Management System
 
 This is a Property Management System application built with React and Spring Boot.
