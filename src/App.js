@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import ProtectedRoute from './ProtectedRoute';
 import Account from './account';
-import Lease from './lease';
+import LeaseController from './controllers/LeaseController';
 import MaintenanceRequest from './maintanceReq';
 import Residence from './Residence';
 import Unit from './unit';
@@ -41,7 +41,7 @@ function App() {
 
         <Switch>
           <ProtectedRoute path="/account" component={Account} isLoggedIn={loggedIn} allowedRoles={['admin', 'manager', 'submanager']} />
-          <ProtectedRoute path="/lease" component={Lease} isLoggedIn={loggedIn} allowedRoles={['admin', 'manager']} />
+          <ProtectedRoute path="/lease" component={LeaseController} isLoggedIn={loggedIn} allowedRoles={['admin', 'manager']} />
           <ProtectedRoute path="/maintenance" component={MaintenanceRequest} isLoggedIn={loggedIn} allowedRoles={['admin', 'manager', 'submanager']} />
           <ProtectedRoute path="/residence" component={Residence} isLoggedIn={loggedIn} allowedRoles={['admin']} />
           <ProtectedRoute path="/unit" component={Unit} isLoggedIn={loggedIn} allowedRoles={['admin', 'manager']} />

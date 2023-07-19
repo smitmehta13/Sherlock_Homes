@@ -6,6 +6,7 @@ const NotificationForm = () => {
   const [content, setContent] = useState('');
   const [image, setImage] = useState(null);
   const [error, setError] = useState('');
+  
 
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
@@ -35,7 +36,14 @@ const NotificationForm = () => {
     }
 
     try {
-      await axios.post('https://dummy.restapiexample.com/api/v1/create', formData);
+      //add header
+      const config = {
+        headers: {
+          'content-type': 'application/json'
+        }
+      };
+      //now do http request
+      const response = await axios.post('http://10.192.78.229:8080/api/notifications/create', formData, config);
       console.log('Notification sent successfully');
       alert('Notification sent successfully');
       setError('');
