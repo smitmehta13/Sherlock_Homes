@@ -14,7 +14,8 @@ function Navbar({ handleLogout }) {
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <div className="container-fluid">
         <a className="navbar-brand" href="/">
-          Admin Panel
+        Property Management System
+
         </a>
         <button
           className="navbar-toggler"
@@ -35,14 +36,14 @@ function Navbar({ handleLogout }) {
                 <i className="fas fa-home"></i>
               </Link>
             </li>
-            {userRole === 'admin' && (
+            {userRole === '1' && (
               <li className="nav-item">
                 <Link to="/account" className="nav-link">
                   Account
                 </Link>
               </li>
             )}
-            {userRole === 'admin' || userRole === 'manager' ? (
+            {userRole === '1' || userRole === 'manager' ? (
               <>
                 <li className="nav-item">
                   <Link to="/lease" className="nav-link">
@@ -61,7 +62,7 @@ function Navbar({ handleLogout }) {
                 </li>
               </>
             ) : null}
-            {userRole === 'admin' || userRole === 'submanager' ? (
+            {userRole === '1' || userRole === 'submanager' ? (
               <li className="nav-item">
                 <Link to="/residence" className="nav-link">
                   Residence
@@ -73,7 +74,7 @@ function Navbar({ handleLogout }) {
                 Unit
               </Link>
             </li>
-            {userRole === 'admin' && (
+            {userRole === '1' && (
               <li className="nav-item">
                 <Link to="/notification" className="nav-link">
                   Send Notification

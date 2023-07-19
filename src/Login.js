@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
+import axios from 'axios';
+import {API_LOGIN_PATH} from './Constants';
 
 function Login({ onLogin }) {
   const history = useHistory();
@@ -7,21 +9,31 @@ function Login({ onLogin }) {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    // Perform the login logic here
-    // Assuming the login is successful
-    // Generate a token or store user information in browser cookies or local storage
 
-    // Set the session token or user information in browser cookies or local storage
-    // Example using localStorage:
-    localStorage.setItem('token', 'your_session_token_or_user_info');
+    try {
+      // Call the login API endpoint with the provided email and password
+      const response = await axios.post(`${API_LOGIN_PATH}`, { email, password });
 
-    // Call the onLogin function to update the login status in the parent component
-    onLogin();
+      // Assuming the login is successful
+      // Generate a token or store user information in browser cookies or local storage
 
-    // Redirect to the desired page after login
-    history.push('/');
+      // Set the session token or user information in browser cookies or local storage
+      // Example using localStorage:
+      localStorage.setItem('token', response.data.token);
+      //localStorage.setItem('role', response.data.role);
+      console.log(response.data.account.role);
+
+      // Call the onLogin function to update the login status in the parent component
+      onLogin(response.data.account.role);
+
+      // Redirect to the desired page after login
+      history.push('/');
+    } catch (error) {
+      console.error(error);
+      setError('Invalid email or password');
+    }
   };
 
   return (
