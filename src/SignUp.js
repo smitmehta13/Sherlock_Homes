@@ -1,14 +1,21 @@
 import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import axios from 'axios';
+import DatePicker from 'react-datepicker'; // Assuming you have a date picker component
+import 'react-datepicker/dist/react-datepicker.css'; // Import the styles for the date picker
+import { API_BASE_URL } from './Constants';
 
 function SignUp() {
   const history = useHistory();
-  const [fullName, setFullName] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [role, setRole] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [address, setAddress] = useState('');
+  const [dateOfBirth, setDateOfBirth] = useState(null); // Assuming dateOfBirth is a Date object
   const [error, setError] = useState('');
 
   const handleRoleChange = (e) => {
@@ -20,12 +27,15 @@ function SignUp() {
 
     try {
       // Send the signup data to the server
-      const response = await axios.post('/api/signup', {
-        fullName,
-        email,
+      const response = await axios.post(`${API_BASE_URL}/api/accounts/create`, {
         password,
-        confirmPassword,
-        role,
+        email,
+        firstName,
+        lastName,
+        phoneNumber,
+        address,
+        dateOfBirth,
+        role
       });
 
       // Assuming the signup is successful
@@ -50,21 +60,36 @@ function SignUp() {
             <p className="login-box-msg">Register a new membership</p>
             {error && <div className="alert alert-danger">{error}</div>} {/* Display error message if signup fails */}
             <form onSubmit={handleSubmit}>
-              <div className="input-group mb-3">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Full name"
-                  required
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
-                />
-                <div className="input-group-append">
-                  <div className="input-group-text">
-                    <span className="fas fa-user"></span>
-                  </div>
-                </div>
-              </div>
+            <div className="input-group mb-3">
+        <input
+          type="text"
+          className="form-control"
+          placeholder="First name"
+          required
+          value={firstName}
+          onChange={(e) => setFirstName(e.target.value)}
+        />
+        <div className="input-group-append">
+          <div className="input-group-text">
+            <span className="fas fa-user"></span>
+          </div>
+        </div>
+      </div>
+      <div className="input-group mb-3">
+        <input
+          type="text"
+          className="form-control"
+          placeholder="Last name"
+          required
+          value={lastName}
+          onChange={(e) => setLastName(e.target.value)}
+        />
+        <div className="input-group-append">
+          <div className="input-group-text">
+            <span className="fas fa-user"></span>
+          </div>
+        </div>
+      </div>
               <div className="input-group mb-3">
                 <input
                   type="email"
@@ -111,6 +136,49 @@ function SignUp() {
                 </div>
               </div>
               <div className="input-group mb-3">
+                <input
+                  type="tel"
+                  className="form-control"
+                  placeholder="Phone number"
+                  required
+                  value={phoneNumber}
+                  onChange={(e) => setPhoneNumber(e.target.value)}
+                />
+                <div className="input-group-append">
+                  <div className="input-group-text">
+                    <span className="fas fa-phone"></span>
+                  </div>
+                </div>
+              </div>
+              <div className="input-group mb-3">
+                <textarea
+                  className="form-control"
+                  placeholder="Address"
+                  required
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                ></textarea>
+                <div className="input-group-append">
+                  <div className="input-group-text">
+                    <span className="fas fa-address-card"></span>
+                  </div>
+                </div>
+              </div>
+              <div className="input-group mb-3">
+                <DatePicker
+                  selected={dateOfBirth}
+                  onChange={(date) => setDateOfBirth(date)}
+                  placeholderText="Date of Birth"
+                  required
+                  className="form-control"
+                />
+                <div className="input-group-append">
+                  <div className="input-group-text">
+                    <span className="fas fa-calendar"></span>
+                  </div>
+                </div>
+              </div>
+              <div className="input-group mb-3">
                 <select
                   className="form-control"
                   value={role}
@@ -118,9 +186,9 @@ function SignUp() {
                   required
                 >
                   <option value="">Select role</option>
-                  <option value="admin">Admin</option>
-                  <option value="manager">Manager</option>
-                  <option value="submanager">Sub Manager</option>
+                  <option value="1">1</option>
+                  <option value="2">Manager</option>
+                  <option value="3">Sub Manager</option>
                 </select>
                 <div className="input-group-append">
                   <div className="input-group-text">

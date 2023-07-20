@@ -24,8 +24,8 @@ function Event() {
   const [isAddingEvent, setIsAddingEvent] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const eventsApi = new BaseApiHandler('/events');
+  const [showForm, setShowForm] = useState(false); // Add a state variable to handle form visibility
 
-  const [selectedImage, setSelectedImage] = useState(null);
 
 
 
@@ -93,7 +93,7 @@ function Event() {
     };
 
     try {
-      const response = await fetch(`${API_EVENTS_UPDATE}/${selectedEvent.id}`, {
+      const response = await fetch(`${API_EVENTS_UPDATE(selectedEvent.id)}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -118,10 +118,12 @@ function Event() {
 
   const deleteEvent = async (eventId) => {
     try {
+      console.log(eventId);
       const response = await fetch(`${API_EVENTS_DELETE}/${eventId}`, {
         method: 'DELETE',
       });
 
+      console.log(response);
       if (response.ok) {
         const updatedEvents = events.filter((event) => event.id !== eventId);
         setEvents(updatedEvents);
@@ -138,10 +140,12 @@ function Event() {
   };
 
   const handleEditEvent = (event) => {
+    toggleForm();
     setSelectedEvent(event);
     setEventName(event.eventName);
     setEventDetails(event.eventDetails);
     setEventDateTime(event.eventDateTime);
+    setEventBanner(event.eventBanner);
     setEventLocation(event.eventLocation);
     setCapacity(event.capacity);
     setEventStatus(event.eventStatus);
@@ -160,6 +164,10 @@ function Event() {
     setIsAddingEvent(false);
   };
 
+  const toggleForm = () => {
+    setShowForm((prevShowForm) => !prevShowForm);
+  };
+
   const filteredEvents = events.filter((event) =>
     event.eventName.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -172,9 +180,13 @@ function Event() {
             <div className="col-sm-6">
               <h1>Event Management</h1>
             </div>
+          <button className="btn btn-primary" onClick={toggleForm}>
+          {showForm ? 'Hide Form' : 'Add New Event'}
+          </button>
           </div>
         </div>
       </section>
+      {!showForm && (
       <section className="content">
         <div className="container-fluid">
           <div className="card">
@@ -260,11 +272,12 @@ function Event() {
           </div>
         </div>
       </section>
-
-      <div className="card">
-        <div className="card-header">
-          <h3 className="card-title">Add Event</h3>
-        </div>
+      )}
+      {showForm && (
+        <div className="card">
+          <div className="card-header">
+            <h3 className="card-title">Add Event</h3>
+          </div>
         <div className="card-body">
           <div className="form-group">
             <label htmlFor="eventName">Event Name</label>
@@ -354,8 +367,9 @@ function Event() {
           </button>
         </div>
       </div>
+      )}
     </div>
-  );
+    );
 }
 
 export default Event;

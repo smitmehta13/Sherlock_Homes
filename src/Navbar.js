@@ -43,7 +43,7 @@ function Navbar({ handleLogout }) {
                 </Link>
               </li>
             )}
-            {userRole === '1' || userRole === 'manager' ? (
+            {userRole === '1' || userRole === '0' ? (
               <>
                 <li className="nav-item">
                   <Link to="/lease" className="nav-link">
