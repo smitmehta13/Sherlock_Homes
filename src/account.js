@@ -14,6 +14,7 @@ function Account() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [showForm, setShowForm] = useState(false); // Add a state variable to handle form visibility
   const [newUserData, setNewUserData] = useState({
     id: '',
     firstName: '',
@@ -91,6 +92,9 @@ function Account() {
       setError('Failed to delete user');
     }
   };
+  const toggleForm = () => {
+    setShowForm((prevShowForm) => !prevShowForm);
+  };
 
   const handleEditUser = (user) => {
     setNewUserData(user);
@@ -112,9 +116,13 @@ function Account() {
             <div className="col-sm-6">
               <h1 className="m-0 text-dark">Account Management</h1>
             </div>
+            <button className="btn btn-primary" onClick={toggleForm}>
+        {showForm ? 'Hide Form' : 'Add New Event'}
+      </button>
           </div>
         </div>
       </div>
+      {!showForm && (
       <section className="content">
         <div className="container-fluid">
           <div className="row">
@@ -183,8 +191,14 @@ function Account() {
               </div>
             </div>
           </div>
+          </div>
+          </section>
+          )}
+          <section className="content">
+        <div className="container-fluid">
           <div className="row mt-3">
             <div className="col-md-6">
+              {showForm && (
               <div className="card">
                 <div className="card-header">
                   <h3 className="card-title">
@@ -248,6 +262,7 @@ function Account() {
                   </button>
                 </div>
               </div>
+              )}
             </div>
           </div>
         </div>

@@ -43,14 +43,14 @@ function App() {
         {loggedIn && <Navbar handleLogout={handleLogout} />}
 
         <Switch>
-          <ProtectedRoute path="/account" component={Account} isLoggedIn={loggedIn} allowedRoles={['1', 'manager', 'submanager']} />
-          <ProtectedRoute path="/lease" component={LeaseController} isLoggedIn={loggedIn} allowedRoles={['1', 'manager']} />
-          <ProtectedRoute path="/maintenance" component={MaintenanceRequest} isLoggedIn={loggedIn} allowedRoles={['1', 'manager', 'submanager']} />
+          <ProtectedRoute path="/account" component={Account} isLoggedIn={loggedIn} allowedRoles={['1', '0', 'submanager']} />
+          <ProtectedRoute path="/lease" component={LeaseController} isLoggedIn={loggedIn} allowedRoles={['1', '0']} />
+          <ProtectedRoute path="/maintenance" component={MaintenanceRequest} isLoggedIn={loggedIn} allowedRoles={['1', '0', 'submanager']} />
           <ProtectedRoute path="/residence" component={Residence} isLoggedIn={loggedIn} allowedRoles={['1']} />
-          <ProtectedRoute path="/unit" component={Unit} isLoggedIn={loggedIn} allowedRoles={['1', 'manager']} />
-          <ProtectedRoute path="/events" component={Events} isLoggedIn={loggedIn} allowedRoles={['1', 'manager']}/>
-          <ProtectedRoute path="/transactions" component={TransactionPage} isLoggedIn={loggedIn} allowedRoles={['1', 'manager']} />
-          <ProtectedRoute path="/notification" component={NotificationForm} isLoggedIn={loggedIn} allowedRoles={['1', 'manager', 'submanager']} />
+          <ProtectedRoute path="/unit" component={Unit} isLoggedIn={loggedIn} allowedRoles={['1', '0']} />
+          <ProtectedRoute path="/events" component={Events} isLoggedIn={loggedIn} allowedRoles={['1', '0']}/>
+          <ProtectedRoute path="/transactions" component={TransactionPage} isLoggedIn={loggedIn} allowedRoles={['1', '0']} />
+          <ProtectedRoute path="/notification" component={NotificationForm} isLoggedIn={loggedIn} allowedRoles={['1', '0', 'submanager']} />
           <Route path="/signup" component={Signup} />
           <Route exact path="/" render={() => (loggedIn ? <Home role={role} /> : <Login onLogin={handleLogin} />)} />
           <Redirect to="/" />

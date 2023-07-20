@@ -5,6 +5,7 @@ export const API_BASE_URL = 'http://20.151.210.84:8080';
 export const API_LEASES_PATH = `/api/leases`;
 export const API_USERS_PATH = '/api/accounts';
 export const API_EVENTS_PATH = '/api/events';
+export const API_UNITS_PATH = '/api/units';
 export const API_LOGIN_PATH = `${API_BASE_URL}/api/accounts/login`;
 export const API_NOTIFICATIONS_CREATE = `${API_BASE_URL}/api/notifications/create`;
 
@@ -23,7 +24,13 @@ export const API_USERS_DELETE = (userId) => `${API_BASE_URL}${API_USERS_PATH}/${
 export const API_EVENTS_ALL = `${API_BASE_URL}${API_EVENTS_PATH}`;
 export const API_EVENTS_CREATE = `${API_BASE_URL}${API_EVENTS_PATH}/create`;
 export const API_EVENTS_UPDATE = (eventId) => `${API_BASE_URL}${API_EVENTS_PATH}/${eventId}`;
-export const API_EVENTS_DELETE = (eventId) => `${API_BASE_URL}${API_EVENTS_PATH}/${eventId}`;
+export const API_EVENTS_DELETE = `${API_BASE_URL}${API_EVENTS_PATH}/delete`;
+
+//apis for units
+export const API_UNITS_ALL = `${API_BASE_URL}${API_UNITS_PATH}/all`;
+export const API_UNITS_CREATE = `${API_BASE_URL}${API_UNITS_PATH}/create`;
+export const API_UNITS_UPDATE = (unitId) => `${API_BASE_URL}/api/units/${unitId}`;
+export const API_UNITS_DELETE = (unitId) => `${API_BASE_URL}/api/units/${unitId}`;
 
 
 // Other Constants
