@@ -1,11 +1,12 @@
 // Constants.js
 
 // API URLs
-export const API_BASE_URL = 'http://20.151.210.84:8080/api';
-export const API_LEASES_PATH = `/leases`;
-export const API_USERS_PATH = '/accounts';
-export const API_EVENTS_PATH = '/events';
-export const API_LOGIN_PATH = `${API_BASE_URL}/accounts/login`;
+export const API_BASE_URL = 'http://20.151.210.84:8080';
+export const API_LEASES_PATH = `/api/leases`;
+export const API_USERS_PATH = '/api/accounts';
+export const API_EVENTS_PATH = '/api/events';
+export const API_LOGIN_PATH = `${API_BASE_URL}/api/accounts/login`;
+export const API_NOTIFICATIONS_CREATE = `${API_BASE_URL}/api/notifications/create`;
 
 // API Endpoints
 export const API_LEASES_ALL = `${API_BASE_URL}${API_LEASES_PATH}/all`;
