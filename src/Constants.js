@@ -6,6 +6,7 @@ export const API_LEASES_PATH = `/api/leases`;
 export const API_USERS_PATH = '/api/accounts';
 export const API_EVENTS_PATH = '/api/events';
 export const API_UNITS_PATH = '/api/units';
+export const API_RESIDENCES_PATH = '/api/residences';
 export const API_LOGIN_PATH = `${API_BASE_URL}/api/accounts/login`;
 export const API_NOTIFICATIONS_CREATE = `${API_BASE_URL}/api/notifications/create`;
 
@@ -31,6 +32,13 @@ export const API_UNITS_ALL = `${API_BASE_URL}${API_UNITS_PATH}/all`;
 export const API_UNITS_CREATE = `${API_BASE_URL}${API_UNITS_PATH}/create`;
 export const API_UNITS_UPDATE = (unitId) => `${API_BASE_URL}/api/units/${unitId}`;
 export const API_UNITS_DELETE = (unitId) => `${API_BASE_URL}/api/units/${unitId}`;
+
+//apis for residences
+export const API_RESIDENCES_ALL = `${API_BASE_URL}${API_RESIDENCES_PATH}/all`;
+export const API_RESIDENCES_CREATE = `${API_BASE_URL}${API_RESIDENCES_PATH}/create`;
+export const API_RESIDENCES_UPDATE = (residenceId) => `${API_BASE_URL}${API_RESIDENCES_PATH}/${residenceId}`;
+export const API_RESIDENCES_DELETE = (residenceId) => `${API_BASE_URL}${API_RESIDENCES_PATH}/${residenceId}`;
+
 
 
 // Other Constants
