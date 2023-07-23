@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { API_NOTIFICATIONS_CREATE } from './Constants';
-import { fileToBase64 } from './utils';
+import { fileToBase64 } from './Utils/utils';
 
 const NotificationForm = () => {
   const [title, setTitle] = useState('');

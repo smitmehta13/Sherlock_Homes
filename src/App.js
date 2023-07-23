@@ -11,6 +11,7 @@ import Signup from './SignUp';
 import Login from './Login';
 import Events from './Events';
 import Home from './Home';
+import Dashboard  from './Dashboard/Dashboard';
 import Navbar from './Navbar';
 import TransactionPage from './Transactions';
 import NotificationForm from './NotificationForm';
@@ -53,7 +54,7 @@ function App() {
           <ProtectedRoute path="/transactions" component={TransactionPage} isLoggedIn={loggedIn} allowedRoles={['1', '0']} />
           <ProtectedRoute path="/notification" component={NotificationForm} isLoggedIn={loggedIn} allowedRoles={['1', '0', 'submanager']} />
           <Route path="/signup" component={Signup} />
-          <Route exact path="/" render={() => (loggedIn ? <Home role={role} /> : <Login onLogin={handleLogin} />)} />
+          <Route exact path="/" render={() => (loggedIn ? <Dashboard role={role} /> : <Login onLogin={handleLogin} />)} />
           <Redirect to="/" />
         </Switch>
       </div>
