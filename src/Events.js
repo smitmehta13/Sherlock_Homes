@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { base64StringtoFile,
-fileToBase64 } from './utils';
+fileToBase64 } from './Utils/utils';
 import {
   API_BASE_URL,
   API_EVENTS_ALL,
@@ -8,7 +8,7 @@ import {
   API_EVENTS_UPDATE,
   API_EVENTS_DELETE,
 } from './Constants';
-import BaseApiHandler from './utils';
+import BaseApiHandler from './Utils/utils';
 
 
 function Event() {

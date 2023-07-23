@@ -1,6 +1,6 @@
 
 import axios from 'axios';
-import { API_BASE_URL } from './Constants';
+import { API_BASE_URL } from '../Constants';
 // method to convert base64 string to image file
 export const base64StringtoFile = (base64String) => {
     var image = new Image();

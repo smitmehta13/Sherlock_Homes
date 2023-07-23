@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { API_RESIDENCES_ALL } from './Constants';
 import axios from 'axios';
 
 function Residence() {
@@ -10,7 +11,7 @@ function Residence() {
 
   const fetchResidences = async () => {
     try {
-      const response = await axios.get('/api/residences');
+      const response = await axios.get(`${API_RESIDENCES_ALL}`);
       setResidences(response.data);
     } catch (error) {
       console.log('Error fetching residences:', error);
@@ -28,9 +29,11 @@ function Residence() {
             <li key={residence.id}>
               <h3>{residence.name}</h3>
               <p>Address: {residence.address}</p>
+              <p>Description: {residence.description}</p>
               <p>City: {residence.city}</p>
               <p>State: {residence.state}</p>
               <p>Zip Code: {residence.zipCode}</p>
+              <p>Total Units: {residence.units.length}</p>
             </li>
           ))}
         </ul>

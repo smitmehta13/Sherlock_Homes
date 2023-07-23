@@ -18,9 +18,16 @@ function Account() {
   const [newUserData, setNewUserData] = useState({
     id: '',
     firstName: '',
+    lastName: '',
     password: '',
     email: '',
-    // Add other fields as needed
+    phoneNumber: '',
+    address: '',
+    dateOfBirth: '',
+    collegeName: '',
+    studentId: '',
+    postalCode: '',
+    role: '',
   });
 
   const fetchUsers = async () => {
@@ -71,9 +78,16 @@ function Account() {
       setNewUserData({
         id: '',
         firstName: '',
+        lastName: '',
         password: '',
         email: '',
-        // Reset other fields as needed
+        phoneNumber: '',
+        address: '',
+        dateOfBirth: '',
+        collegeName: '',
+        studentId: '',
+        postalCode: '',
+        role: '',
       });
       fetchUsers();
     } catch (error) {
@@ -97,6 +111,8 @@ function Account() {
   };
 
   const handleEditUser = (user) => {
+    toggleForm();
+    console.log(user);
     setNewUserData(user);
   };
 
@@ -197,7 +213,7 @@ function Account() {
           <section className="content">
         <div className="container-fluid">
           <div className="row mt-3">
-            <div className="col-md-6">
+            <div className="col-md-12">
               {showForm && (
               <div className="card">
                 <div className="card-header">
@@ -205,39 +221,42 @@ function Account() {
                     {newUserData.id ? 'Update User' : 'Create User'}
                   </h3>
                 </div>
-                <div className="card-body">
-                  <div className="form-group">
-                    <label htmlFor="firstName">First Name:</label>
-                    <input
-                      type="text"
-                      id="firstName"
-                      className="form-control"
-                      name="firstName"
-                      value={newUserData.firstName}
-                      onChange={(e) =>
-                        setNewUserData((prevData) => ({
-                          ...prevData,
-                          firstName: e.target.value,
-                        }))
-                      }
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="password">Password:</label>
-                    <input
-                      type="text"
-                      id="password"
-                      className="form-control"
-                      name="password"
-                      value={newUserData.password}
-                      onChange={(e) =>
-                        setNewUserData((prevData) => ({
-                          ...prevData,
-                          password: e.target.value,
-                        }))
-                      }
-                    />
-                  </div>
+                {/*Left Column */}
+                     <div className="card-body">
+                      <div className="row">
+                      <div className="col-md-6">
+                    <div className="form-group">
+                      <label htmlFor="firstName">First Name:</label>
+                      <input
+                        type="text"
+                        id="firstName"
+                        className="form-control"
+                        name="firstName"
+                        value={newUserData.firstName}
+                        onChange={(e) =>
+                          setNewUserData((prevData) => ({
+                            ...prevData,
+                            firstName: e.target.value,
+                          }))
+                        }
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="lastName">Last Name:</label>
+                      <input
+                        type="text"
+                        id="lastName"
+                        className="form-control"
+                        name="lastName"
+                        value={newUserData.lastName}
+                        onChange={(e) =>
+                          setNewUserData((prevData) => ({
+                            ...prevData,
+                            lastName: e.target.value,
+                          }))
+                        }
+                      />
+                    </div>
                   <div className="form-group">
                     <label htmlFor="email">Email:</label>
                     <input
@@ -254,6 +273,122 @@ function Account() {
                       }
                     />
                   </div>
+                  
+                   <div className="form-group">
+                    <label htmlFor="password">Password:</label>
+                    <input
+                      type="text"
+                      id="password"
+                      className="form-control"
+                      name="password"
+                      value={newUserData.password}
+                      onChange={(e) =>
+                        setNewUserData((prevData) => ({
+                          ...prevData,
+                          password: e.target.value,
+                        }))
+                      }
+                    />
+                  </div>
+                   <div className="form-group">
+                    <label htmlFor="phoneNumber">phoneNumber:</label>
+                    <input
+                      type="text"
+                      id="phoneNumber"
+                      className="form-control"
+                      name="phoneNumber"
+                      value={newUserData.phoneNumber}
+                      onChange={(e) =>
+                        setNewUserData((prevData) => ({
+                          ...prevData,
+                          phoneNumber: e.target.value,
+                        }))
+                      }
+                    />
+                  </div>
+                  </div>
+                      <div className="col-md-6">
+                   <div className="form-group">
+                    <label htmlFor="address">address:</label>
+                    <input
+                      type="textbox"
+                      id="address"
+                      className="form-control"
+                      name="address"
+                      value={newUserData.address}
+                      onChange={(e) =>
+                        setNewUserData((prevData) => ({
+                          ...prevData,
+                          address: e.target.value,
+                        }))
+                      }
+                    />
+                  </div>
+                   <div className="form-group">
+                    <label htmlFor="postalCode">postalCode:</label>
+                    <input
+                      type="text"
+                      id="postalCode"
+                      className="form-control"
+                      name="postalCode"
+                      value={newUserData.postalCode}
+                      onChange={(e) =>
+                        setNewUserData((prevData) => ({
+                          ...prevData,
+                          postalCode: e.target.value,
+                        }))
+                      }
+                    />
+                  </div>
+                   <div className="form-group">
+                    <label htmlFor="dateOfBirth">Date of Birth:</label>
+                    <input
+                      type="Date"
+                      id="DateOfBirth"
+                      className="form-control"
+                      name="DateOfBirth"
+                      value={newUserData.dateOfBirth}
+                      onChange={(e) =>
+                        setNewUserData((prevData) => ({
+                          ...prevData,
+                          dateOfBirth: e.target.value,
+                        }))
+                      }
+                    />
+                  </div>
+                   <div className="form-group">
+                    <label htmlFor="collegeName">College Name:</label>
+                    <input
+                      type="text"
+                      id="CollegeName"
+                      className="form-control"
+                      name="CollegeName"
+                      value={newUserData.collegeName}
+                      onChange={(e) =>
+                        setNewUserData((prevData) => ({
+                          ...prevData,
+                          collegeName: e.target.value,
+                        }))
+                      }
+                    />
+                  </div>
+                   <div className="form-group">
+                    <label htmlFor="studentId">Student ID:</label>
+                    <input
+                      type="text"
+                      id="studentId"
+                      className="form-control"
+                      name="studentId"
+                      value={newUserData.studentId}
+                      onChange={(e) =>
+                        setNewUserData((prevData) => ({
+                          ...prevData,
+                          studentId: e.target.value,
+                        }))
+                      }
+                    />
+                  </div>
+                  </div>
                   <button
                     className="btn btn-primary"
                     onClick={handleCreateOrUpdateUser}
@@ -261,7 +396,9 @@ function Account() {
                     {newUserData.id ? 'Update User' : 'Create User'}
                   </button>
                 </div>
-              </div>
+              
+            </div>
+          </div>
               )}
             </div>
           </div>
