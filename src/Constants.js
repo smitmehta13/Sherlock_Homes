@@ -7,6 +7,7 @@ export const API_USERS_PATH = '/api/accounts';
 export const API_EVENTS_PATH = '/api/events';
 export const API_UNITS_PATH = '/api/units';
 export const API_RESIDENCES_PATH = '/api/residences';
+export const API_MAINTENANCE_PATH = '/api/maintenance-requests';
 export const API_LOGIN_PATH = `${API_BASE_URL}/api/accounts/login`;
 export const API_NOTIFICATIONS_CREATE = `${API_BASE_URL}/api/notifications/create`;
 
@@ -16,6 +17,8 @@ export const API_LEASES_CREATE = `${API_BASE_URL}${API_LEASES_PATH}/create`;
 export const API_LEASES_UPDATE = (leaseId) => `${API_BASE_URL}${API_LEASES_PATH}/${leaseId}`;
 export const API_LEASES_DELETE = (leaseId) => `${API_BASE_URL}${API_LEASES_PATH}/${leaseId}`;
 
+//apis for users
+// api for get user by id
 export const API_USERS_ALL = `${API_BASE_URL}${API_USERS_PATH}/all`;
 export const API_USERS_CREATE = `${API_BASE_URL}${API_USERS_PATH}/create`;
 export const API_USERS_UPDATE = (userId) => `${API_BASE_URL}${API_USERS_PATH}/${userId}`;
@@ -39,7 +42,11 @@ export const API_RESIDENCES_CREATE = `${API_BASE_URL}${API_RESIDENCES_PATH}/crea
 export const API_RESIDENCES_UPDATE = (residenceId) => `${API_BASE_URL}${API_RESIDENCES_PATH}/${residenceId}`;
 export const API_RESIDENCES_DELETE = (residenceId) => `${API_BASE_URL}${API_RESIDENCES_PATH}/${residenceId}`;
 
-
+//apis for maintenance
+export const API_MAINTENANCE_ALL = `${API_BASE_URL}${API_MAINTENANCE_PATH}`;
+export const API_MAINTENANCE_CREATE = `${API_BASE_URL}${API_MAINTENANCE_PATH}/create`;
+export const API_MAINTENANCE_UPDATE = (maintenanceId) => `${API_BASE_URL}${API_MAINTENANCE_PATH}/${maintenanceId}`;
+export const API_MAINTENANCE_DELETE = (maintenanceId) => `${API_BASE_URL}${API_MAINTENANCE_PATH}/${maintenanceId}`;
 
 // Other Constants
 export const MAX_RESULTS_PER_PAGE = 10;

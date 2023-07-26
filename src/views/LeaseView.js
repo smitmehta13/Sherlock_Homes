@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import LeaseModel from '../models/LeaseModel';
+import leaseModel from '../models/LeaseModel';
+import { API_LEASES_ALL, API_USERS_UPDATE } from '../Constants';
+import axios from 'axios';
+import { get, post } from 'jquery';
 
 function LeaseView() {
-  const [leases, setLeases] = useState([]);
+  const [leases, setLeases] = useState([]); // Set the initial value to an empty array
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -10,11 +13,9 @@ function LeaseView() {
     leaseStatus: '',
     property: '',
     leaseStartDate: '',
-    leaseleaseEndDate: '',
+    leaseEndDate: '',
     monthlyRent: '',
   });
-
-  const leaseModel = new LeaseModel();
 
   useEffect(() => {
     fetchLeases();
@@ -22,15 +23,35 @@ function LeaseView() {
 
   const fetchLeases = async () => {
     try {
-      const leases = await leaseModel.fetchLeases();
-      setLeases(leases);
+      // Fetch all leases using leaseModel
+      console.log("fetching leases");
+      const leases = await get(`${API_LEASES_ALL}`);
+      console.log("fetched leases");
+  
+      // Fetch user data for each lease and store tenant names
+      const tenantNamesMap = {};
+      await Promise.all(
+        leases.map(async (lease) => {
+          const userResponse = await axios.get(`${API_USERS_UPDATE(lease.userId)}`);
+          const user = userResponse.data;
+          console.log(user);
+          tenantNamesMap[lease.userId] = user.firstName; // Assuming user object has a 'firstName' field
+        })
+      );
+  
+      // Update the leases with the tenant names
+      const leasesWithTenantNames = leases.map((lease) => ({
+        ...lease,
+        tenantName: tenantNamesMap[lease.userId],
+      }));
+  
+      setLeases(leasesWithTenantNames);
       setLoading(false);
     } catch (error) {
       setError('Failed to fetch leases');
       setLoading(false);
     }
   };
-
   const handleSearchQueryChange = (event) => {
     setSearchQuery(event.target.value);
   };
@@ -131,11 +152,11 @@ function LeaseView() {
                       <tbody>
                         {filteredLeases.map((lease) => (
                           <tr key={lease.id}>
-                            <td>{lease.leaseStatus}</td>
-                            <td>{lease.property}</td>
+                            <td>{lease.tenantName}</td>
+                            <td>{lease.unit.unitNumber}</td>
                             <td>{lease.leaseStartDate}</td>
                             <td>{lease.leaseEndDate}</td>
-                            <td>{lease.monthlyRent}</td>
+                            <td>{lease.unit.monthlyRent}</td>
                             <td>
                               <button
                                 className="btn btn-danger btn-sm"

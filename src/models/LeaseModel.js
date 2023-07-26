@@ -11,21 +11,6 @@ import {
 
 
 class LeaseModel {
-  
-  async login(username, password) {
-    try {
-      console.log('login started');
-      const response = await axios.post('https://focus-chain-392022.nn.r.appspot.com/login', { username, password});
-      const token = response.data.token;
-      console.log('got token');
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      console.log(token);
-      // Store the token in local storage or cookies for future requests
-      localStorage.setItem('token', token);
-    } catch (error) {
-      throw new Error('Login failed');
-    }
-  }
   async createLease(leaseData) {
     try {
       const response = await axios.post(`${API_LEASES_CREATE}`, leaseData);
@@ -37,7 +22,11 @@ class LeaseModel {
 
   async fetchLeases() {
     try {
+      console.log(
+        "came here"
+      );
       const response = await axios.get(`${API_LEASES_ALL}`)
+      console.log("bheja");
       return response.data;
     } catch (error) {
       throw new Error('Failed to fetch leases');
