@@ -25,6 +25,7 @@ function Navbar({ handleLogout }) {
           aria-controls="navbarNav"
           aria-expanded="false"
           aria-label="Toggle navigation"
+          onClick={() => {console.log("clicked");}}
         >
           <span className="navbar-toggler-icon"></span>
         </button>

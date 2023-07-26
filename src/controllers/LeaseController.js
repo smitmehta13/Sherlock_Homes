@@ -18,7 +18,6 @@ function LeaseController() {
   const leaseModel = new LeaseModel();
 
   useEffect(() => {
-    //leaseModel.login('admin', 'admin');
     fetchLeases();
   }, []);
 

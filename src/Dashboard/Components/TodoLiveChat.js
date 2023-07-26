@@ -77,6 +77,8 @@ class TodoChat extends Component {
   sendChatMessage = async () => {
     const { newMessage } = this.state;
 
+    if (newMessage.trim() !== ""){
+
     const message = {
       senderId: 1, // Replace with the sender's ID or a unique identifier
       senderName: "Admin", // Replace with the sender's name or ID
@@ -86,7 +88,6 @@ class TodoChat extends Component {
     };
 
     try {
-      if(newMessage != "") {
       // Send the message using a POST request
       await axios.post("http://20.151.210.84:8080/api/chat", message);
 
@@ -108,12 +109,11 @@ class TodoChat extends Component {
           this.fetchChatMessages();
         }
       );
-      }
-      else {
-        window.alert("Please enter a message");
-      }
-    } catch (error) {
+      } catch (error) {
       console.error("Error sending chat message:", error);
+    }}
+    else {
+      window.alert("Please enter a message");
     }
   };
 
@@ -224,7 +224,7 @@ class TodoChat extends Component {
               </div>
             <div className="card-body">
               <div ref={this.chatBoxRef} className="direct-chat-messages">
-              {messages.map((message) => {
+              {messages.slice(0).reverse().map((message) => {
                 const date = new Date(message.date);
                 const formattedDate = `${date.getFullYear()}-${String(
                   date.getMonth() + 1
@@ -237,6 +237,7 @@ class TodoChat extends Component {
                 ).padStart(2, "0")}`;
 
                 return (
+                  message.content !== "" && (
                   <div
                     className={
                       message.senderName === "Admin"
@@ -264,15 +265,16 @@ class TodoChat extends Component {
                     />
                     <div className="direct-chat-text">{message.content}</div>
                   </div>
+                )
                 )})}
               </div>
           </div>
-          <div class="card-footer">
+          <div className="card-footer">
    
-      <div class="input-group">
-        <input type="text" name="message" placeholder="Type Message ..." class="form-control" value={newMessage} onChange={this.handleChatMessageChange}>
-        </input><span class="input-group-append">
-          <button type="button" class="btn btn-primary" onClick={this.sendChatMessage}>Send</button>
+      <div className="input-group">
+        <input type="text" name="message" placeholder="Type Message ..." className="form-control" value={newMessage} onChange={this.handleChatMessageChange}>
+        </input><span className="input-group-append">
+          <button type="button" className="btn btn-primary" onClick={this.sendChatMessage}>Send</button>
         </span>
       </div>
   </div>
