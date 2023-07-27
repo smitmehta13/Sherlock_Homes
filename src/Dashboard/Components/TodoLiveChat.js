@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
+import { API_BASE_URL } from "../../Constants";
 
 class TodoChat extends Component {
   constructor(props) {
@@ -43,19 +44,28 @@ class TodoChat extends Component {
       this.ws.send(JSON.stringify(message));
     }
   };
+   handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      this.sendChatMessage();
+    }
+  };
+  
 
   handleMessageReceived = (event) => {
     const data = JSON.parse(event.data);
     console.log("Received message:", data);
-    if (data.type === "chat") {
+    if (data.contentType === "txt" || data.contentType === "img") {
       const message = {
-        id: Date.now(),
-        text: data.content,
-        sender: data.senderName,
+        senderId: data.senderId, // Replace with the sender's ID or a unique identifier
+        senderName: data.senderName, // Replace with the sender's name or ID
+        content: data.content,
+        contentType: data.contentType,
+        date: data.date,
       };
       this.setState((prevState) => ({
-        messages: [...prevState.messages, message],
+        messages: [ message, ...prevState.messages],
       }));
+      this.scrollToBottom();
     }
   };
 
@@ -77,41 +87,42 @@ class TodoChat extends Component {
   sendChatMessage = async () => {
     const { newMessage } = this.state;
 
-    if (newMessage.trim() !== ""){
+    if (newMessage.trim() !== "") {
 
-    const message = {
-      senderId: 1, // Replace with the sender's ID or a unique identifier
-      senderName: "Admin", // Replace with the sender's name or ID
-      content: newMessage,
-      contentType: "txt",
-      date: new Date().toISOString(),
-    };
+      const message = {
+        senderId: 1, // Replace with the sender's ID or a unique identifier
+        senderName: "Admin", // Replace with the sender's name or ID
+        content: newMessage,
+        contentType: "txt",
+        date: new Date().toISOString(),
+      };
 
-    try {
-      // Send the message using a POST request
-      await axios.post("http://20.151.210.84:8080/api/chat", message);
+      try {
+        // Send the message using a POST request
+        await axios.post("http://20.151.210.84:8080/api/chat", message);
 
-      // Update the state to display the message in the chat
-      this.setState(
-        (prevState) => ({
-          messages: [
-            ...prevState.messages,
-            {
-              id: Date.now(),
-              text: newMessage,
-              sender: "Admin",
-            },
-          ],
-          newMessage: "",
-        }),
-        () => {
-          this.scrollToBottom();
-          this.fetchChatMessages();
-        }
-      );
+        // Update the state to display the message in the chat
+        this.setState(
+          (prevState) => ({
+            messages: [
+              ...prevState.messages,
+              {
+                id: Date.now(),
+                text: newMessage,
+                sender: "Admin",
+              },
+            ],
+            newMessage: "",
+          }),
+          () => {
+            this.scrollToBottom();
+            // this.fetchChatMessages();
+          }
+        );
       } catch (error) {
-      console.error("Error sending chat message:", error);
-    }}
+        console.error("Error sending chat message:", error);
+      }
+    }
     else {
       window.alert("Please enter a message");
     }
@@ -221,65 +232,94 @@ class TodoChat extends Component {
           <div className="card card-primary direct-chat direct-chat-success">
             <div className="card-header">
               <h4 className="card-title">Live Chat</h4>
-              </div>
+            </div>
             <div className="card-body">
               <div ref={this.chatBoxRef} className="direct-chat-messages">
-              {messages.slice(0).reverse().map((message) => {
-                const date = new Date(message.date);
-                const formattedDate = `${date.getFullYear()}-${String(
-                  date.getMonth() + 1
-                ).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
-                const formattedTime = `${String(date.getHours()).padStart(
-                  2,
-                  "0"
-                )}:${String(date.getMinutes()).padStart(2, "0")}:${String(
-                  date.getSeconds()
-                ).padStart(2, "0")}`;
+                {messages.slice(0).reverse().map((message) => {
+                  const date = new Date(message.date);
+                  const formattedDate = `${date.getFullYear()}-${String(
+                    date.getMonth() + 1
+                  ).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+                  const formattedTime = `${String(date.getHours()).padStart(
+                    2,
+                    "0"
+                  )}:${String(date.getMinutes()).padStart(2, "0")}:${String(
+                    date.getSeconds()
+                  ).padStart(2, "0")}`;
 
-                return (
-                  message.content !== "" && (
-                  <div
-                    className={
-                      message.senderName === "Admin"
-                        ? "direct-chat-msg right"
-                        : "direct-chat-msg"
-                    }
-                    key={message.id}
-                  >
-                    <div className="direct-chat-infos clearfix">
-                      <span className="direct-chat-name float-right">
-                        {message.senderName}
-                      </span>
-                      <span className="direct-chat-timestamp float-left">
-                        {formattedDate} {formattedTime}
-                      </span>
-                    </div>
-                    <img
-                      className="direct-chat-img"
-                      src={
-                        message.senderName === "Admin"
-                          ? "/docs/3.0/assets/img/user3-128x128.jpg"
-                          : "/docs/3.0/assets/img/user1-128x128.jpg"
-                      }
-                      alt={message.senderName}
-                    />
-                    <div className="direct-chat-text">{message.content}</div>
-                  </div>
-                )
-                )})}
+                  return (
+                    message.content !== "" && (
+                      <div
+                        className={
+                          message.senderName === "Admin"
+                            ? "direct-chat-msg right"
+                            : "direct-chat-msg"
+                        }
+                        key={message.id}
+                      >
+                        <div className="direct-chat-infos clearfix">
+                          <span className="direct-chat-name float-right">
+                            {message.senderName}
+                          </span>
+                          <span className="direct-chat-timestamp float-left">
+                            {formattedDate} {formattedTime}
+                          </span>
+                        </div>
+                        <img
+                          className="direct-chat-img"
+                          src={
+                            message.senderName === "Admin"
+                              ? "/docs/3.0/assets/img/user3-128x128.jpg"
+                              : "/docs/3.0/assets/img/user1-128x128.jpg"
+                          }
+                          alt={message.senderName}
+                        />
+                        <div className="direct-chat-text">
+                          {message.contentType === "txt" ? (
+                            // Render the text content if contentType is "txt"
+                            message.content
+                          ) : message.contentType === "img" ? (
+                            // Render the image if contentType is "img"
+                            <img src={`${API_BASE_URL}/${message.content}`} alt="Received data"
+                              style={{ width: '150px', height: 'auto' }} />
+                          ) : null}
+                        </div>
+
+                      </div>
+                    )
+                  )
+                })}
               </div>
+            </div>
+            <div className="card-footer">
+
+              <div className="input-group">
+                <input type="text" name="message" placeholder="Type Message ..." className="form-control" value={newMessage} onChange={this.handleChatMessageChange}
+                onKeyDown={this.handleKeyDown}
+                >
+                
+                </input>
+
+                <label htmlFor="imageInput">
+
+                  <i className="fas fa-paperclip"></i>
+
+                </label>
+                <input
+                  type="file"
+                  name="image"
+                  id="imageInput"
+                  accept="image/*"
+                  style={{ display: 'none' }}
+                // onChange={handleImageSelect}
+                />
+                <span className="input-group-append">
+                  <button type="button" className="btn btn-primary" onClick={this.sendChatMessage} >Send</button>
+                </span>
+              </div>
+            </div>
           </div>
-          <div className="card-footer">
-   
-      <div className="input-group">
-        <input type="text" name="message" placeholder="Type Message ..." className="form-control" value={newMessage} onChange={this.handleChatMessageChange}>
-        </input><span className="input-group-append">
-          <button type="button" className="btn btn-primary" onClick={this.sendChatMessage}>Send</button>
-        </span>
-      </div>
-  </div>
         </div>
-      </div>
       </div>
     );
   }

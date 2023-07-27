@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import leaseModel from '../models/LeaseModel';
-import { API_LEASES_ALL, API_USERS_UPDATE } from '../Constants';
+import { API_LEASES_ALL } from '../Constants';
 import axios from 'axios';
 import { get, post } from 'jquery';
 
@@ -27,25 +27,7 @@ function LeaseView() {
       console.log("fetching leases");
       const leases = await get(`${API_LEASES_ALL}`);
       console.log("fetched leases");
-  
-      // Fetch user data for each lease and store tenant names
-      const tenantNamesMap = {};
-      await Promise.all(
-        leases.map(async (lease) => {
-          const userResponse = await axios.get(`${API_USERS_UPDATE(lease.userId)}`);
-          const user = userResponse.data;
-          console.log(user);
-          tenantNamesMap[lease.userId] = user.firstName; // Assuming user object has a 'firstName' field
-        })
-      );
-  
-      // Update the leases with the tenant names
-      const leasesWithTenantNames = leases.map((lease) => ({
-        ...lease,
-        tenantName: tenantNamesMap[lease.userId],
-      }));
-  
-      setLeases(leasesWithTenantNames);
+      setLeases(leases);
       setLoading(false);
     } catch (error) {
       setError('Failed to fetch leases');
@@ -56,21 +38,7 @@ function LeaseView() {
     setSearchQuery(event.target.value);
   };
 
-  const handleCreateLease = async () => {
-    try {
-      await leaseModel.createLease(newLeaseData);
-      setNewLeaseData({
-        leaseStatus: '',
-        property: '',
-        leaseStartDate: '',
-        leaseEndDate: '',
-        monthlyRent: '',
-      });
-      fetchLeases();
-    } catch (error) {
-      setError('Failed to create lease');
-    }
-  };
+
 
   const handleDeleteLease = async (leaseId) => {
     try {
@@ -90,15 +58,28 @@ function LeaseView() {
   };
 
   const filteredLeases = leases.filter((lease) => {
-    const { leaseStatus, property } = lease;
+    const leaseStatus = lease.leaseStatus;
+    const Tenant = lease.user.firstName + lease.user.lastName;
+    const property = lease.subresidence.unitType + lease.subresidence.unitId;
     const lowerCaseQuery = searchQuery.toLowerCase();
-    if (searchQuery === '') {
-      return true; // Return all leases when the search query is empty
+    
+    // Check if searchQuery is defined and not empty
+    if (typeof searchQuery === 'string' && searchQuery.trim() !== '') {
+      // Convert leaseStatus and property to strings (if they are not already strings)
+      const statusString = leaseStatus && leaseStatus.toString().toLowerCase();
+      const tenantString = Tenant && Tenant.toString().toLowerCase();
+      const propertyString = property && property.toString().toLowerCase();
+      
+      // Check if statusString includes the searchQuery (case-insensitive)
+      const statusMatch = statusString && statusString.includes(lowerCaseQuery);
+      const tenantMatch = tenantString && tenantString.includes(lowerCaseQuery);
+      const propertyMatch = propertyString && propertyString.includes(lowerCaseQuery);
+      
+      return statusMatch || propertyMatch || tenantMatch;
     }
-    return (
-      (leaseStatus && leaseStatus.toLowerCase().includes(lowerCaseQuery)) ||
-      (property && property.toLowerCase().includes(lowerCaseQuery))
-    );
+  
+    // Return all leases when the search query is empty or not a string
+    return true;
   });
   
   return (
@@ -152,11 +133,11 @@ function LeaseView() {
                       <tbody>
                         {filteredLeases.map((lease) => (
                           <tr key={lease.id}>
-                            <td>{lease.tenantName}</td>
-                            <td>{lease.unit.unitNumber}</td>
+                            <td>{lease.user.firstName} {lease.user.lastName}</td>
+                            <td>{lease.subresidence.unitType} {lease.subresidence.unitId}</td>
                             <td>{lease.leaseStartDate}</td>
                             <td>{lease.leaseEndDate}</td>
-                            <td>{lease.unit.monthlyRent}</td>
+                            <td>{lease.subresidence.monthlyRent}</td>
                             <td>
                               <button
                                 className="btn btn-danger btn-sm"
@@ -236,7 +217,7 @@ function LeaseView() {
                       onChange={handleInputChange}
                     />
                   </div>
-                  <button className="btn btn-primary" onClick={handleCreateLease}>
+                  <button className="btn btn-primary" onClick={leaseModel.handleCreateLease}>
                     Create Lease
                   </button>
                 </div>

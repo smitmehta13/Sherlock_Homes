@@ -1,6 +1,9 @@
+//Events.js
 import React, { useState, useEffect } from 'react';
-import { base64StringtoFile,
-fileToBase64 } from './Utils/utils';
+import {
+  base64StringtoFile,
+  fileToBase64
+} from './Utils/utils';
 import {
   API_BASE_URL,
   API_EVENTS_ALL,
@@ -9,11 +12,13 @@ import {
   API_EVENTS_DELETE,
 } from './Constants';
 import BaseApiHandler from './Utils/utils';
+import LocationSelector from './Utils/LocationSelector';
 
 
 function Event() {
   const [events, setEvents] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
+  const [id, setEventId] = useState('');
   const [eventName, setEventName] = useState('');
   const [eventDetails, setEventDetails] = useState('');
   const [eventBanner, setEventBanner] = useState(null);
@@ -39,7 +44,7 @@ function Event() {
       setEventBanner(base64String);
     });
   }
-  
+
   const fetchEvents = async () => {
     const eventsData = await eventsApi.get();
     if (eventsData) {
@@ -64,7 +69,7 @@ function Event() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization':'Bearer ' + localStorage.getItem('token')
+          'Authorization': 'Bearer ' + localStorage.getItem('token')
         },
         body: JSON.stringify(newEvent),
       });
@@ -84,8 +89,10 @@ function Event() {
 
   const updateEvent = async () => {
     const updatedEvent = {
+      id,
       eventName,
       eventDetails,
+      eventBanner,
       eventDateTime,
       eventLocation,
       capacity,
@@ -93,7 +100,7 @@ function Event() {
     };
 
     try {
-      const response = await fetch(`${API_EVENTS_UPDATE(selectedEvent.id)}`, {
+      const response = await fetch(`${API_EVENTS_UPDATE}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -139,9 +146,11 @@ function Event() {
     setSearchQuery(e.target.value);
   };
 
+
   const handleEditEvent = (event) => {
     toggleForm();
     setSelectedEvent(event);
+    setEventId(event.id);
     setEventName(event.eventName);
     setEventDetails(event.eventDetails);
     setEventDateTime(event.eventDateTime);
@@ -162,6 +171,7 @@ function Event() {
     setCapacity('');
     setEventStatus('');
     setIsAddingEvent(false);
+    toggleForm();
   };
 
   const toggleForm = () => {
@@ -171,6 +181,12 @@ function Event() {
   const filteredEvents = events.filter((event) =>
     event.eventName.toLowerCase().includes(searchQuery.toLowerCase())
   );
+  const handleLocationSelect = ({ location, latitude, longitude }) => {
+    console.log("this",location);
+    const locationString = `${location}--${latitude}--${longitude}`;
+    console.log(locationString);
+    setEventLocation(locationString);
+  };
 
   return (
     <div className="content-wrapper">
@@ -180,196 +196,188 @@ function Event() {
             <div className="col-sm-6">
               <h1>Event Management</h1>
             </div>
-          <button className="btn btn-primary" onClick={toggleForm}>
-          {showForm ? 'Hide Form' : 'Add New Event'}
-          </button>
+            <button className="btn btn-primary" onClick={toggleForm}>
+              {showForm ? 'Hide Form' : 'Add New Event'}
+            </button>
           </div>
         </div>
       </section>
       {!showForm && (
-      <section className="content">
-        <div className="container-fluid">
-          <div className="card">
-            <div className="card-header">
-              <h3 className="card-title">Events</h3>
-            </div>
-            <div className="card-body">
-              <div className="form-group">
-                <label htmlFor="searchInput">Search:</label>
-                <input
-                  type="text"
-                  id="searchInput"
-                  className="form-control"
-                  value={searchQuery}
-                  onChange={handleSearch}
-                />
+        <section className="content">
+          <div className="container-fluid">
+            <div className="card">
+              <div className="card-header">
+                <h3 className="card-title">Events</h3>
               </div>
-              {filteredEvents.length > 0 ? (
-                <table className="table table-hover">
-                  <thead>
-                    <tr>
-                      <th>ID</th>
-                      <th>Event Name</th>
-                      <th>Event Details</th>
-                      <th>Event Banner</th>
-                      <th>Date and Time</th>
-                      <th>Location</th>
-                      <th>Capacity</th>
-                      <th>Status</th>
-                      <th>Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {filteredEvents.map((event) => (
-                      <tr key={event.id}>
-                        <td>{event.id}</td>
-                        <td>{event.eventName}</td>
-                        <td>{event.eventDetails}</td>
-                        <td>
-                          {event.eventBanner && (
-                            <img
-                              src={`${API_BASE_URL}/${event.eventBanner}`}
-                              alt="Event Banner"
-                              style={{ maxWidth: '100px' }}
-                            />
-                          )}
-                        </td>
-                        <td>{event.eventDateTime}</td>
-                        <td>{event.eventLocation}</td>
-                        <td>{event.capacity}</td>
-                        <td>
-  {event.eventStatus === 1
-    ? 'Open'
-    : event.eventStatus === 2
-    ? 'Closed'
-    : event.eventStatus === 3
-    ? 'Cancelled'
-    : 'Unknown'}
-</td>
-
-                        <td>
-                          <button
-                            className="btn btn-sm btn-primary"
-                            onClick={() => handleEditEvent(event)}
-                          >
-                            Edit
-                          </button>
-                          <button
-                            className="btn btn-sm btn-danger"
-                            onClick={() => deleteEvent(event.id)}
-                          >
-                            Delete
-                          </button>
-                        </td>
+              <div className="card-body">
+                <div className="form-group">
+                  <label htmlFor="searchInput">Search:</label>
+                  <input
+                    type="text"
+                    id="searchInput"
+                    className="form-control"
+                    value={searchQuery}
+                    onChange={handleSearch}
+                  />
+                </div>
+                {filteredEvents.length > 0 ? (
+                  <table className="table table-hover">
+                    <thead>
+                      <tr>
+                        <th>ID</th>
+                        <th>Event Name</th>
+                        <th>Description</th>
+                        <th>Banner</th>
+                        <th>Date & Time</th>
+                        <th>Location</th>
+                        <th>Capacity</th>
+                        <th>Status</th>
+                        <th>Action</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
-              ) : (
-                <p>No events found.</p>
-              )}
+                    </thead>
+                    <tbody>
+                      {filteredEvents.map((event) => (
+                        <tr key={event.id}>
+                          <td>{event.id}</td>
+                          <td>{event.eventName}</td>
+                          <td>{event.eventDetails}</td>
+                          <td>
+                            {event.eventBanner && (
+                              <img
+                                src={`${API_BASE_URL}/${event.eventBanner}`}
+                                alt="Event Banner"
+                                style={{ maxWidth: '100px' }}
+                              />
+                            )}
+                          </td>
+                          <td>{event.eventDateTime.slice(0,-3)}</td>
+                          <td>{event.eventLocation.split('--')[0]}</td>
+                          <td>{event.capacity}</td>
+                          <td>
+                            {event.eventStatus === 1
+                              ? 'Open'
+                              : event.eventStatus === 2
+                                ? 'Closed'
+                                : event.eventStatus === 3
+                                  ? 'Cancelled'
+                                  : 'Unknown'}
+                          </td>
+
+                          <td>
+                            <button
+                              className="btn btn-sm btn-primary"
+                              onClick={() => handleEditEvent(event)}
+                            >
+                              Edit
+                            </button>
+                            <button
+                              className="btn btn-sm btn-danger"
+                              onClick={() => deleteEvent(event.id)}
+                            >
+                              Delete
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                ) : (
+                  <p>No events found.</p>
+                )}
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
       )}
       {showForm && (
         <div className="card">
           <div className="card-header">
             <h3 className="card-title">Add Event</h3>
           </div>
-        <div className="card-body">
-          <div className="form-group">
-            <label htmlFor="eventName">Event Name</label>
-            <input
-              type="text"
-              className="form-control"
-              id="eventName"
-              value={eventName}
-              onChange={(e) => setEventName(e.target.value)}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="eventDetails">Event Details</label>
-            <textarea
-              className="form-control"
-              id="eventDetails"
-              value={eventDetails}
-              onChange={(e) => setEventDetails(e.target.value)}
-            ></textarea>
-          </div>
-          <div className="form-group">
-      <label htmlFor="eventImage">Event Image</label>
-      <input
-        type="file"
-        className="form-control-file"
-        id="eventImage"
-        accept="image/*"
-        onChange={handleImageSelect}
-      />
-    </div>
-          <div className="form-group">
-            <label htmlFor="eventDateTime">Event Date and Time</label>
-            <input
-              type="datetime-local"
-              className="form-control"
-              id="eventDateTime"
-              value={eventDateTime}
-              onChange={(e) => setEventDateTime(e.target.value)}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="eventLocation">Event Location</label>
-            <select
-              className="form-control"
-              id="eventLocation"
-              value={eventLocation}
-              onChange={(e) => setEventLocation(e.target.value)}
+          <div className="card-body">
+            <div className="form-group">
+              <label htmlFor="eventName">Event Name</label>
+              <input
+                type="text"
+                className="form-control"
+                id="eventName"
+                value={eventName}
+                onChange={(e) => setEventName(e.target.value)}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="eventDetails">Event Details</label>
+              <textarea
+                className="form-control"
+                id="eventDetails"
+                value={eventDetails}
+                onChange={(e) => setEventDetails(e.target.value)}
+              ></textarea>
+            </div>
+            <div className="form-group">
+              <label htmlFor="eventImage">Event Image</label>
+              <input
+                type="file"
+                className="form-control-file"
+                id="eventImage"
+                accept="image/*"
+                onChange={handleImageSelect}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="eventDateTime">Event Date and Time</label>
+              <input
+                type="datetime-local"
+                className="form-control"
+                id="eventDateTime"
+                value={eventDateTime}
+                onChange={(e) => setEventDateTime(e.target.value)}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="eventLocation">Event Location</label>
+              <LocationSelector
+              onChange={handleLocationSelect}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="capacity">Capacity</label>
+              <input
+                type="number"
+                className="form-control"
+                id="capacity"
+                value={capacity}
+                onChange={(e) => setCapacity(e.target.value)}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="eventStatus">Event Status</label>
+              <select
+                className="form-control"
+                id="eventStatus"
+                value={eventStatus}
+                onChange={(e) => setEventStatus(e.target.value)}
+              >
+                <option value="">Select Status</option>
+                <option value="1">Open</option>
+                <option value="2">Closed</option>
+                <option value="3">Cancelled</option>
+              </select>
+            </div>
+            <button
+              className="btn btn-primary"
+              onClick={isAddingEvent ? updateEvent : addEvent}
             >
-              <option value="">Select Location</option>
-              <option value="Location 1">Location 1</option>
-              <option value="Location 2">Location 2</option>
-              <option value="Location 3">Location 3</option>
-            </select>
+              {isAddingEvent ? 'Update Event' : 'Add Event'}
+            </button>
+            <button className="btn btn-secondary" onClick={resetEventForm}>
+              Cancel
+            </button>
           </div>
-          <div className="form-group">
-            <label htmlFor="capacity">Capacity</label>
-            <input
-              type="number"
-              className="form-control"
-              id="capacity"
-              value={capacity}
-              onChange={(e) => setCapacity(e.target.value)}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="eventStatus">Event Status</label>
-            <select
-              className="form-control"
-              id="eventStatus"
-              value={eventStatus}
-              onChange={(e) => setEventStatus(e.target.value)}
-            >
-              <option value="">Select Status</option>
-              <option value="1">Open</option>
-              <option value="2">Closed</option>
-              <option value="3">Cancelled</option>
-            </select>
-          </div>
-          <button
-            className="btn btn-primary"
-            onClick={isAddingEvent ? updateEvent : addEvent}
-          >
-            {isAddingEvent ? 'Update Event' : 'Add Event'}
-          </button>
-          <button className="btn btn-secondary" onClick={resetEventForm}>
-            Cancel
-          </button>
         </div>
-      </div>
       )}
     </div>
-    );
+  );
 }
 
 export default Event;

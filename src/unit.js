@@ -85,13 +85,13 @@ function Unit() {
                       <tbody>
                         {units.map((unit) => (
                           <tr key={unit.id}>
-                            <td>{unit.unitNumber}</td>
+                            <td>{unit.unitType}</td>
                             <td>{unit.occupied == 1 ? 'Yes' : 'No'}</td>
                             <td>{unit.user ? unit.user.name : '-'}</td>
                             <td>
                               <button
                                 className="btn btn-sm btn-primary"
-                                onClick={() => handleOccupancyChange(unit.id, !unit.occupied)}
+                                onClick={() => handleOccupancyChange(unit.unit_id, unit.occupied == 0)}
                               >
                                 {unit.occupied ? 'Vacate' : 'Occupy'}
                               </button>

@@ -4,9 +4,7 @@ import {
   API_LEASES_CREATE,
   API_LEASES_UPDATE,
   API_LEASES_DELETE,
-  API_BASE_URL,
-  MAX_RESULTS_PER_PAGE,
-  MY_VARIABLE,
+
 } from '../Constants';
 
 

@@ -17,6 +17,8 @@ import TransactionPage from './Transactions';
 import NotificationForm from './NotificationForm';
 import './AdminLTE-master/dist/css/adminlte.min.css';
 import './AdminLTE-master/dist/js/adminlte.min.js';
+import '@fortawesome/fontawesome-free/css/all.min.css';
+
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(!!localStorage.getItem('loggedIn'));

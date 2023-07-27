@@ -57,7 +57,7 @@ function AccountView({
                           <th>Email</th>
                           <th>Phone Number</th>
                           <th>Address</th>
-                          <th>Date of Birth</th>
+                          <th>DateOfBirth</th>
                           <th>College Name</th>
                           <th>Student ID</th>
                           <th>Postal Code</th>
@@ -78,16 +78,16 @@ function AccountView({
                             <td>{user.postalCode}</td>
                             <td>
                               <button
-                                className="btn btn-primary"
+                                className="btn btn-info"
                                 onClick={() => handleEditUser(user)}
                               >
-                                Edit
+                                <i class="fa-solid fa-pen-to-square"></i>
                               </button>
                               <button
-                                className="btn btn-danger ml-2"
+                                className="btn btn-danger ml-2l"
                                 onClick={() => handleDeleteUser(user.id)}
                               >
-                                Delete
+                                <i class="fa-solid fa-trash"></i>
                               </button>
                             </td>
                           </tr>
