@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { API_RESIDENCES_ALL } from './Constants';
 import axios from 'axios';
+import { myHeaders } from './Constants';
 
 function Residence() {
   const [residences, setResidences] = useState([]);
@@ -11,7 +12,8 @@ function Residence() {
 
   const fetchResidences = async () => {
     try {
-      const response = await axios.get(`${API_RESIDENCES_ALL}`);
+      console.log('myHeaders', myHeaders);
+      const response = await axios.get(`${API_RESIDENCES_ALL}`, myHeaders);
       setResidences(response.data);
     } catch (error) {
       console.log('Error fetching residences:', error);
@@ -29,24 +31,25 @@ function Residence() {
                   <h3 className="card-title">Residence Management</h3>
                 </div>
                 <div className="card-body">
-                  {residences.length === 0 ? (
-                    <p>No residences found.</p>
-                  ) : (
-                    <ul>
-                      {residences.map((residence) => (
-                        <li key={residence.id}>
-                          <h3>{residence.name}</h3>
-                          <p>Address: {residence.address}</p>
-                          <p>Description: {residence.description}</p>
-                          <p>City: {residence.city}</p>
-                          <p>State: {residence.state}</p>
-                          <p>Zip Code: {residence.zipCode}</p>
-                          <p>Total Units: {residence.units.length}</p>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
+  {residences.length === 0 ? (
+    <p>No residences found.</p>
+  ) : (
+    <ul>
+      {residences.map((residence) => (
+        <li key={residence.residenceId}>
+          <h3>{residence.name}</h3>
+          <p>Address: {residence.address}</p>
+          <p>Description: {residence.description}</p>
+          <p>City: {residence.city}</p>
+          <p>State: {residence.state}</p>
+          <p>Zip Code: {residence.zipCode}</p>
+          <p>Total Units: {residence.units.length}</p>
+        </li>
+      ))}
+    </ul>
+  )}
+</div>
+
               </div>
             </div>
           </div>

@@ -4,17 +4,18 @@ import ProtectedRoute from './ProtectedRoute';
 // import Account from './account';
 import AccountController from './controllers/AccountController';
 import LeaseController from './controllers/LeaseController';
-import MaintenanceRequest from './maintanceReq';
+// import MaintenanceRequest from './maintanceReq';
+import MaintenanceRequest from './controllers/MaintenanceRequest';
 import Residence from './Residence';
 import Unit from './unit';
 import Signup from './SignUp';
 import Login from './Login';
 import Events from './Events';
-import Home from './Home';
 import Dashboard  from './Dashboard/Dashboard';
 import Navbar from './Navbar';
 import TransactionPage from './Transactions';
-import NotificationForm from './NotificationForm';
+import CreateAnnouncement from './CreateAnnouncement';
+// import NotificationForm from './NotificationForm';
 import './AdminLTE-master/dist/css/adminlte.min.css';
 import './AdminLTE-master/dist/js/adminlte.min.js';
 import '@fortawesome/fontawesome-free/css/all.min.css';
@@ -54,7 +55,7 @@ function App() {
           <ProtectedRoute path="/unit" component={Unit} isLoggedIn={loggedIn} allowedRoles={['1', '0']} />
           <ProtectedRoute path="/events" component={Events} isLoggedIn={loggedIn} allowedRoles={['1', '0']}/>
           <ProtectedRoute path="/transactions" component={TransactionPage} isLoggedIn={loggedIn} allowedRoles={['1', '0']} />
-          <ProtectedRoute path="/notification" component={NotificationForm} isLoggedIn={loggedIn} allowedRoles={['1', '0', 'submanager']} />
+          <ProtectedRoute path="/notification" component={CreateAnnouncement} isLoggedIn={loggedIn} allowedRoles={['1', '0', 'submanager']} />
           <Route path="/signup" component={Signup} />
           <Route exact path="/" render={() => (loggedIn ? <Dashboard role={role} /> : <Login onLogin={handleLogin} />)} />
           <Redirect to="/" />

@@ -13,7 +13,7 @@ import {
 } from './Constants';
 import BaseApiHandler from './Utils/utils';
 import LocationSelector from './Utils/LocationSelector';
-
+import { myHeaders } from './Constants';
 
 function Event() {
   const [events, setEvents] = useState([]);
@@ -67,11 +67,8 @@ function Event() {
       console.log(newEvent);
       const response = await fetch(API_EVENTS_CREATE, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + localStorage.getItem('token')
-        },
         body: JSON.stringify(newEvent),
+        myHeaders,
       });
 
       if (response.ok) {

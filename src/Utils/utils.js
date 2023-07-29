@@ -35,9 +35,7 @@ class BaseApiHandler {
   getHeaders() {
     return {
       'Content-Type': 'application/json',
-      'Key': 'Authorization',
-      'Value': 'Bearer ' + localStorage.getItem('token')
-
+      'Authorization': 'Bearer ' + localStorage.getItem('token')
     };
   }
 
@@ -47,6 +45,7 @@ class BaseApiHandler {
 
   async get() {
     try {
+      console.log(this.getHeaders());
       const response = await axios.get(this.getFullUrl(), { headers: this.getHeaders() });
       return response.data;
     } catch (error) {

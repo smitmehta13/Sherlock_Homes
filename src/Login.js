@@ -40,7 +40,7 @@ function Login({ onLogin }) {
     <div className="login-page">
       <div className="login-box">
         <div className="login-logo">
-          <Link to="/">Colorful Admin Panel</Link>
+          <Link to="/">Property Management System</Link>
         </div>
         <div className="card">
           <div className="card-body login-card-body">

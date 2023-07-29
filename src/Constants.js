@@ -56,3 +56,13 @@ export const DEFAULT_SORT_ORDER = 'desc';
 
 // Additional Variables
 export const MY_VARIABLE = 'some value';
+//noticies api
+export const API_NOTICES_ALL = `${API_BASE_URL}/api/notices`;
+
+//create function to set headers
+export const myHeaders = {
+  headers: {
+  'Content-Type': 'application/json',
+  'Authorization': `Bearer ${localStorage.getItem('token')}`}
+}
+  

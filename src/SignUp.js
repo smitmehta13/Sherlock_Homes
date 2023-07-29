@@ -53,7 +53,7 @@ function SignUp() {
     <div className="login-page">
       <div className="register-box">
         <div className="register-logo">
-          <a href="/">Colorful Admin Panel</a>
+          <a href="/">Property Management System</a>
         </div>
         <div className="card">
           <div className="card-body register-card-body">

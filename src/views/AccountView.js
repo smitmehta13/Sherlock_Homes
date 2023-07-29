@@ -81,13 +81,13 @@ function AccountView({
                                 className="btn btn-info"
                                 onClick={() => handleEditUser(user)}
                               >
-                                <i class="fa-solid fa-pen-to-square"></i>
+                                <i className="fa-solid fa-pen-to-square"></i>
                               </button>
                               <button
                                 className="btn btn-danger ml-2l"
                                 onClick={() => handleDeleteUser(user.id)}
                               >
-                                <i class="fa-solid fa-trash"></i>
+                                <i className="fa-solid fa-trash"></i>
                               </button>
                             </td>
                           </tr>

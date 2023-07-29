@@ -3,6 +3,7 @@ import leaseModel from '../models/LeaseModel';
 import { API_LEASES_ALL } from '../Constants';
 import axios from 'axios';
 import { get, post } from 'jquery';
+import { myHeaders } from '../Constants';
 
 function LeaseView() {
   const [leases, setLeases] = useState([]); // Set the initial value to an empty array
@@ -25,7 +26,7 @@ function LeaseView() {
     try {
       // Fetch all leases using leaseModel
       console.log("fetching leases");
-      const leases = await get(`${API_LEASES_ALL}`);
+      const leases = await axios.get(`${API_LEASES_ALL}`,  myHeaders);
       console.log("fetched leases");
       setLeases(leases);
       setLoading(false);
@@ -59,28 +60,29 @@ function LeaseView() {
 
   const filteredLeases = leases.filter((lease) => {
     const leaseStatus = lease.leaseStatus;
-    const Tenant = lease.user.firstName + lease.user.lastName;
+    const tenant = lease.user.firstName + lease.user.lastName;
     const property = lease.subresidence.unitType + lease.subresidence.unitId;
-    const lowerCaseQuery = searchQuery.toLowerCase();
-    
+    const lowerCaseQuery = searchQuery.toLowerCase().trim(); // Trim the searchQuery
+  
     // Check if searchQuery is defined and not empty
     if (typeof searchQuery === 'string' && searchQuery.trim() !== '') {
-      // Convert leaseStatus and property to strings (if they are not already strings)
-      const statusString = leaseStatus && leaseStatus.toString().toLowerCase();
-      const tenantString = Tenant && Tenant.toString().toLowerCase();
-      const propertyString = property && property.toString().toLowerCase();
-      
-      // Check if statusString includes the searchQuery (case-insensitive)
+      // Convert leaseStatus, tenant, and property to lowercase (if they are strings)
+      const statusString = leaseStatus && typeof leaseStatus === 'string' ? leaseStatus.toLowerCase() : '';
+      const tenantString = tenant && typeof tenant === 'string' ? tenant.toLowerCase() : '';
+      const propertyString = property && typeof property === 'string' ? property.toLowerCase() : '';
+  
+      // Check if statusString, tenantString, or propertyString includes the searchQuery (case-insensitive)
       const statusMatch = statusString && statusString.includes(lowerCaseQuery);
       const tenantMatch = tenantString && tenantString.includes(lowerCaseQuery);
       const propertyMatch = propertyString && propertyString.includes(lowerCaseQuery);
-      
+  
       return statusMatch || propertyMatch || tenantMatch;
     }
   
     // Return all leases when the search query is empty or not a string
     return true;
   });
+  
   
   return (
     <div className="content-wrapper">

@@ -15,7 +15,6 @@ function Navbar({ handleLogout }) {
       <div className="container-fluid">
         <a className="navbar-brand" href="/">
         Property Management System
-
         </a>
         <button
           className="navbar-toggler"

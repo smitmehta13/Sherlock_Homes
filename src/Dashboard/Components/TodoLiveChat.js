@@ -26,6 +26,7 @@ class TodoChat extends Component {
     this.ws.addEventListener("open", this.handleWebSocketOpen);
     this.ws.addEventListener("message", this.handleMessageReceived);
     this.fetchChatMessages();
+    this.scrollToBottom();
   }
 
   componentWillUnmount() {
