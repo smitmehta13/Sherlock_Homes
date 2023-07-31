@@ -57,10 +57,10 @@ function AccountView({
                           <th>Email</th>
                           <th>Phone Number</th>
                           <th>Address</th>
+                          <th>Postal Code</th>
                           <th>DateOfBirth</th>
                           <th>College Name</th>
                           <th>Student ID</th>
-                          <th>Postal Code</th>
                           <th>Actions</th>
                         </tr>
                       </thead>
@@ -68,27 +68,22 @@ function AccountView({
                         {filteredUsers.map((user) => (
                           <tr key={user.id}>
                             <td>{user.id}</td>
-                            <td>{user.name}</td>
+                            <td>{user.firstName} {user.lastName}</td>
                             <td>{user.email}</td>
                             <td>{user.phoneNumber}</td>
                             <td>{user.address}</td>
+                            <td>{user.postalCode}</td>
                             <td>{user.dateOfBirth}</td>
                             <td>{user.collegeName}</td>
                             <td>{user.studentId}</td>
-                            <td>{user.postalCode}</td>
                             <td>
-                              <button
-                                className="btn btn-info"
-                                onClick={() => handleEditUser(user)}
-                              >
-                                <i className="fa-solid fa-pen-to-square"></i>
-                              </button>
-                              <button
-                                className="btn btn-danger ml-2l"
+                                <i className="fa-solid fa-pen-to-square"
+                              onClick={() => handleEditUser(user)}>
+                              </i>
+                              &nbsp;&nbsp;
+                                <i className="fa-solid fa-trash"
                                 onClick={() => handleDeleteUser(user.id)}
-                              >
-                                <i className="fa-solid fa-trash"></i>
-                              </button>
+                                ></i>
                             </td>
                           </tr>
                         ))}
