@@ -28,7 +28,7 @@ function LeaseView() {
       console.log("fetching leases");
       const leases = await axios.get(`${API_LEASES_ALL}`,  myHeaders);
       console.log("fetched leases");
-      setLeases(leases);
+      setLeases(leases.data);
       setLoading(false);
     } catch (error) {
       setError('Failed to fetch leases');

@@ -11,7 +11,7 @@ function Navbar({ handleLogout }) {
   };
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav className="navbar navbar-expand-lg navbar-dark bg-purple">
       <div className="container-fluid">
         <a className="navbar-brand" href="/">
         Property Management System
@@ -62,18 +62,7 @@ function Navbar({ handleLogout }) {
                 </li>
               </>
             ) : null}
-            {userRole === '1' || userRole === 'submanager' ? (
-              <li className="nav-item">
-                <Link to="/residence" className="nav-link">
-                  Residence
-                </Link>
-              </li>
-            ) : null}
-            <li className="nav-item">
-              <Link to="/unit" className="nav-link">
-                Unit
-              </Link>
-            </li>
+            
             {userRole === '1' && (
               <li className="nav-item">
                 <Link to="/notification" className="nav-link">
