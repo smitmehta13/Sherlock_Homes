@@ -1,3 +1,4 @@
+//LeaseModel.js
 import axios from 'axios';
 import {
   API_LEASES_ALL,
@@ -22,7 +23,7 @@ class LeaseModel {
     try {
       const response = await axios.get(`${API_LEASES_ALL}`,  myHeaders);
       console.log("bheja");
-      return response.data;
+      return response;
     } catch (error) {
       throw new Error('Failed to fetch leases');
     }

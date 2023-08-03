@@ -17,18 +17,37 @@ function AccountView({
 }) {
   return (
     <div className="wrapper">
-      <div className="content-header">
-        <div className="container-fluid">
-          <div className="row mb-2">
-            <div className="col-sm-6">
-              <h1 className="m-0 text-dark">Account Management</h1>
-            </div>
-            <button className="btn btn-primary" onClick={toggleForm}>
+    <div className="content-header">
+      <div className="container-fluid">
+        <div className="row mb-2">
+          <div className="col-sm-6">
+          {!showForm && (
+            <ol className="breadcrumb">
+              <li className="breadcrumb-item"><a href="/">Home</a></li>
+              <li className="breadcrumb-item active">Account Management</li>
+            </ol>
+            )}
+            {showForm && (
+            <ol className="breadcrumb">
+              <li className="breadcrumb-item"><a href="/">Home</a></li>
+              <li className="breadcrumb-item"><a href="/account">Account Management</a></li>
+              <li className="breadcrumb-item active">Add New User</li>
+            </ol>
+            )}
+          </div>
+          <div className="col-sm-6">
+            <button className="btn btn-primary float-right" onClick={toggleForm}>
               {showForm ? 'Hide Form' : 'Add New User'}
             </button>
           </div>
         </div>
+        <div className="row mb-2">
+          <div className="col-sm-12">
+            <h1 className="m-0 text-dark">Account Management</h1>
+          </div>
+        </div>
       </div>
+    </div>
       {!showForm && (
         <section className="content">
           <div className="container-fluid">
