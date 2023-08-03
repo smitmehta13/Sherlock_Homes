@@ -122,17 +122,20 @@ function Event() {
 
   const deleteEvent = async (eventId) => {
     try {
-      console.log(eventId);
-      const response = await fetch(`${API_EVENTS_DELETE}/${eventId}`, {
-        method: 'DELETE',
-      });
+      const confirmation = window.confirm('Are you sure you want to delete this Event?');
+      if (!confirmation) {
+        console.log(eventId);
+        const response = await fetch(`${API_EVENTS_DELETE}/${eventId}`, {
+          method: 'DELETE',
+        });
 
-      console.log(response);
-      if (response.ok) {
-        const updatedEvents = events.filter((event) => event.id !== eventId);
-        setEvents(updatedEvents);
-      } else {
-        console.error('Failed to delete event:', response.status);
+        console.log(response);
+        if (response.ok) {
+          const updatedEvents = events.filter((event) => event.id !== eventId);
+          setEvents(updatedEvents);
+        } else {
+          console.error('Failed to delete event:', response.status);
+        }
       }
     } catch (error) {
       console.error('Failed to delete event:', error);
@@ -179,26 +182,45 @@ function Event() {
     event.eventName.toLowerCase().includes(searchQuery.toLowerCase())
   );
   const handleLocationSelect = ({ location, latitude, longitude }) => {
-    console.log("this",location);
+    console.log("this", location);
     const locationString = `${location}--${latitude}--${longitude}`;
     console.log(locationString);
     setEventLocation(locationString);
   };
 
   return (
-    <div className="content-wrapper">
-      <section className="content-header">
+    <div className="wrapper">
+      <div className="content-header">
         <div className="container-fluid">
           <div className="row mb-2">
             <div className="col-sm-6">
-              <h1>Event Management</h1>
+              {!showForm && (
+                <ol className="breadcrumb">
+                  <li className="breadcrumb-item"><a href="/">Home</a></li>
+                  <li className="breadcrumb-item active">Event Management</li>
+                </ol>
+              )}
+              {showForm && (
+                <ol className="breadcrumb">
+                  <li className="breadcrumb-item"><a href="/">Home</a></li>
+                  <li className="breadcrumb-item"><a href="/account">Event Management</a></li>
+                  <li className="breadcrumb-item active">Add New Event</li>
+                </ol>
+              )}
             </div>
-            <button className="btn btn-primary" onClick={toggleForm}>
-              {showForm ? 'Hide Form' : 'Add New Event'}
-            </button>
+            <div className="col-sm-6">
+              <button className="btn btn-primary float-right" onClick={toggleForm}>
+                {showForm ? 'Hide Form' : 'Add New Event'}
+              </button>
+            </div>
+          </div>
+          <div className="row mb-2">
+            <div className="col-sm-12">
+              <h1 className="m-0 text-dark">Event Management</h1>
+            </div>
           </div>
         </div>
-      </section>
+      </div>
       {!showForm && (
         <section className="content">
           <div className="container-fluid">
@@ -241,13 +263,18 @@ function Event() {
                           <td>
                             {event.eventBanner && (
                               <img
-                                src={`${API_BASE_URL}/${event.eventBanner}`}
+                                src={event.eventBanner.startsWith("http") ? (
+                                  event.eventBanner
+                                ) : (
+                                  `${API_BASE_URL}/${event.eventBanner}`
+                                )}
                                 alt="Event Banner"
                                 style={{ maxWidth: '100px' }}
                               />
                             )}
                           </td>
-                          <td>{event.eventDateTime.slice(0,-3)}</td>
+
+                          <td>{event.eventDateTime.slice(0, -3)}</td>
                           <td>{event.eventLocation.split('--')[0]}</td>
                           <td>{event.capacity}</td>
                           <td>
@@ -261,18 +288,13 @@ function Event() {
                           </td>
 
                           <td>
-                            <button
-                              className="btn btn-sm btn-primary"
+                            <i className="fas fa-edit"
                               onClick={() => handleEditEvent(event)}
-                            >
-                              Edit
-                            </button>
-                            <button
-                              className="btn btn-sm btn-danger"
+                            ></i>
+                            &nbsp;&nbsp;
+                            <i className="fas fa-trash"
                               onClick={() => deleteEvent(event.id)}
-                            >
-                              Delete
-                            </button>
+                            ></i>
                           </td>
                         </tr>
                       ))}
@@ -334,7 +356,7 @@ function Event() {
             <div className="form-group">
               <label htmlFor="eventLocation">Event Location</label>
               <LocationSelector
-              onChange={handleLocationSelect}
+                onChange={handleLocationSelect}
               />
             </div>
             <div className="form-group">
