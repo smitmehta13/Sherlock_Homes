@@ -16,16 +16,35 @@ function AccountView({
   setNewUserData,
 }) {
   return (
-    <div className="content-wrapper">
+    <div className="wrapper">
       <div className="content-header">
         <div className="container-fluid">
           <div className="row mb-2">
             <div className="col-sm-6">
+              {!showForm && (
+                <ol className="breadcrumb">
+                  <li className="breadcrumb-item"><a href="/">Home</a></li>
+                  <li className="breadcrumb-item active">Account Management</li>
+                </ol>
+              )}
+              {showForm && (
+                <ol className="breadcrumb">
+                  <li className="breadcrumb-item"><a href="/">Home</a></li>
+                  <li className="breadcrumb-item"><a href="/account">Account Management</a></li>
+                  <li className="breadcrumb-item active">Add New User</li>
+                </ol>
+              )}
+            </div>
+            <div className="col-sm-6">
+              <button className="btn btn-primary float-right" onClick={toggleForm}>
+                {showForm ? 'Hide Form' : 'Add New User'}
+              </button>
+            </div>
+          </div>
+          <div className="row mb-2">
+            <div className="col-sm-12">
               <h1 className="m-0 text-dark">Account Management</h1>
             </div>
-            <button className="btn btn-primary" onClick={toggleForm}>
-              {showForm ? 'Hide Form' : 'Add New User'}
-            </button>
           </div>
         </div>
       </div>
@@ -57,42 +76,41 @@ function AccountView({
                           <th>Email</th>
                           <th>Phone Number</th>
                           <th>Address</th>
-                          <th>Date of Birth</th>
+                          <th>Postal Code</th>
+                          <th>DateOfBirth</th>
                           <th>College Name</th>
                           <th>Student ID</th>
-                          <th>Postal Code</th>
                           <th>Actions</th>
                         </tr>
                       </thead>
-                      <tbody>
-                        {filteredUsers.map((user) => (
-                          <tr key={user.id}>
-                            <td>{user.id}</td>
-                            <td>{user.name}</td>
-                            <td>{user.email}</td>
-                            <td>{user.phoneNumber}</td>
-                            <td>{user.address}</td>
-                            <td>{user.dateOfBirth}</td>
-                            <td>{user.collegeName}</td>
-                            <td>{user.studentId}</td>
-                            <td>{user.postalCode}</td>
-                            <td>
-                              <button
-                                className="btn btn-primary"
-                                onClick={() => handleEditUser(user)}
-                              >
-                                Edit
-                              </button>
-                              <button
-                                className="btn btn-danger ml-2"
-                                onClick={() => handleDeleteUser(user.id)}
-                              >
-                                Delete
-                              </button>
-                            </td>
-                          </tr>
-                        ))}
+                     
+                        {filteredUsers.length === 0 ? (
+                          <p>"No users found. Please add new members."</p>
+                        ) : ( <tbody>
+                          {filteredUsers.map((user) => (
+                            <tr key={user.id}>
+                              <td>{user.id}</td>
+                              <td>{user.firstName} {user.lastName}</td>
+                              <td>{user.email}</td>
+                              <td>{user.phoneNumber}</td>
+                              <td>{user.address}</td>
+                              <td>{user.postalCode}</td>
+                              <td>{user.dateOfBirth}</td>
+                              <td>{user.collegeName}</td>
+                              <td>{user.studentId}</td>
+                              <td>
+                                <i className="fa-solid fa-pen-to-square"
+                                  onClick={() => handleEditUser(user)}>
+                                </i>
+                                &nbsp;&nbsp;
+                                <i className="fa-solid fa-trash"
+                                  onClick={() => handleDeleteUser(user.id)}
+                                ></i>
+                              </td>
+                            </tr>
+                          ))}
                       </tbody>
+                        )}
                     </table>
                   </div>
                 </div>

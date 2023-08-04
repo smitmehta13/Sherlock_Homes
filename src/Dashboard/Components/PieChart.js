@@ -83,7 +83,7 @@ PieChart.defaultProps = {
         ]
       }
     ],
-    labels: ["Desktop", "Tablet", "Mobile"]
+    labels: ["Occupied Units", "Public Units", "Unoccupied Units"]
   }
 };
 

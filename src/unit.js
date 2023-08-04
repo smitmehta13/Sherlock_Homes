@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { API_UNITS_ALL, API_USERS_ALL } from './Constants';
+import { myHeaders } from './Constants';
 
 function Unit() {
   const [units, setUnits] = useState([]);
@@ -15,7 +16,7 @@ function Unit() {
 
   const fetchUnits = async () => {
     try {
-      const response = await axios.get(`${API_UNITS_ALL}`);
+      const response = await axios.get(`${API_UNITS_ALL}`,  myHeaders);
       setUnits(response.data);
     } catch (error) {
       console.log('Error fetching units:', error);
@@ -24,7 +25,7 @@ function Unit() {
 
   const fetchUsers = async () => {
     try {
-      const response = await axios.get(`${API_USERS_ALL}`);
+      const response = await axios.get(`${API_USERS_ALL}`, myHeaders);
       setUsers(response.data);
     } catch (error) {
       console.log('Error fetching users:', error);
@@ -33,7 +34,7 @@ function Unit() {
 
   const handleOccupancyChange = async (unitId, occupied) => {
     try {
-      await axios.put(`/api/units/${unitId}`, { occupied });
+      await axios.put(`/api/units/${unitId}`, { occupied }, myHeaders);
       fetchUnits(); // Refresh the unit data after changing occupancy status
     } catch (error) {
       console.log('Error changing occupancy status:', error);
@@ -42,7 +43,7 @@ function Unit() {
 
   const handleUserAllocation = async () => {
     try {
-      await axios.put(`/api/units/${selectedUnit}/allocate`, { userId: selectedUser });
+      await axios.put(`/api/units/${selectedUnit}/allocate`, { userId: selectedUser }, myHeaders);
       fetchUnits(); // Refresh the unit data after allocating a user
     } catch (error) {
       console.log('Error allocating user to unit:', error);
@@ -85,13 +86,13 @@ function Unit() {
                       <tbody>
                         {units.map((unit) => (
                           <tr key={unit.id}>
-                            <td>{unit.unitNumber}</td>
+                            <td>{unit.unitType}</td>
                             <td>{unit.occupied == 1 ? 'Yes' : 'No'}</td>
                             <td>{unit.user ? unit.user.name : '-'}</td>
                             <td>
                               <button
                                 className="btn btn-sm btn-primary"
-                                onClick={() => handleOccupancyChange(unit.id, !unit.occupied)}
+                                onClick={() => handleOccupancyChange(unit.unit_id, unit.occupied == 0)}
                               >
                                 {unit.occupied ? 'Vacate' : 'Occupy'}
                               </button>

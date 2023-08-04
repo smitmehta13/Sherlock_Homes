@@ -12,7 +12,7 @@ class ChartSection extends Component {
         <div className="col-lg-12">
           <div className="card">
             <div className="card-body">
-              <h4 className="box-title">Number of iPhones Sold </h4>
+              <h4 className="box-title">Number of Units Sold </h4>
             </div>
             <div className="row">
               <div className="col-lg-8">

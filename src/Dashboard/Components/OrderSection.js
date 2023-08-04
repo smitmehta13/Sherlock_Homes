@@ -20,7 +20,7 @@ class OrderSection extends Component {
           <div className="col-xl-8">
             <div className="card">
               <div className="card-body">
-                <h4 className="box-title">Orders </h4>
+                <h4 className="box-title">Maintenance requests </h4>
               </div>
               <div className="card-body--">
                 <div className="table-stats order-table ov-h">
@@ -31,8 +31,8 @@ class OrderSection extends Component {
                         <th className="avatar">Avatar</th>
                         <th>ID</th>
                         <th>Name</th>
-                        <th>Product</th>
-                        <th>Quantity</th>
+                        <th>Room Number</th>
+                        <th>Date of request</th>
                         <th>Status</th>
                       </tr>
                     </thead>
@@ -55,10 +55,10 @@ class OrderSection extends Component {
                           <span className="name">Louis Stanley</span>{" "}
                         </td>
                         <td>
-                          <span className="product">iMax</span>{" "}
+                          <span className="product">A2-351</span>{" "}
                         </td>
                         <td>
-                          <span className="count">231</span>
+                          <span className="count">23/07/2023</span>
                         </td>
                         <td>
                           <span className="badge badge-complete">Complete</span>
@@ -82,10 +82,10 @@ class OrderSection extends Component {
                           <span className="name">Gregory Dixon</span>{" "}
                         </td>
                         <td>
-                          <span className="product">iPad</span>{" "}
+                          <span className="product">111</span>{" "}
                         </td>
                         <td>
-                          <span className="count">250</span>
+                          <span className="count">20/07/2023</span>
                         </td>
                         <td>
                           <span className="badge badge-complete">Complete</span>
@@ -109,10 +109,10 @@ class OrderSection extends Component {
                           <span className="name">Catherine Dixon</span>{" "}
                         </td>
                         <td>
-                          <span className="product">SSD</span>{" "}
+                          <span className="product">A4-433</span>{" "}
                         </td>
                         <td>
-                          <span className="count">250</span>
+                          <span className="count">20/07/2023</span>
                         </td>
                         <td>
                           <span className="badge badge-complete">Complete</span>
@@ -136,10 +136,10 @@ class OrderSection extends Component {
                           <span className="name">Mary Silva</span>{" "}
                         </td>
                         <td>
-                          <span className="product">Magic Mouse</span>{" "}
+                          <span className="product">A1-111</span>{" "}
                         </td>
                         <td>
-                          <span className="count">250</span>
+                          <span className="count">15/07/2023</span>
                         </td>
                         <td>
                           <span className="badge badge-pending">Pending</span>
@@ -163,10 +163,10 @@ class OrderSection extends Component {
                           <span className="name">Johnny Stephens</span>{" "}
                         </td>
                         <td>
-                          <span className="product">Monitor</span>{" "}
+                          <span className="product">234</span>{" "}
                         </td>
                         <td>
-                          <span className="count">250</span>
+                          <span className="count">25/06/2023</span>
                         </td>
                         <td>
                           <span className="badge badge-complete">Complete</span>

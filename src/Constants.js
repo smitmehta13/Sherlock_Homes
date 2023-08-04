@@ -27,7 +27,7 @@ export const API_USERS_DELETE = (userId) => `${API_BASE_URL}${API_USERS_PATH}/${
 //apis for events
 export const API_EVENTS_ALL = `${API_BASE_URL}${API_EVENTS_PATH}`;
 export const API_EVENTS_CREATE = `${API_BASE_URL}${API_EVENTS_PATH}/create`;
-export const API_EVENTS_UPDATE = (eventId) => `${API_BASE_URL}${API_EVENTS_PATH}/${eventId}`;
+export const API_EVENTS_UPDATE = `${API_BASE_URL}${API_EVENTS_PATH}/update`;
 export const API_EVENTS_DELETE = `${API_BASE_URL}${API_EVENTS_PATH}/delete`;
 
 //apis for units
@@ -56,3 +56,13 @@ export const DEFAULT_SORT_ORDER = 'desc';
 
 // Additional Variables
 export const MY_VARIABLE = 'some value';
+//noticies api
+export const API_NOTICES_ALL = `${API_BASE_URL}/api/notices`;
+
+//create function to set headers
+export const myHeaders = {
+  headers: {
+  'Content-Type': 'application/json',
+  'Authorization': `Bearer ${localStorage.getItem('token')}`}
+}
+  

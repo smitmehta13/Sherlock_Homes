@@ -1,21 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { API_MAINTENANCE_ALL, API_MAINTENANCE_UPDATE } from './Constants';
+import Pagitation from './Utils/Pagination';
 
-const Pagination = ({ currentPage, itemsPerPage, totalItems }) => {
-  const pageNumbers = [];
-
-  for (let i = 1; i <= Math.ceil(totalItems / itemsPerPage); i++) {
-    pageNumbers.push(i);
-  }
-}
-
-
-function MaintenanceRequest() {
-  const [requests, setRequests] = useState([]);
-  const [closedRequests, setClosedRequests] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [requestsPerPage] = useState(10); // Set the number of requests to display per page
+const MaintenanceRequest = () => {
+  const [maintenanceRequests, setMaintenanceRequests] = useState([]);
+  const [selectedRequest, setSelectedRequest] = useState(null);
 
   useEffect(() => {
     fetchMaintenanceRequests();
@@ -24,155 +14,134 @@ function MaintenanceRequest() {
   const fetchMaintenanceRequests = async () => {
     try {
       const response = await axios.get(`${API_MAINTENANCE_ALL}`);
-      setRequests(response.data.filter((request) => request.requestStatus === 0 || request.requestStatus === 1));
-      setClosedRequests(response.data.filter((request) => request.requestStatus === 2));
+      setMaintenanceRequests(response.data);
     } catch (error) {
       console.log('Error fetching maintenance requests:', error);
     }
   };
 
- 
+  const openMaintenanceRequestDetails = (request) => {
+    setSelectedRequest(request);
+  };
 
-  const closeMaintenanceRequest = async (id) => {
+  const closeMaintenanceRequestDetails = () => {
+    setSelectedRequest(null);
+  };
+
+  const handleStatus = (status) => {
+    switch (status) {
+      case 0:
+        return 'Open';
+      case 1:
+        return 'In Progress';
+      case 2:
+        return 'Closed';
+      default:
+        return null;
+    }
+  };
+
+  const handleCloseRequest = async (requestId) => {
     try {
-      // Send a PUT or PATCH request to update the maintenance request status
-      console.log('Closing maintenance request...', id);
-      await axios.put(`${API_MAINTENANCE_UPDATE(id)}`, { requestStatus: 2 });
-      console.log('Maintenance request closed successfully');
-  
-      // Update the requests state to reflect the closed request
-      setRequests((prevRequests) =>
-        prevRequests.map((request) =>
-          request.requestId === id ? { ...request, requestStatus: 2 } : request
-        )
-      );
+      await axios.put(`${API_MAINTENANCE_UPDATE(requestId)}`, {
+        requestStatus: 2,
+      });
       fetchMaintenanceRequests();
-    }catch (error) {
+    } catch (error) {
       console.log('Error closing maintenance request:', error);
     }
   };
 
-  // Get current open requests based on pagination
-  const indexOfLastRequest = currentPage * requestsPerPage;
-  const indexOfFirstRequest = indexOfLastRequest - requestsPerPage;
-  const currentRequests = requests.slice(indexOfFirstRequest, indexOfLastRequest);
-
-  // Get current closed requests based on pagination
-  const indexOfLastClosedRequest = currentPage * requestsPerPage;
-  const indexOfFirstClosedRequest = indexOfLastClosedRequest - requestsPerPage;
-  const currentClosedRequests = closedRequests.slice(indexOfFirstClosedRequest, indexOfLastClosedRequest);
-
-  // Change page for both open and closed requests
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  const handleOpenRequest = async (requestId) => {
+    try {
+      await axios.put(`${API_MAINTENANCE_UPDATE(requestId)}`, {
+        requestStatus: 0,
+      });
+      fetchMaintenanceRequests();
+    } catch (error) {
+      console.log('Error opening maintenance request:', error);
+    }
+  };
 
   return (
-    <div className="content-wrapper">
-      <section className="content-header">
-        <h1>Maintenance Request Management</h1>
-      </section>
-
-      <section className="content">
-        <div className="row">
-          <div className="col-xs-6">
-            <div className="box">
-              <div className="box-header">
-                <h3 className="box-title">Open Requests</h3>
-              </div>
-
-              <div className="box-body">
-                {currentRequests.length === 0 ? (
-                  <p>No open requests found.</p>
-                ) : (
-                  <>
-                    <table className="table table-bordered table-hover">
-                      <thead>
-                        <tr>
-                          <th>ID</th>
-                          <th>Description</th>
-                          <th>Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {currentRequests.map((request) => (
-                          <tr
-                          key={request.requestId}>
-                            <td>{request.requestId}</td>
-                            <td>{request.requestDescription}</td>
-                            <td>
-                              <button
-                                className="btn btn-danger btn-sm"
-                                onClick={() => closeMaintenanceRequest(request.requestId)}
-                              >
-                                Close
-                              </button>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                    <Pagination
-                      currentPage={currentPage}
-                      itemsPerPage={requestsPerPage}
-                      totalItems={requests.length}
-                      paginate={paginate}
-                    />
-                  </>
+    <div className="container">
+      <h1>Maintenance Requests</h1>
+      <table className="table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Date</th>
+            <th>Description</th>
+            <th>Unit</th>
+            <th>User</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {maintenanceRequests.map((request) => (
+            <tr key={request.id}>
+              <td>{request.requestId}</td>
+              <td>{request.requestDate}</td>
+              <td>{request.requestDescription}</td>
+              <td>{request.unitId}</td>
+              <td>{request.userId}</td>
+              <td>
+                <button className="btn btn-primary" onClick={() => openMaintenanceRequestDetails(request)}>
+                  <i className="fas fa-eye"></i>
+                </button>
+                {request.status === 0 && (
+                  <button className="btn btn-danger ml-2" onClick={() => handleCloseRequest(request.id)}>
+                    Close Request
+                  </button>
                 )}
-              </div>
-            </div>
-          </div>
-
-          <div className="col-xs-6">
-            <div className="box">
-              <div className="box-header">
-                <h3 className="box-title">Closed Requests</h3>
-              </div>
-
-              <div className="box-body">
-                {currentClosedRequests.length === 0 ? (
-                  <p>No closed requests found.</p>
-                ) : (
-                  <>
-                    <table className="table table-bordered table-hover">
-                      <thead>
-                        <tr>
-                          <th>ID</th>
-                          <th>Description</th>
-                          <th>Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {currentClosedRequests.map((request) => (
-                          <tr key={request.id}>
-                            <td>{request.requestId}</td>
-                            <td>{request.requestDescription}</td>
-                            <td>
-                              <button
-                                className="btn btn-primary btn-sm"
-                                onClick={() => {/* Optional: Implement logic to reopen the request */}}
-                              >
-                                Reopen
-                              </button>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                    <Pagination
-                      currentPage={currentPage}
-                      itemsPerPage={requestsPerPage}
-                      totalItems={closedRequests.length}
-                      paginate={paginate}
-                    />
-                  </>
+                {request.status === 2 && (
+                  <button className="btn btn-success ml-2" onClick={() => handleOpenRequest(request.id)}>
+                    Open Request
+                  </button>
                 )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      {/* Maintenance request details modal */}
+      {selectedRequest && (
+        <div className="modal" style={{ display: 'block' }}>
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">Maintenance Request Details</h5>
+                <button type="button" className="close" onClick={closeMaintenanceRequestDetails}>
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div className="modal-body">
+                <p>
+                  <strong>ID:</strong> {selectedRequest.id}
+                </p>
+                <p>
+                  <strong>Date:</strong> {selectedRequest.date}
+                </p>
+                <p>
+                  <strong>Description:</strong> {selectedRequest.description}
+                </p>
+                <p>
+                  <strong>Unit:</strong> {selectedRequest.unit}
+                </p>
+                <p>
+                  <strong>User:</strong> {selectedRequest.user}
+                </p>
+                <p>
+                  <strong>Status:</strong> {handleStatus(selectedRequest.status)}
+                </p>
               </div>
             </div>
           </div>
         </div>
-      </section>
+      )}
     </div>
   );
-}
+};
 
 export default MaintenanceRequest;

@@ -17,29 +17,29 @@ class DashboardHeaderSection extends Component {
       <div className="row">
         <DashboardHeaderCard
           count={"3123"}
-          title={"Sale"}
-          icon={"hdd-o"}
+          title={"Members"}
+          icon={"users"}
           color={"flat-color-1"}
         />
 
         <DashboardHeaderCard
           count={"349"}
-          title={"Templates"}
-          icon={"laptop"}
+          title={"Units"}
+          icon={"house-user"}
           color={"flat-color-2"}
         />
 
         <DashboardHeaderCard
-          count={"2986"}
-          title={"Clients"}
-          icon={"users"}
+          count={"26"}
+          title={"Total Events"}
+          icon={"gamepad"}
           color={"flat-color-3"}
         />
 
         <DashboardHeaderCard
           count={"23569"}
           title={"Revenue"}
-          icon={"money"}
+          icon={"dollar"}
           color={"flat-color-4"}
         />
       </div>

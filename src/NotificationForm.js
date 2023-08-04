@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { API_NOTIFICATIONS_CREATE } from './Constants';
 import { fileToBase64 } from './Utils/utils';
+import { myHeaders } from './Constants';
 
 const NotificationForm = () => {
   const [title, setTitle] = useState('');
@@ -42,14 +43,10 @@ const NotificationForm = () => {
     }
 
     try {
-      //add header
-      const config = {
-        headers: {
-          'content-type': 'application/json'
-        }
-      };
+     
       //now do http request
-      const response = await axios.post(`${API_NOTIFICATIONS_CREATE}`, formData, config);
+      console.log(formData);
+      const response = await axios.post(`${API_NOTIFICATIONS_CREATE}`, formData, myHeaders);
       console.log('Notification sent successfully');
       alert('Notification sent successfully');
       setError('');

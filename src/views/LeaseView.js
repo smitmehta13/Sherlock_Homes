@@ -1,108 +1,29 @@
+//LeaseView.js
 import React, { useState, useEffect } from 'react';
-import leaseModel from '../models/LeaseModel';
-import { API_LEASES_ALL, API_USERS_UPDATE } from '../Constants';
-import axios from 'axios';
-import { get, post } from 'jquery';
 
-function LeaseView() {
-  const [leases, setLeases] = useState([]); // Set the initial value to an empty array
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [newLeaseData, setNewLeaseData] = useState({
-    leaseStatus: '',
-    property: '',
-    leaseStartDate: '',
-    leaseEndDate: '',
-    monthlyRent: '',
-  });
-
-  useEffect(() => {
-    fetchLeases();
-  }, []);
-
-  const fetchLeases = async () => {
-    try {
-      // Fetch all leases using leaseModel
-      console.log("fetching leases");
-      const leases = await get(`${API_LEASES_ALL}`);
-      console.log("fetched leases");
-  
-      // Fetch user data for each lease and store tenant names
-      const tenantNamesMap = {};
-      await Promise.all(
-        leases.map(async (lease) => {
-          const userResponse = await axios.get(`${API_USERS_UPDATE(lease.userId)}`);
-          const user = userResponse.data;
-          console.log(user);
-          tenantNamesMap[lease.userId] = user.firstName; // Assuming user object has a 'firstName' field
-        })
-      );
-  
-      // Update the leases with the tenant names
-      const leasesWithTenantNames = leases.map((lease) => ({
-        ...lease,
-        tenantName: tenantNamesMap[lease.userId],
-      }));
-  
-      setLeases(leasesWithTenantNames);
-      setLoading(false);
-    } catch (error) {
-      setError('Failed to fetch leases');
-      setLoading(false);
-    }
-  };
-  const handleSearchQueryChange = (event) => {
-    setSearchQuery(event.target.value);
-  };
-
-  const handleCreateLease = async () => {
-    try {
-      await leaseModel.createLease(newLeaseData);
-      setNewLeaseData({
-        leaseStatus: '',
-        property: '',
-        leaseStartDate: '',
-        leaseEndDate: '',
-        monthlyRent: '',
-      });
-      fetchLeases();
-    } catch (error) {
-      setError('Failed to create lease');
-    }
-  };
-
-  const handleDeleteLease = async (leaseId) => {
-    try {
-      await leaseModel.deleteLease(leaseId);
-      fetchLeases();
-    } catch (error) {
-      setError('Failed to delete lease');
-    }
-  };
-
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setNewLeaseData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
-  const filteredLeases = leases.filter((lease) => {
-    const { leaseStatus, property } = lease;
-    const lowerCaseQuery = searchQuery.toLowerCase();
-    if (searchQuery === '') {
-      return true; // Return all leases when the search query is empty
-    }
-    return (
-      (leaseStatus && leaseStatus.toLowerCase().includes(lowerCaseQuery)) ||
-      (property && property.toLowerCase().includes(lowerCaseQuery))
-    );
-  });
-  
+function LeaseView({
+  leases,
+  loading,
+  error,
+  searchQuery,
+  handleSearchQueryChange,
+  selectedLease,
+  handleCreateLease,
+  toggleForm,
+  showForm,
+  handleEditLease,
+  handleDeleteLease,
+  handleInputChange,
+  filteredLeases,
+  handleStatusSelect,
+  handleUnitNumberInput,
+  handleApproveLease,
+  editedLease,
+  handleDenyLease,
+}) {
+    
   return (
-    <div className="content-wrapper">
+    <div className="wrapper">
       <div className="content-header">
         <div className="container-fluid">
           <div className="row mb-2">
@@ -122,6 +43,7 @@ function LeaseView() {
         <div className="container-fluid">
           <div className="row">
             <div className="col-12">
+              {!showForm && (
               <div className="card">
                 <div className="card-header">
                   <h3 className="card-title">Leases</h3>
@@ -152,18 +74,13 @@ function LeaseView() {
                       <tbody>
                         {filteredLeases.map((lease) => (
                           <tr key={lease.id}>
-                            <td>{lease.tenantName}</td>
-                            <td>{lease.unit.unitNumber}</td>
+                            <td>{lease.user.firstName} {lease.user.lastName}</td>
+                            <td>{lease.subresidence.unitType} {lease.subresidence.unitId}</td>
                             <td>{lease.leaseStartDate}</td>
                             <td>{lease.leaseEndDate}</td>
-                            <td>{lease.unit.monthlyRent}</td>
+                            <td>{lease.subresidence.monthlyRent}</td>
                             <td>
-                              <button
-                                className="btn btn-danger btn-sm"
-                                onClick={() => handleDeleteLease(lease.id)}
-                              >
-                                Delete
-                              </button>
+                            <i className="fas fa-eye" onClick={() => handleEditLease(lease)}></i>
                             </td>
                           </tr>
                         ))}
@@ -172,79 +89,99 @@ function LeaseView() {
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-          <div className="row mt-3">
-            <div className="col-md-6">
-              <div className="card">
-                <div className="card-header">
-                  <h3 className="card-title">Create Lease</h3>
-                </div>
-                <div className="card-body">
-                  <div className="form-group">
-                    <label htmlFor="leaseStatus">Tenant Name:</label>
-                    <input
-                      type="text"
-                      id="leaseStatus"
-                      className="form-control"
-                      name="leaseStatus"
-                      value={newLeaseData.leaseStatus}
-                      onChange={handleInputChange}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="property">Property:</label>
-                    <input
-                      type="text"
-                      id="property"
-                      className="form-control"
-                      name="property"
-                      value={newLeaseData.property}
-                      onChange={handleInputChange}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="leaseStartDate">Start Date:</label>
-                    <input
-                      type="date"
-                      id="leaseStartDate"
-                      className="form-control"
-                      name="leaseStartDate"
-                      value={newLeaseData.leaseStartDate}
-                      onChange={handleInputChange}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="leaseEndDate">End Date:</label>
-                    <input
-                      type="date"
-                      id="leaseEndDate"
-                      className="form-control"
-                      name="leaseEndDate"
-                      value={newLeaseData.leaseEndDate}
-                      onChange={handleInputChange}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="monthlyRent">Monthly Rent:</label>
-                    <input
-                      type="text"
-                      id="monthlyRent"
-                      className="form-control"
-                      name="monthlyRent"
-                      value={newLeaseData.monthlyRent}
-                      onChange={handleInputChange}
-                    />
-                  </div>
-                  <button className="btn btn-primary" onClick={handleCreateLease}>
-                    Create Lease
-                  </button>
-                </div>
-              </div>
+              )}
+              {showForm && (
+       <div className="view-section">
+       <h2>Lease Details</h2>
+       <div className="row">
+         <div className="col-md-6">
+           <div className="info-box">
+             <span className="info-box-icon bg-info"><i className="fas fa-user"></i></span>
+             <div className="info-box-content">
+               <h5>Tenant Name</h5>
+               <p>{selectedLease.user.firstName} {selectedLease.user.lastName}</p>
+             </div>
+           </div>
+           <div className="info-box">
+             <span className="info-box-icon bg-success"><i className="fas fa-home"></i></span>
+             <div className="info-box-content">
+               <h5>Property</h5>
+               <p>{selectedLease.subresidence.unitType} {selectedLease.subresidence.unitId}</p>
+             </div>
+           </div>
+           <div className="info-box">
+             <span className="info-box-icon bg-warning"><i className="far fa-calendar-alt"></i></span>
+             <div className="info-box-content">
+               <h5>Start Date</h5>
+               <p>{selectedLease.leaseStartDate}</p>
+             </div>
+           </div>
+         </div>
+         <div className="col-md-6">
+           <div className="info-box">
+             <span className="info-box-icon bg-danger"><i className="far fa-calendar-alt"></i></span>
+             <div className="info-box-content">
+               <h5>End Date</h5>
+               <p>{selectedLease.leaseEndDate}</p>
+             </div>
+           </div>
+           <div className="info-box">
+             <span className="info-box-icon bg-primary"><i className="fas fa-dollar-sign"></i></span>
+             <div className="info-box-content">
+               <h5>Monthly Rent</h5>
+               <p>{selectedLease.subresidence.monthlyRent}</p>
+             </div>
+           </div>
+           <div className="info-box">
+             <span className="info-box-icon bg-secondary"><i className="fas fa-info"></i></span>
+             <div className="info-box-content">
+               <h5>Lease Status</h5>
+               <select
+          id="statusSelect"
+          className="form-control"
+          value={editedLease.leaseStatus}
+          onChange={handleStatusSelect}
+        >
+          <option value={0}>Pending</option>
+          <option value={1}>Approved</option>
+          <option value={2}>Denied</option>
+        </select>
+             </div>
+           </div>
+           {editedLease.leaseStatus === 1 && (
+           <div className="info-box">
+             <span className="info-box-icon bg-info"><i className="fas fa-home"></i></span>
+             <div className="info-box-content">
+               <h5>Unit Number</h5>
+               <input
+          type="text"
+          id="unitNumberInput"
+          className="form-control"
+          value={editedLease.unitNo}
+          onChange={handleUnitNumberInput}
+        />
+             </div>
+           </div>
+            )}
+         </div>
+       </div>
+       <button className="btn btn-success" onClick={handleApproveLease}>
+        Approve
+      </button>
+      <button className="btn btn-danger" onClick={handleDenyLease}>
+        Deny
+      </button>
+      <button className="btn btn-secondary" onClick={toggleForm}>
+        Close
+      </button>
+     </div>
+     
+      )}
             </div>
           </div>
         </div>
       </section>
+ 
     </div>
   );
 }
