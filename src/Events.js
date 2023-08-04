@@ -29,6 +29,7 @@ function Event() {
   const [isAddingEvent, setIsAddingEvent] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const eventsApi = new BaseApiHandler('/events');
+  const [fee, setEventFee] = useState([]); // Add a state variable to hold the event feed
   const [showForm, setShowForm] = useState(false); // Add a state variable to handle form visibility
 
 
@@ -38,12 +39,13 @@ function Event() {
     fetchEvents();
   }, []);
 
-  async function handleImageSelect(event) {
+  const handleImageSelect = async (event) => {
     const file = event.target.files[0];
-    fileToBase64(file).then((base64String) => {
+    if (file) {
+      const base64String = await fileToBase64(file);
       setEventBanner(base64String);
-    });
-  }
+    }
+  };
 
   const fetchEvents = async () => {
     const eventsData = await eventsApi.get();
@@ -61,6 +63,7 @@ function Event() {
       eventLocation,
       capacity,
       eventStatus,
+      fee,
     };
 
     try {
@@ -84,18 +87,42 @@ function Event() {
     }
   };
 
+  
   const updateEvent = async () => {
-    const updatedEvent = {
-      id,
-      eventName,
-      eventDetails,
-      eventBanner,
-      eventDateTime,
-      eventLocation,
-      capacity,
-      eventStatus,
-    };
-
+    // Check if a new image was selected during the update
+    const fileInput = document.getElementById('eventImage');
+    let updatedEvent;
+    
+    if (fileInput && fileInput.files && fileInput.files.length > 0) {
+      const file = fileInput.files[0];
+      const eventBannerData = await fileToBase64(file);
+      updatedEvent = {
+        id,
+        eventName,
+        eventDetails,
+        eventDateTime,
+        eventBanner: eventBannerData,
+        eventLocation,
+        capacity,
+        eventStatus,
+        fee,
+      };
+    } else {
+      // Use the existing eventBanner if no new image is selected
+      updatedEvent = {
+        id,
+        eventName,
+        eventDetails,
+        eventDateTime,
+        eventBanner: selectedEvent.eventBanner,
+        eventLocation,
+        capacity,
+        eventStatus,
+        fee,
+      };
+    }
+    console.log(updatedEvent);
+  
     try {
       const response = await fetch(`${API_EVENTS_UPDATE}`, {
         method: 'PUT',
@@ -104,7 +131,7 @@ function Event() {
         },
         body: JSON.stringify(updatedEvent),
       });
-
+  
       if (response.ok) {
         const eventData = await response.json();
         const updatedEvents = events.map((event) =>
@@ -119,6 +146,8 @@ function Event() {
       console.error('Failed to update event:', error);
     }
   };
+  
+  
 
   const deleteEvent = async (eventId) => {
     try {
@@ -158,6 +187,7 @@ function Event() {
     setEventLocation(event.eventLocation);
     setCapacity(event.capacity);
     setEventStatus(event.eventStatus);
+    setEventFee(event.fee);
     setIsAddingEvent(true);
   };
 
@@ -278,15 +308,18 @@ function Event() {
                           <td>{event.eventLocation.split('--')[0]}</td>
                           <td>{event.capacity}</td>
                           <td>
-                            {event.eventStatus === 1
-                              ? 'Open'
-                              : event.eventStatus === 2
-                                ? 'Closed'
-                                : event.eventStatus === 3
-                                  ? 'Cancelled'
-                                  : 'Unknown'}
+                            <span className={`badge ${event.eventStatus === 1 ? 'bg-secondary' : event.eventStatus === 2 ? 'bg-success' : event.eventStatus === 3 ? 'bg-warning' : event.eventStatus === 4 ? 'bg-danger' : 'bg-info'}`}>
+                              {event.eventStatus === 1
+                                ? 'UpComing'
+                                : event.eventStatus === 2
+                                  ? 'OnGoing'
+                                  : event.eventStatus === 3
+                                    ? 'Closed'
+                                    : event.eventStatus === 4
+                                      ? 'Cancelled'
+                                    : 'Unknown'}
+                            </span>
                           </td>
-
                           <td>
                             <i className="fas fa-edit"
                               onClick={() => handleEditEvent(event)}
@@ -307,81 +340,95 @@ function Event() {
             </div>
           </div>
         </section>
-      )}
-      {showForm && (
+      )}{showForm && (
         <div className="card">
           <div className="card-header">
             <h3 className="card-title">Add Event</h3>
           </div>
           <div className="card-body">
-            <div className="form-group">
-              <label htmlFor="eventName">Event Name</label>
-              <input
-                type="text"
-                className="form-control"
-                id="eventName"
-                value={eventName}
-                onChange={(e) => setEventName(e.target.value)}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="eventDetails">Event Details</label>
-              <textarea
-                className="form-control"
-                id="eventDetails"
-                value={eventDetails}
-                onChange={(e) => setEventDetails(e.target.value)}
-              ></textarea>
-            </div>
-            <div className="form-group">
-              <label htmlFor="eventImage">Event Image</label>
-              <input
-                type="file"
-                className="form-control-file"
-                id="eventImage"
-                accept="image/*"
-                onChange={handleImageSelect}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="eventDateTime">Event Date and Time</label>
-              <input
-                type="datetime-local"
-                className="form-control"
-                id="eventDateTime"
-                value={eventDateTime}
-                onChange={(e) => setEventDateTime(e.target.value)}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="eventLocation">Event Location</label>
-              <LocationSelector
-                onChange={handleLocationSelect}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="capacity">Capacity</label>
-              <input
-                type="number"
-                className="form-control"
-                id="capacity"
-                value={capacity}
-                onChange={(e) => setCapacity(e.target.value)}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="eventStatus">Event Status</label>
-              <select
-                className="form-control"
-                id="eventStatus"
-                value={eventStatus}
-                onChange={(e) => setEventStatus(e.target.value)}
-              >
-                <option value="">Select Status</option>
-                <option value="1">Open</option>
-                <option value="2">Closed</option>
-                <option value="3">Cancelled</option>
-              </select>
+            <div className="row">
+              <div className="col-md-6">
+                <div className="form-group">
+                  <label htmlFor="eventName">Event Name</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="eventName"
+                    value={eventName}
+                    onChange={(e) => setEventName(e.target.value)}
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="eventDetails">Event Details</label>
+                  <textarea
+                    className="form-control"
+                    id="eventDetails"
+                    value={eventDetails}
+                    onChange={(e) => setEventDetails(e.target.value)}
+                  ></textarea>
+                </div>
+                <div className="form-group">
+                  <label htmlFor="eventImage">Event Image</label>
+                  <input
+                    type="file"
+                    className="form-control-file"
+                    id="eventImage"
+                    accept="image/*"
+                    onChange={handleImageSelect}
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="eventFee">Fee</label>
+                  <input
+                    type="number"
+                    className="form-control"
+                    id="eventFee"
+                    value={fee}
+                    onChange={(e) => setEventFee(e.target.value)}
+                  />
+                </div>
+              </div>
+              <div className="col-md-6">
+                <div className="form-group">
+                  <label htmlFor="eventDateTime">Event Date and Time</label>
+                  <input
+                    type="datetime-local"
+                    className="form-control"
+                    id="eventDateTime"
+                    value={eventDateTime}
+                    onChange={(e) => setEventDateTime(e.target.value)}
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="eventLocation">Event Location</label>
+                  <LocationSelector onChange={handleLocationSelect} />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="capacity">Capacity</label>
+                  <input
+                    type="number"
+                    className="form-control"
+                    id="capacity"
+                    value={capacity}
+                    onChange={(e) => setCapacity(e.target.value)}
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="eventStatus">Event Status</label>
+                  <select
+                    className="form-control"
+                    id="eventStatus"
+                    value={eventStatus}
+                    onChange={(e) => setEventStatus(e.target.value)}
+                  >
+                    <option value="">Select Status</option>
+                    <option value="1">UpComing</option>
+                    <option value="2">OnGoing</option>
+                    <option value="3">Closed</option>
+                    <option value="4">Cancelled</option>
+                  </select>
+                </div>
+              </div>
             </div>
             <button
               className="btn btn-primary"
@@ -395,6 +442,7 @@ function Event() {
           </div>
         </div>
       )}
+      
     </div>
   );
 }

@@ -17,37 +17,37 @@ function AccountView({
 }) {
   return (
     <div className="wrapper">
-    <div className="content-header">
-      <div className="container-fluid">
-        <div className="row mb-2">
-          <div className="col-sm-6">
-          {!showForm && (
-            <ol className="breadcrumb">
-              <li className="breadcrumb-item"><a href="/">Home</a></li>
-              <li className="breadcrumb-item active">Account Management</li>
-            </ol>
-            )}
-            {showForm && (
-            <ol className="breadcrumb">
-              <li className="breadcrumb-item"><a href="/">Home</a></li>
-              <li className="breadcrumb-item"><a href="/account">Account Management</a></li>
-              <li className="breadcrumb-item active">Add New User</li>
-            </ol>
-            )}
+      <div className="content-header">
+        <div className="container-fluid">
+          <div className="row mb-2">
+            <div className="col-sm-6">
+              {!showForm && (
+                <ol className="breadcrumb">
+                  <li className="breadcrumb-item"><a href="/">Home</a></li>
+                  <li className="breadcrumb-item active">Account Management</li>
+                </ol>
+              )}
+              {showForm && (
+                <ol className="breadcrumb">
+                  <li className="breadcrumb-item"><a href="/">Home</a></li>
+                  <li className="breadcrumb-item"><a href="/account">Account Management</a></li>
+                  <li className="breadcrumb-item active">Add New User</li>
+                </ol>
+              )}
+            </div>
+            <div className="col-sm-6">
+              <button className="btn btn-primary float-right" onClick={toggleForm}>
+                {showForm ? 'Hide Form' : 'Add New User'}
+              </button>
+            </div>
           </div>
-          <div className="col-sm-6">
-            <button className="btn btn-primary float-right" onClick={toggleForm}>
-              {showForm ? 'Hide Form' : 'Add New User'}
-            </button>
-          </div>
-        </div>
-        <div className="row mb-2">
-          <div className="col-sm-12">
-            <h1 className="m-0 text-dark">Account Management</h1>
+          <div className="row mb-2">
+            <div className="col-sm-12">
+              <h1 className="m-0 text-dark">Account Management</h1>
+            </div>
           </div>
         </div>
       </div>
-    </div>
       {!showForm && (
         <section className="content">
           <div className="container-fluid">
@@ -83,30 +83,34 @@ function AccountView({
                           <th>Actions</th>
                         </tr>
                       </thead>
-                      <tbody>
-                        {filteredUsers.map((user) => (
-                          <tr key={user.id}>
-                            <td>{user.id}</td>
-                            <td>{user.firstName} {user.lastName}</td>
-                            <td>{user.email}</td>
-                            <td>{user.phoneNumber}</td>
-                            <td>{user.address}</td>
-                            <td>{user.postalCode}</td>
-                            <td>{user.dateOfBirth}</td>
-                            <td>{user.collegeName}</td>
-                            <td>{user.studentId}</td>
-                            <td>
+                     
+                        {filteredUsers.length === 0 ? (
+                          <p>"No users found. Please add new members."</p>
+                        ) : ( <tbody>
+                          {filteredUsers.map((user) => (
+                            <tr key={user.id}>
+                              <td>{user.id}</td>
+                              <td>{user.firstName} {user.lastName}</td>
+                              <td>{user.email}</td>
+                              <td>{user.phoneNumber}</td>
+                              <td>{user.address}</td>
+                              <td>{user.postalCode}</td>
+                              <td>{user.dateOfBirth}</td>
+                              <td>{user.collegeName}</td>
+                              <td>{user.studentId}</td>
+                              <td>
                                 <i className="fa-solid fa-pen-to-square"
-                              onClick={() => handleEditUser(user)}>
-                              </i>
-                              &nbsp;&nbsp;
+                                  onClick={() => handleEditUser(user)}>
+                                </i>
+                                &nbsp;&nbsp;
                                 <i className="fa-solid fa-trash"
-                                onClick={() => handleDeleteUser(user.id)}
+                                  onClick={() => handleDeleteUser(user.id)}
                                 ></i>
-                            </td>
-                          </tr>
-                        ))}
+                              </td>
+                            </tr>
+                          ))}
                       </tbody>
+                        )}
                     </table>
                   </div>
                 </div>

@@ -37,15 +37,25 @@ function AccountController() {
     fetchData();
   }, []);
 
-  const filteredUsers = users.filter((user) => {
-    const { id, name, email } = user;
-    const lowerCaseQuery = searchQuery.toLowerCase();
+  // Assuming users is an array of objects
+const filteredUsers = users
+? users.filter((user) => {
+    const { id, firstName, lastName, email } = user;
+    const lowerCaseQuery = searchQuery ? searchQuery.toLowerCase() : '';
+    const lowerCaseFirstName = firstName?.toLowerCase() || '';
+    const lowerCaseLastName = lastName?.toLowerCase() || '';
+    const lowerCaseEmail = email?.toLowerCase() || '';
+
     return (
-      id.toString().includes(searchQuery) ||
-      name.toLowerCase().includes(lowerCaseQuery) ||
-      email.toLowerCase().includes(lowerCaseQuery)
+      id.toString().includes(lowerCaseQuery) ||
+      lowerCaseFirstName.includes(lowerCaseQuery) ||
+      lowerCaseLastName.includes(lowerCaseQuery) ||
+      lowerCaseEmail.includes(lowerCaseQuery)
     );
-  });
+  })
+: [];
+
+  
 
   const handleCreateOrUpdateUser = async () => {
     try {

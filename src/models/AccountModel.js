@@ -26,7 +26,8 @@ export async function fetchUsers() {
     }));
     return userData;
   } catch (error) {
-    throw new Error('Failed to fetch users');
+    console.log(error);
+    //throw new Error('Failed to fetch users');
   }
 }
 

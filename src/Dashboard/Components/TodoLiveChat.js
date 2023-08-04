@@ -44,6 +44,7 @@ class TodoChat extends Component {
     if (this.ws.readyState === WebSocket.OPEN) {
       this.ws.send(JSON.stringify(message));
     }
+    this.scrollToBottom();
   };
    handleKeyDown = (event) => {
     if (event.key === 'Enter') {
@@ -234,7 +235,7 @@ class TodoChat extends Component {
             <div className="card-header">
               <h4 className="card-title">Live Chat</h4>
             </div>
-            <div className="card-body">
+            <div className="card-body" >
               <div ref={this.chatBoxRef} className="direct-chat-messages">
                 {messages.slice(0).reverse().map((message) => {
                   const date = new Date(message.date);
@@ -293,18 +294,13 @@ class TodoChat extends Component {
               </div>
             </div>
             <div className="card-footer">
-
               <div className="input-group">
                 <input type="text" name="message" placeholder="Type Message ..." className="form-control" value={newMessage} onChange={this.handleChatMessageChange}
                 onKeyDown={this.handleKeyDown}
                 >
-                
                 </input>
-
                 <label htmlFor="imageInput">
-
                   <i className="fas fa-paperclip"></i>
-
                 </label>
                 <input
                   type="file"
