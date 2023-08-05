@@ -55,7 +55,6 @@ function CreateAnnouncement() {
       formData.append('externalUrl', announcement.externalUrl);
       formData.append('isPinned', announcement.isPinned);
     }
-    formData.append('createdAt', announcement.createdAt);
 
 
     try {
