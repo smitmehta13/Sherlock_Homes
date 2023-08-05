@@ -14,6 +14,7 @@ import {
 import BaseApiHandler from './Utils/utils';
 import LocationSelector from './Utils/LocationSelector';
 import { myHeaders } from './Constants';
+import axios from 'axios';
 
 function Event() {
   const [events, setEvents] = useState([]);
@@ -55,40 +56,59 @@ function Event() {
   };
 
   const addEvent = async () => {
-    const newEvent = {
-      eventName,
-      eventDetails,
-      eventDateTime,
-      eventBanner,
-      eventLocation,
-      capacity,
-      eventStatus,
-      fee,
-    };
+  if (
+    !eventName ||
+    !eventDetails ||
+    !eventDateTime ||
+    !eventLocation ||
+    !eventBanner ||
+    eventStatus === ''
+  ) {
+    alert("Please fill in all the required fields.");
+    return;
+  }
 
-    try {
-      console.log(newEvent);
-      const response = await fetch(API_EVENTS_CREATE, {
-        method: 'POST',
-        body: JSON.stringify(newEvent),
-        myHeaders,
-      });
+  // Convert capacity and fee to numbers
+  const capacityNumber = parseInt(capacity);
+  const feeNumber = parseFloat(fee);
 
-      if (response.ok) {
-        const eventData = await response.json();
-        setEvents([...events, eventData]);
-        resetEventForm();
-      } else {
-        console.error('Failed to add event:', response.status);
-      }
-    } catch (error) {
+  // Convert eventDateTime to the correct format
+  // const formattedDateTime = new Date(eventDateTime).toISOString();
 
-      console.error('Failed to add event:', error);
-    }
+  const newEvent = {
+    eventName,
+    eventDetails,
+    eventDateTime,
+    eventLocation,
+    capacity: capacityNumber,
+    eventStatus: parseInt(eventStatus),
+    fee: feeNumber,
+    eventBanner,
   };
+  try {
+    const response = await axios.post(API_EVENTS_CREATE, newEvent, { headers: myHeaders });
+
+    if (response.ok) {
+      const eventData = await response.json();
+      setEvents([...events, eventData]);
+      resetEventForm();
+    } else {
+      console.error('Failed to add event:', response.status);
+    }
+  } catch (error) {
+    console.error('Failed to add event:', error);
+  }
+};
+
 
   
   const updateEvent = async () => {
+
+    if (!eventName || !eventDetails || !eventDateTime || !eventLocation || !eventStatus) {
+    // Add validation to check if any of the required fields are empty
+    alert("Please fill in all the required fields.");
+    return;
+  }
     // Check if a new image was selected during the update
     const fileInput = document.getElementById('eventImage');
     let updatedEvent;
@@ -152,7 +172,7 @@ function Event() {
   const deleteEvent = async (eventId) => {
     try {
       const confirmation = window.confirm('Are you sure you want to delete this Event?');
-      if (!confirmation) {
+      if (confirmation) {
         console.log(eventId);
         const response = await fetch(`${API_EVENTS_DELETE}/${eventId}`, {
           method: 'DELETE',
