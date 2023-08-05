@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { API_NOTIFICATIONS_CREATE } from './Constants';
+import { fileToBase64 } from './Utils/utils';
+import { myHeaders } from './Constants';
 
 const NotificationForm = () => {
   const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
+  const [description, setDescription] = useState('');
   const [image, setImage] = useState(null);
   const [error, setError] = useState('');
   
@@ -13,42 +16,42 @@ const NotificationForm = () => {
   };
 
   const handleContentChange = (e) => {
-    setContent(e.target.value);
+    setDescription(e.target.value);
   };
 
-  const handleImageChange = (e) => {
-    setImage(e.target.files[0]);
-  };
+
+  async function handleImageChange(event) {
+    const file = event.target.files[0];
+    fileToBase64(file).then((base64String) => {
+      setImage(base64String);
+    });
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!title || !content) {
-      setError('Title and content are required');
+    if (!title || !description) {
+      setError('Title and description are required');
       return;
     }
 
     const formData = new FormData();
     formData.append('title', title);
-    formData.append('content', content);
+    formData.append('description', description);
     if (image) {
       formData.append('image', image);
     }
 
     try {
-      //add header
-      const config = {
-        headers: {
-          'content-type': 'application/json'
-        }
-      };
+     
       //now do http request
-      const response = await axios.post('http://10.192.78.229:8080/api/notifications/create', formData, config);
+      console.log(formData);
+      const response = await axios.post(`${API_NOTIFICATIONS_CREATE}`, formData, myHeaders);
       console.log('Notification sent successfully');
       alert('Notification sent successfully');
       setError('');
       setTitle('');
-      setContent('');
+      setDescription('');
       setImage(null);
     } catch (error) {
       console.error('Failed to send notification', error);
@@ -73,11 +76,11 @@ const NotificationForm = () => {
             />
           </div>
           <div className="form-group">
-            <label>Content</label>
+            <label>description</label>
             <textarea
               className="form-control"
               placeholder="Enter notification message"
-              value={content}
+              value={description}
               onChange={handleContentChange}
             ></textarea>
           </div>

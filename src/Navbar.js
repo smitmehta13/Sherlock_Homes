@@ -11,11 +11,10 @@ function Navbar({ handleLogout }) {
   };
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav className="navbar navbar-expand-lg navbar-dark" style={{ background: '#C83F44A6'}}>
       <div className="container-fluid">
         <a className="navbar-brand" href="/">
         Property Management System
-
         </a>
         <button
           className="navbar-toggler"
@@ -25,6 +24,7 @@ function Navbar({ handleLogout }) {
           aria-controls="navbarNav"
           aria-expanded="false"
           aria-label="Toggle navigation"
+          onClick={() => {console.log("clicked");}}
         >
           <span className="navbar-toggler-icon"></span>
         </button>
@@ -43,7 +43,7 @@ function Navbar({ handleLogout }) {
                 </Link>
               </li>
             )}
-            {userRole === '1' || userRole === 'manager' ? (
+            {userRole === '1' || userRole === '0' ? (
               <>
                 <li className="nav-item">
                   <Link to="/lease" className="nav-link">
@@ -62,18 +62,7 @@ function Navbar({ handleLogout }) {
                 </li>
               </>
             ) : null}
-            {userRole === '1' || userRole === 'submanager' ? (
-              <li className="nav-item">
-                <Link to="/residence" className="nav-link">
-                  Residence
-                </Link>
-              </li>
-            ) : null}
-            <li className="nav-item">
-              <Link to="/unit" className="nav-link">
-                Unit
-              </Link>
-            </li>
+            
             {userRole === '1' && (
               <li className="nav-item">
                 <Link to="/notification" className="nav-link">
