@@ -60,9 +60,13 @@ function Navbar({ handleLogout }) {
                     Maintenance
                   </Link>
                 </li>
+                <li className="nav-item">
+                  <Link to="/transactions" className="nav-link">
+                    Transactions
+                  </Link>
+                </li>
               </>
             ) : null}
-            
             {userRole === '1' && (
               <li className="nav-item">
                 <Link to="/notification" className="nav-link">

@@ -12,9 +12,9 @@ export const fetchMaintenanceRequests = async () => {
   }
 };
 
-export const closeMaintenanceRequest = async (id) => {
+export const closeMaintenanceRequest = async (id,myRemarks) => {
   try {
-    await axios.put(`${API_MAINTENANCE_UPDATE(id)}`, { requestStatus: 2 }, myHeaders);
+    await axios.put(`${API_MAINTENANCE_UPDATE(id)}`, { requestStatus: 2, remarks: `${myRemarks}` }, myHeaders);
     console.log('Maintenance request closed successfully');
     return true;
   } catch (error) {

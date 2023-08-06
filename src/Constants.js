@@ -8,6 +8,7 @@ export const API_EVENTS_PATH = '/api/events';
 export const API_UNITS_PATH = '/api/units';
 export const API_RESIDENCES_PATH = '/api/residences';
 export const API_MAINTENANCE_PATH = '/api/maintenance-requests';
+export const API_PATH_TRANSACTIONS = `${API_BASE_URL}/api/transactions`;
 export const API_LOGIN_PATH = `${API_BASE_URL}/api/accounts/login`;
 export const API_NOTIFICATIONS_CREATE = `${API_BASE_URL}/api/notifications/create`;
 
@@ -64,5 +65,13 @@ export const myHeaders = {
   headers: {
   'Content-Type': 'application/json',
   'Authorization': `Bearer ${localStorage.getItem('token')}`}
+}
+
+export function formatDateDDMMYYYY(timestamp) {
+  const date = new Date(timestamp);
+  const day = date.getDate().toString().padStart(2, '0');
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const year = date.getFullYear();
+  return `${day}-${month}-${year}`;
 }
   
