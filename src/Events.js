@@ -72,9 +72,6 @@ function Event() {
   const capacityNumber = parseInt(capacity);
   const feeNumber = parseFloat(fee);
 
-  // Convert eventDateTime to the correct format
-  // const formattedDateTime = new Date(eventDateTime).toISOString();
-
   const newEvent = {
     eventName,
     eventDetails,
