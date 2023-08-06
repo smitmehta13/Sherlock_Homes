@@ -48,38 +48,6 @@ function LeaseController() {
     setSearchQuery(event.target.value);
   };
 
-  const handleCreateLease = async () => {
-    try {
-      await leaseModel.createLease(selectedLease);
-      setSelectedLease({
-        tenantName: '',
-        property: '',
-        startDate: '',
-        endDate: '',
-        monthlyRent: '',
-      });
-      fetchLeases();
-    } catch (error) {
-      setError('Failed to create lease');
-    }
-  };
-
-  const handleDeleteLease = async (leaseId) => {
-    try {
-      await leaseModel.deleteLease(leaseId);
-      fetchLeases();
-    } catch (error) {
-      setError('Failed to delete lease');
-    }
-  };
-
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setSelectedLease((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
   const filteredLeases = leases.filter((lease) => {
     const leaseStatus = lease.leaseStatus;
     const tenant = lease.user.firstName + lease.user.lastName;
@@ -106,7 +74,6 @@ function LeaseController() {
   });
 
   const toggleForm = () => {
-    console.log("toggle");
     setShowForm((prevShowForm) => !prevShowForm);
   };
 
@@ -139,27 +106,41 @@ function LeaseController() {
     }));
   };
 
-  const handleApproveLease = () => {
-    if (editedLease.leaseStatus === 1 && editedLease.unitNo.trim() === '') {
+  const handleStatusChange = () => {
+    if (editedLease.leaseStatus === 1) {
       // If the status is "Approved" and the unit number is empty, show an alert and return.
-      alert('Please enter the unit number before approving.');
-      return;
-    }
-
-    leaseModel.updateLease(selectedLease.leaseId, editedLease);
-    toggleForm();
-  };
-  const handleDenyLease = () => {
-    setEditedLease((prevState) => ({
-      ...prevState,
-      leaseStatus: 2,
-    }));
-    leaseModel.updateLease(selectedLease.leaseId, editedLease);
-    toggleForm();
-  };
-
+      if (editedLease.unitNo.trim() === '') {
+        alert('Please enter the unit number before approving.');
+        return;
+      }
   
-
+      // Prepare the data for approval (include the required fields)
+      const dataForApproval = {
+        userId: selectedLease.userId,
+        leaseStartDate: selectedLease.leaseStartDate,
+        leaseEndDate: selectedLease.leaseEndDate,
+        leaseStatus: editedLease.leaseStatus,
+        subresidenceId: selectedLease.subresidenceId,
+        unitNo: editedLease.unitNo,
+      };
+  
+      leaseModel.updateLease(selectedLease.leaseId, dataForApproval);
+    } else if (editedLease.leaseStatus === 2) {
+      // Prepare the data for denial (include the required fields)
+      const dataForDenial = {
+        userId: selectedLease.userId,
+        leaseStartDate: selectedLease.leaseStartDate,
+        leaseEndDate: selectedLease.leaseEndDate,
+        leaseStatus: editedLease.leaseStatus,
+        subresidenceId: selectedLease.subresidenceId,
+      };
+  
+      leaseModel.updateLease(selectedLease.leaseId, dataForDenial);
+    }
+    toggleForm();
+    
+  };
+  
   return (
     <LeaseView
       leases={leases}
@@ -168,18 +149,14 @@ function LeaseController() {
       searchQuery={searchQuery}
       handleSearchQueryChange={handleSearchQueryChange}
       selectedLease={selectedLease}
-      handleCreateLease={handleCreateLease}
       toggleForm={toggleForm}
       showForm={showForm}
       handleEditLease={handleEditLease}
-      handleDeleteLease={handleDeleteLease}
-      handleInputChange={handleInputChange}
       filteredLeases={filteredLeases}
       handleStatusSelect={handleStatusSelect}
       handleUnitNumberInput={handleUnitNumberInput}
-      handleApproveLease={handleApproveLease}
       editedLease={editedLease}
-      handleDenyLease={handleDenyLease}
+      handleStatusChange={handleStatusChange}
     />
   );
 }
