@@ -1,11 +1,9 @@
-//TransactionsView.js
 import React from 'react';
 import { formatDateDDMMYYYY } from '../Constants';
 
-
-function TransactionsView({ transactions, users, selectedUserId, setSelectedUserId,searchTerm, setSearchTerm, filteredTransactions, showSearchBar,toggleSearchBar, handleSearchButtonClick }) {
+function TransactionsView({ transactions, users, selectedUserId, setSelectedUserId, searchTerm, setSearchTerm, filteredTransactions, showSearchBar, toggleSearchBar, handleSearchButtonClick }) {
   return (
-    <div className="content-wrapper">
+    <div className="wrapper p-3">
       <section className="content-header">
         <h1>Transactions</h1>
       </section>
@@ -15,19 +13,19 @@ function TransactionsView({ transactions, users, selectedUserId, setSelectedUser
             <div className="form-group">
               {showSearchBar ? (
                 <>
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Search transactions..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
-                <button
-                  className="btn btn-secondary mt-2"
-                  onClick={toggleSearchBar}
-                >
-                  Cancel
-                </button>
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Search transactions..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                  />
+                  <button
+                    className="btn btn-secondary mt-2"
+                    onClick={toggleSearchBar}
+                  >
+                    Cancel
+                  </button>
                 </>
               ) : (
                 <>
@@ -56,32 +54,34 @@ function TransactionsView({ transactions, users, selectedUserId, setSelectedUser
               </button>
             </div>
 
-            {filteredTransactions.length === 0 ? (
-              <p>No transactions found.</p>
-            ) : (
-              <table className="table table-bordered table-hover">
-                <thead>
-                  <tr>
-                    <th>Transaction ID</th>
-                    <th>Date</th>
-                    <th>Description</th>
-                    <th>Amount</th>
-                    <th>User</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredTransactions.map((transaction) => (
-                    <tr key={transaction.id}>
-                      <td>{transaction.id}</td>
-                      <td>{formatDateDDMMYYYY(transaction.createdAt)}</td>
-                      <td>{transaction.description}</td>
-                      <td>{transaction.amount}</td>
-                      <td>{transaction.payerName}</td>
+            <div className="table-responsive p-4"> {/* Adding padding to the table */}
+              {filteredTransactions.length === 0 ? (
+                <p>No transactions found.</p>
+              ) : (
+                <table className="table table-bordered table-hover">
+                  <thead>
+                    <tr>
+                      <th>Transaction ID</th>
+                      <th>Date</th>
+                      <th>Description</th>
+                      <th>Amount</th>
+                      <th>User</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            )}
+                  </thead>
+                  <tbody>
+                    {filteredTransactions.map((transaction) => (
+                      <tr key={transaction.id}>
+                        <td>{transaction.id}</td>
+                        <td>{formatDateDDMMYYYY(transaction.createdAt)}</td>
+                        <td>{transaction.description}</td>
+                        <td>{transaction.amount}</td>
+                        <td>{transaction.payerName}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+            </div>
           </div>
         </div>
       </section>

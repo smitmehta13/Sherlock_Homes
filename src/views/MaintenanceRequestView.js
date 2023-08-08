@@ -27,7 +27,7 @@ function MaintenanceRequestView({
   const sortedRequests = currentRequests.sort((a, b) => a.requestStatus - b.requestStatus);
 
     return (
-      <div className="content-wrapper">
+      <div className="wrapper p-2">
         <section className="content-header">
           <h1>Maintenance Requests</h1>
         </section>
