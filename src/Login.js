@@ -37,7 +37,7 @@ function Login({ onLogin }) {
   };
 
   return (
-    <div className="login-page" style={{ background: 'linear-gradient(135deg, #C83BF1 0%, #C83F44A6 100%)', height: '100vh' }}>
+    <div className="login-page" style={{ background: 'linear-gradient(135deg, #555bad 0%, #555bad 100%)', height: '100vh' }}>
       <div className="row">
         <div className="col-md-6">
           {/* Replace the src attribute with the URL of your image */}

@@ -33,17 +33,7 @@ function MaintenanceRequest() {
       console.log('Previous State:', maintenanceRequests);
   
       // Update the request status in the state
-      setMaintenanceRequests((prevRequests) =>
-        prevRequests.map((request) => {
-          if (request.requestId === id) {
-            console.log('Updating request:', request);
-            return { ...request, requestStatus: 2 };
-          }
-          console.log(request);
-          return request;
-        })
-      );
-      
+    window.location.reload();
       // Log the updated state
       console.log('Updated State:', maintenanceRequests);
     } else {
@@ -55,13 +45,10 @@ function MaintenanceRequest() {
   const toggleStatus = async (id,remarks,status) => {
     const success = await toggleMaintenanceRequest(id, remarks, status);
     if (success) {
+     window.location.reload();
       // Update the request status in the state
       console.log('success toggle');
-      setMaintenanceRequests((prevRequests) =>
-        prevRequests.map((request) =>
-          request.requestId === id ? { ...request, requestStatus: 1 } : request
-        )
-      );
+      
     }
   };
 
@@ -93,6 +80,13 @@ const handleStatusChange = (request) => {
 
  
   // Clear the selected request and remarks after status change
+  setMaintenanceRequests(maintenanceRequests.map((request) => {
+    if (request.requestId === updatedRequest.requestId) {
+      console.log('request', request);
+      return updatedRequest;
+    }
+    return request;
+  }));
   setSelectedRequest(null);
   setRemarks('');
 };

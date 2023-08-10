@@ -23,10 +23,9 @@ function MaintenanceRequestView({
   const indexOfLastRequest = currentPage * requestsPerPage;
   const indexOfFirstRequest = indexOfLastRequest - requestsPerPage;
   const currentRequests = maintenanceRequests.slice(indexOfFirstRequest, indexOfLastRequest);
-
   // Combine open and closed requests and sort them based on status (open/pending on top)
   const sortedRequests = currentRequests.sort((a, b) => a.requestStatus - b.requestStatus);
-
+ 
     return (
       <div className="wrapper p-2">
         <section className="content-header">
@@ -56,7 +55,7 @@ function MaintenanceRequestView({
                       </tr>
                     </thead>
                     <tbody>
-                      {sortedRequests.map((request) => (
+                      { sortedRequests.map((request) => (
                         <tr key={request.requestId}>
                           <td>{request.requestId}</td>
                           <td>{request.requestDate}</td>
