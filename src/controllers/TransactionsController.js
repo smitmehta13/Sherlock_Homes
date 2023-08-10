@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import TransactionsModel from '../models/TransactionsModel';
 import {fetchUsers} from '../models/AccountModel';
 import TransactionsView from '../views/TransactionsView';
-import { formatDateDDMMYYYY } from '../Constants';
+import { formatDateDDMMMYYYY } from '../Constants';
 
 function TransactionsController() {
   const [transactions, setTransactions] = useState([]);
@@ -52,7 +52,7 @@ function TransactionsController() {
       transaction.id.toString().includes(searchTermLowerCase) ||
       transaction.amount.toString().includes(searchTermLowerCase) ||
       transaction.payerName.toLowerCase().includes(searchTermLowerCase) ||
-      formatDateDDMMYYYY(transaction.createdAt).includes(searchTermLowerCase) // Assuming you have the formatDate function
+      formatDateDDMMMYYYY(transaction.createdAt).includes(searchTermLowerCase) // Assuming you have the formatDate function
     );
   });
 

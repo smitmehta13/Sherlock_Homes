@@ -1,4 +1,5 @@
 import React from 'react';
+import { API_BASE_URL } from '../Constants';
 
 function MaintenanceRequestView({
   maintenanceRequests,
@@ -88,76 +89,126 @@ function MaintenanceRequestView({
   
         {/* New section for displaying details and changing status */}
         {showModal && (
-          <section className="content">
-            {selectedRequest && (
-              <div className="card">
-                <div className="card-body">
-                  <h2>Maintenance Request Details</h2>
-                  <p>
-                    <strong>ID:</strong> {selectedRequest.requestId}
-                  </p>
-                  <p>
-                    <strong>Date:</strong> {selectedRequest.requestDate}
-                  </p>
-                  <p>
-                    <strong>Description:</strong> {selectedRequest.requestDescription}
-                  </p>
-                  <p>
-                    <strong>Unit:</strong> {selectedRequest.unitId}
-                  </p>
-                  <p>
-                    <strong>User:</strong> {selectedRequest.userId}
-                  </p>
-                  {selectedRequest.requestStatus === 0 || selectedRequest.requestStatus === 1 ? (
-                    <>
-                      <div className="form-group">
-                        <label htmlFor="remarks">Remarks:</label>
-                        <textarea
-                          className="form-control"
-                          id="remarks"
-                          value={remarks}
-                          onChange={(e) => setRemarks(e.target.value)}
-                          required
-                        ></textarea>
-                      </div>
-                      <div className="form-group">
-                        <label htmlFor="status">Status:</label>
-                        <select
-                          className="form-control"
-                          id="status"
-                          value={status}
-                          onChange={(e) => setStatus(e.target.value)}
-                        >
+  <section className="content">
+    {selectedRequest && (
+      <div className="card">
+        <div className="card-body">
+          <h2>Maintenance Request Details</h2>
+          <table className="table table-bordered">
+            <tbody>
+              <tr>
+                <td><strong>ID:</strong></td>
+                <td>{selectedRequest.requestId}</td>
+              </tr>
+              <tr>
+                <td><strong>Date:</strong></td>
+                <td>{selectedRequest.requestDate}</td>
+              </tr>
+              <tr>
+                <td><strong>Description:</strong></td>
+                <td>{selectedRequest.requestDescription}</td>
+              </tr>
+              <tr>
+                <td><strong>Unit:</strong></td>
+                <td>{selectedRequest.unitId}</td>
+              </tr>
+              <tr>
+                <td><strong>User:</strong></td>
+                <td>{selectedRequest.userId}</td>
+              </tr>
+              {selectedRequest.img !== null && (
+                <tr>
+                  <td><strong>Category:</strong></td>
+                  <td>
+                    {selectedRequest.img.startsWith('http') ? (
+                      
+                        <img
+                          src={`${selectedRequest.img}`}
+                          alt="maintenance req img"
+                          style={{ maxWidth: '20%', height: 'auto' }}
+                        />
+                    ) : (
+                      <img
+                        src={`${API_BASE_URL}/${selectedRequest.img}`}
+                        alt="maintenance req img"
+                        style={{ maxWidth: '20%', height: 'auto' }}
+                      />
+                    )}
+                  </td>
+                </tr>
+              )}
+              {selectedRequest.requestStatus === 0 || selectedRequest.requestStatus === 1 ? (
+                <>
+                  <tr>
+                    <td><strong>Remarks:</strong></td>
+                    <td>
+                      <textarea
+                        className="form-control"
+                        id="remarks"
+                        value={remarks}
+                        onChange={(e) => setRemarks(e.target.value)}
+                        required
+                      ></textarea>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><strong>Status:</strong></td>
+                    <td>
+                      <select
+                        className="form-control"
+                        id="status"
+                        value={status}
+                        onChange={(e) => setStatus(e.target.value)}
+                      >
+                        {selectedRequest.requestStatus === 0 ? (
                           <option value="1">Open Request</option>
-                          <option value="2">Close Request</option>
-                        </select>
-                      </div>
+                        ) : (
+                          <option value="0">Pending Request</option>
+                        )}
+                        <option value="2">Close Request</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td>
                       <button className="btn btn-primary" onClick={() => handleStatusChange(selectedRequest)}>
                         <i className="fas fa-exchange-alt"></i> Change Status
                       </button>
                       <button className="btn btn-danger ml-2" onClick={() => closeDetails()}>
                         <i className="fas fa-times"></i> Close
                       </button>
-                    </>
-                  ) : (
-                    <>
-                      <p>
-                        <strong>Remarks:</strong> {selectedRequest.requestRemarks}
-                      </p>
-                      <p>
-                        <strong>Status:</strong> {selectedRequest.requestStatus === 1 ? 'Open Request' : 'Closed Request'}
-                      </p>
+                    </td>
+                  </tr>
+                </>
+              ) : (
+                <>
+                  <tr>
+                    <td><strong>Remarks:</strong></td>
+                    <td>{selectedRequest.remarks}</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Status:</strong></td>
+                    <td>{selectedRequest.requestStatus === 1 ? 'Open Request' : 'Closed Request'}</td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td>
                       <button className="btn btn-danger ml-2" onClick={() => closeDetails()}>
                         <i className="fas fa-times"></i> Close
                       </button>
-                    </>
-                  )}
-                </div>
-              </div>
-            )}
-          </section>
-        )}
+                    </td>
+                  </tr>
+                </>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
+    )}
+  </section>
+)}
+    </div>
     );
   }
   

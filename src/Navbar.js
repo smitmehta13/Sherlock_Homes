@@ -11,7 +11,7 @@ function Navbar({ handleLogout }) {
   };
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark" style={{ background: '#C83F44A6'}}>
+    <nav className="navbar navbar-expand-lg navbar-dark" style={{ background: '#555bad'}}>
       <div className="container-fluid">
         <a className="navbar-brand" href="/">
         Property Management System

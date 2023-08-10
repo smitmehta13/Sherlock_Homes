@@ -235,6 +235,10 @@ function Event() {
     setEventLocation(locationString);
   };
 
+  const sortedEvents = [...filteredEvents].sort((a, b) => {
+    return a.eventStatus - b.eventStatus;
+  });
+
   return (
     <div className="wrapper">
       <div className="content-header">
@@ -286,7 +290,7 @@ function Event() {
                     onChange={handleSearch}
                   />
                 </div>
-                {filteredEvents.length > 0 ? (
+                {sortedEvents.length > 0 ? (
                   <table className="table table-hover">
                     <thead>
                       <tr>
@@ -302,7 +306,7 @@ function Event() {
                       </tr>
                     </thead>
                     <tbody>
-                      {filteredEvents.map((event) => (
+                      {sortedEvents.map((event) => (
                         <tr key={event.id}>
                           <td>{event.id}</td>
                           <td>{event.eventName}</td>

@@ -31,9 +31,13 @@ function LeaseView({
               <h1 className="m-0">Lease Management</h1>
             </div>
             <div className="col-sm-6">
+              
               <ol className="breadcrumb float-sm-right">
                 <li className="breadcrumb-item"><a href="/">Home</a></li>
                 <li className="breadcrumb-item active">Lease Management</li>
+                {showForm && (
+                  <li className="breadcrumb-item active">Edit Lease</li>
+                )}
               </ol>
             </div>
           </div>
@@ -142,16 +146,23 @@ function LeaseView({
                         <span className="info-box-icon bg-secondary"><i className="fas fa-info"></i></span>
                         <div className="info-box-content">
                           <h5>Lease Status</h5>
+                          {selectedLease.leaseStatus === 0 ?(
                           <select
                             id="statusSelect"
                             className="form-control"
                             value={editedLease.leaseStatus}
                             onChange={handleStatusSelect}
                           >
-                            <option value={0}>Pending</option>
+                            <option value={0}>Change Status</option>
                             <option value={1}>Approved</option>
                             <option value={2}>Denied</option>
                           </select>
+                          ): (
+                            <strong ><p style={{fontStyle:'italic'}} 
+                            className={`badge bg-${selectedLease.leaseStatus === 1 ? 'success' :'danger'}`}
+                            >{selectedLease.leaseStatus === 1 ? 'Approved' : selectedLease.leaseStatus === 2 ? 'Denied' : 'Unknown'} </p></strong>
+                          )
+                          }
                         </div>
                       </div>
                       {editedLease.leaseStatus === 1 && (
@@ -175,7 +186,7 @@ function LeaseView({
                     className={`btn ${editedLease.leaseStatus === 1 ? 'btn-primary' : 'btn-danger'}`}
                     onClick={handleStatusChange}
                   >
-                    {editedLease.leaseStatus === 1 ? 'Approve' : 'Deny'}
+                    {editedLease.leaseStatus === 1 ? 'Approve' : editedLease.leaseStatus === 2 ? 'Deny' : 'Change Status'}
                   </button>
                   <button className="btn btn-secondary" onClick={toggleForm}>
                     Close

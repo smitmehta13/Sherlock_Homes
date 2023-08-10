@@ -22,3 +22,15 @@ export const closeMaintenanceRequest = async (id,myRemarks) => {
     return false;
   }
 };
+
+//toggle maintenance request status between open and pending if it is not closed
+export const toggleMaintenanceRequest = async (id,remarks, status) => {
+  try {
+    await axios.put(`${API_MAINTENANCE_UPDATE(id)}`, { requestStatus: status, remarks: `${remarks}` }, myHeaders);
+    console.log('Maintenance request status toggled successfully');
+    return true;
+  } catch (error) {
+    console.log('Error toggling maintenance request status:', error);
+    return false;
+  }
+}

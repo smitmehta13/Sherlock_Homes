@@ -1,5 +1,5 @@
 import React from 'react';
-import { formatDateDDMMYYYY } from '../Constants';
+import { formatDateDDMMMYYYY } from '../Constants';
 
 function TransactionsView({ transactions, users, selectedUserId, setSelectedUserId, searchTerm, setSearchTerm, filteredTransactions, showSearchBar, toggleSearchBar, handleSearchButtonClick }) {
   return (
@@ -72,7 +72,7 @@ function TransactionsView({ transactions, users, selectedUserId, setSelectedUser
                     {filteredTransactions.map((transaction) => (
                       <tr key={transaction.id}>
                         <td>{transaction.id}</td>
-                        <td>{formatDateDDMMYYYY(transaction.createdAt)}</td>
+                        <td>{formatDateDDMMMYYYY(transaction.createdAt)}</td>
                         <td>{transaction.description}</td>
                         <td>{transaction.amount}</td>
                         <td>{transaction.payerName}</td>

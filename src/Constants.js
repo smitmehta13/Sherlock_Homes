@@ -67,11 +67,18 @@ export const myHeaders = {
   'Authorization': `Bearer ${localStorage.getItem('token')}`}
 }
 
-export function formatDateDDMMYYYY(timestamp) {
+export function formatDateDDMMMYYYY(timestamp) {
   const date = new Date(timestamp);
   const day = date.getDate().toString().padStart(2, '0');
-  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const month = date.toLocaleString('default', { month: 'short' });
   const year = date.getFullYear();
-  return `${day}-${month}-${year}`;
+  return `${day} ${month} ${year}`;
+}
+
+export function formatTimeHHMM(timestamp) {
+  const date = new Date(timestamp);
+  const hours = date.getHours().toString().padStart(2, '0');
+  const minutes = date.getMinutes().toString().padStart(2, '0');
+  return `${hours}:${minutes}`;
 }
   

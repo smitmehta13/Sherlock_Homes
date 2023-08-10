@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { fetchMaintenanceRequests, closeMaintenanceRequest } from '../models/MaintenanceRequestModel';
+import { fetchMaintenanceRequests, closeMaintenanceRequest, toggleMaintenanceRequest } from '../models/MaintenanceRequestModel';
 import MaintenanceRequestView from '../views/MaintenanceRequestView';
 import Pagination from '../Utils/Pagination';
 
@@ -24,17 +24,48 @@ function MaintenanceRequest() {
   };
 
   // Function to close a maintenance request
-  const closeRequest = async (id,remarks) => {
+  const closeRequest = async (id, remarks) => {
     const success = await closeMaintenanceRequest(id, remarks);
     if (success) {
+      console.log('API call successful');
+      
+      // Log the previous state
+      console.log('Previous State:', maintenanceRequests);
+  
       // Update the request status in the state
       setMaintenanceRequests((prevRequests) =>
+        prevRequests.map((request) => {
+          if (request.requestId === id) {
+            console.log('Updating request:', request);
+            return { ...request, requestStatus: 2 };
+          }
+          console.log(request);
+          return request;
+        })
+      );
+      
+      // Log the updated state
+      console.log('Updated State:', maintenanceRequests);
+    } else {
+      console.log('API call failed');
+    }
+  };
+  
+  //toggle between open and pending
+  const toggleStatus = async (id,remarks,status) => {
+    const success = await toggleMaintenanceRequest(id, remarks, status);
+    if (success) {
+      // Update the request status in the state
+      console.log('success toggle');
+      setMaintenanceRequests((prevRequests) =>
         prevRequests.map((request) =>
-          request.requestId === id ? { ...request, requestStatus: 2 } : request
+          request.requestId === id ? { ...request, requestStatus: 1 } : request
         )
       );
     }
   };
+
+
 
   // ... Inside the MaintenanceRequestView component ...
 
@@ -43,16 +74,24 @@ const handleStatusChange = (request) => {
     alert('Please provide remarks before changing the status.');
     return;
   }
-
+  let newStatus = document.getElementById('status').value;
+  //convert into an intergar
+  newStatus = parseInt(newStatus, 10);
   // Logic to change the status of the request
   const updatedRequest = {
     ...request,
-    requestStatus: request.requestStatus === 0 ? 2 : 0,
+    requestStatus: newStatus,
     remarks,
   };
 
-  closeRequest(updatedRequest.requestId, updatedRequest.remarks);
+  if (newStatus === 2) {
+    closeRequest(updatedRequest.requestId, updatedRequest.remarks);
+  }
+  else {
+   toggleStatus(updatedRequest.requestId, updatedRequest.remarks, updatedRequest.requestStatus);
+  }
 
+ 
   // Clear the selected request and remarks after status change
   setSelectedRequest(null);
   setRemarks('');
