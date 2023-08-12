@@ -1,8 +1,3 @@
-/*
- **Author: Santosh Kumar Dash
- **Author URL: http://santoshdash.epizy.com/
- **Github URL: https://github.com/quintuslabs/dashio-admin
- */
 
 import React, { Component } from "react";
 import CanvasJSReact from "../../../assets/js/canvasjs.react";

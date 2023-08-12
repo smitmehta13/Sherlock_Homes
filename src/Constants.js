@@ -50,6 +50,8 @@ export const API_MAINTENANCE_CREATE = `${API_BASE_URL}${API_MAINTENANCE_PATH}/cr
 export const API_MAINTENANCE_UPDATE = (maintenanceId) => `${API_BASE_URL}${API_MAINTENANCE_PATH}/${maintenanceId}`;
 export const API_MAINTENANCE_DELETE = (maintenanceId) => `${API_BASE_URL}${API_MAINTENANCE_PATH}/${maintenanceId}`;
 
+//APIs for dashboard
+export const API_DASHBOARD_ALL = `${API_BASE_URL}/api/dashboard`;
 // Other Constants
 export const MAX_RESULTS_PER_PAGE = 10;
 export const DEFAULT_PAGE_NUMBER = 1;

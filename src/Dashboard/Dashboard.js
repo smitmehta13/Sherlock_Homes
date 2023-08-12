@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "./StyleSheets/Dashboard.css";
 import ChartSection from "./Components/ChartSection";
 import DashboardHeaderSection from "./Components/DashboardHeaderSection";
-import OrderSection from "./Components/OrderSection";
+import MaintenanceReqSection from "./Components/MaintenanceReqSection";
 import TodoLiveChat from "./Components/TodoLiveChat";
 
 class Dashboard extends Component {
@@ -16,7 +16,7 @@ class Dashboard extends Component {
         <div className="right-panel">
           <DashboardHeaderSection />
           <ChartSection />
-          <OrderSection />
+          <MaintenanceReqSection />
           <TodoLiveChat />
         </div>
       </div>

@@ -1,43 +1,41 @@
-/*
- **Author: Santosh Kumar Dash
- **Author URL: http://santoshdash.epizy.com/
- **Github URL: https://github.com/quintuslabs/dashio-admin
- */
 
 import React, { Component } from "react";
+import { useDashboardContext } from "../DashboardContext";
 import DashboardHeaderCard from "./DashboardHeaderCard";
 
-class DashboardHeaderSection extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
+
+
+function DashboardHeaderSection() {
+  const { dashboardData } = useDashboardContext();
+
+  if (!dashboardData) {
+    return <div>Loading...</div>;
   }
-  render() {
     return (
       <div className="row">
         <DashboardHeaderCard
-          count={"3123"}
+          count={dashboardData.Users}
           title={"Members"}
           icon={"users"}
           color={"flat-color-1"}
         />
 
         <DashboardHeaderCard
-          count={"349"}
+          count={dashboardData.Units}
           title={"Units"}
           icon={"house-user"}
           color={"flat-color-2"}
         />
 
         <DashboardHeaderCard
-          count={"26"}
+          count={dashboardData.events}
           title={"Total Events"}
           icon={"gamepad"}
           color={"flat-color-3"}
         />
 
         <DashboardHeaderCard
-          count={"23569"}
+          count={dashboardData["Total revenue"]}
           title={"Revenue"}
           icon={"dollar"}
           color={"flat-color-4"}
@@ -45,6 +43,5 @@ class DashboardHeaderSection extends Component {
       </div>
     );
   }
-}
 
 export default DashboardHeaderSection;
