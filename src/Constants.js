@@ -10,6 +10,7 @@ export const API_RESIDENCES_PATH = '/api/residences';
 export const API_MAINTENANCE_PATH = '/api/maintenance-requests';
 export const API_PATH_TRANSACTIONS = `${API_BASE_URL}/api/transactions`;
 export const API_LOGIN_PATH = `${API_BASE_URL}/api/accounts/login`;
+export const API_BOOKABLE_ITEMS = `${API_BASE_URL}/api/bookings/items`;
 export const API_NOTIFICATIONS_CREATE = `${API_BASE_URL}/api/notifications/create`;
 
 // API Endpoints

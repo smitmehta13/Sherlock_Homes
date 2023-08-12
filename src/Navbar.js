@@ -65,6 +65,11 @@ function Navbar({ handleLogout }) {
                     Transactions
                   </Link>
                 </li>
+                <li className="nav-item">
+                  <Link to="/bookedItems" className="nav-link">
+                    Booked Items
+                  </Link>
+                </li>
               </>
             ) : null}
             {userRole === '1' && (

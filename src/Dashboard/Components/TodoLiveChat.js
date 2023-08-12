@@ -262,10 +262,10 @@ class TodoChat extends Component {
                           className="direct-chat-img"
                           src={
                             message.senderName === "Admin"
-                              ? "/docs/3.0/assets/img/user3-128x128.jpg"
-                              : "/docs/3.0/assets/img/user1-128x128.jpg"
+                              ? "https://t4.ftcdn.net/jpg/04/75/00/99/360_F_475009987_zwsk4c77x3cTpcI3W1C1LU4pOSyPKaqi.jpg"
+                              : "https://img.freepik.com/free-icon/user_318-159711.jpg"
                           }
-                          alt={message.senderName}
+                          alt={message.senderName.trim().charAt(0)}
                         />
                         <div className="direct-chat-text">
                           {message.contentType === "txt" ? (
