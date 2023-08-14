@@ -12,9 +12,12 @@ import Signup from './SignUp';
 import Login from './Login';
 import Events from './Events';
 import Dashboard  from './Dashboard/Dashboard';
+import { DashboardProvider } from './Dashboard/DashboardContext';
 import Navbar from './Navbar';
+import BookableItemsPage from './bookedItems';
 import TransactionPage from './Transactions';
 import CreateAnnouncement from './CreateAnnouncement';
+import TransactionsController from './controllers/TransactionsController';
 // import NotificationForm from './NotificationForm';
 import './AdminLTE-master/dist/css/adminlte.min.css';
 import './AdminLTE-master/dist/js/adminlte.min.js';
@@ -54,10 +57,11 @@ function App() {
           <ProtectedRoute path="/residence" component={Residence} isLoggedIn={loggedIn} allowedRoles={['1']} />
           <ProtectedRoute path="/unit" component={Unit} isLoggedIn={loggedIn} allowedRoles={['1', '0']} />
           <ProtectedRoute path="/events" component={Events} isLoggedIn={loggedIn} allowedRoles={['1', '0']}/>
-          <ProtectedRoute path="/transactions" component={TransactionPage} isLoggedIn={loggedIn} allowedRoles={['1', '0']} />
+          <ProtectedRoute path="/transactions" component={TransactionsController} isLoggedIn={loggedIn} allowedRoles={['1', '0']} />
+          <ProtectedRoute path="/bookedItems" component={BookableItemsPage} isLoggedIn={loggedIn} allowedRoles={['1', '0']} />
           <ProtectedRoute path="/notification" component={CreateAnnouncement} isLoggedIn={loggedIn} allowedRoles={['1', '0', 'submanager']} />
           <Route path="/signup" component={Signup} />
-          <Route exact path="/" render={() => (loggedIn ? <Dashboard role={role} /> : <Login onLogin={handleLogin} />)} />
+          <Route exact path="/" render={() => (loggedIn ? <DashboardProvider><Dashboard role={role} /> </DashboardProvider> : <Login onLogin={handleLogin} />)} />
           <Redirect to="/" />
         </Switch>
       </div>

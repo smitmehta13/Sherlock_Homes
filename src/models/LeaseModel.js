@@ -31,7 +31,7 @@ class LeaseModel {
 
   async updateLease(leaseId, leaseData) {
     try {
-      const response = await axios.put(`${API_LEASES_UPDATE}`, leaseData, myHeaders);
+      const response = await axios.put(`${API_LEASES_UPDATE(leaseId)}`, leaseData, myHeaders,);
       return response.data;
     } catch (error) {
       throw new Error('Failed to update lease');

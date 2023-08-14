@@ -22,8 +22,7 @@ function CreateAnnouncement() {
 
   // Update the "createdAt" field with the current time when the component mounts
   useEffect(() => {
-    setCurrentTime(new Date().toISOString().slice(0, 16));
-  }, []);
+    }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

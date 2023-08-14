@@ -8,7 +8,9 @@ export const API_EVENTS_PATH = '/api/events';
 export const API_UNITS_PATH = '/api/units';
 export const API_RESIDENCES_PATH = '/api/residences';
 export const API_MAINTENANCE_PATH = '/api/maintenance-requests';
+export const API_PATH_TRANSACTIONS = `${API_BASE_URL}/api/transactions`;
 export const API_LOGIN_PATH = `${API_BASE_URL}/api/accounts/login`;
+export const API_BOOKABLE_ITEMS = `${API_BASE_URL}/api/bookings/items`;
 export const API_NOTIFICATIONS_CREATE = `${API_BASE_URL}/api/notifications/create`;
 
 // API Endpoints
@@ -48,6 +50,8 @@ export const API_MAINTENANCE_CREATE = `${API_BASE_URL}${API_MAINTENANCE_PATH}/cr
 export const API_MAINTENANCE_UPDATE = (maintenanceId) => `${API_BASE_URL}${API_MAINTENANCE_PATH}/${maintenanceId}`;
 export const API_MAINTENANCE_DELETE = (maintenanceId) => `${API_BASE_URL}${API_MAINTENANCE_PATH}/${maintenanceId}`;
 
+//APIs for dashboard
+export const API_DASHBOARD_ALL = `${API_BASE_URL}/api/dashboard`;
 // Other Constants
 export const MAX_RESULTS_PER_PAGE = 10;
 export const DEFAULT_PAGE_NUMBER = 1;
@@ -64,5 +68,20 @@ export const myHeaders = {
   headers: {
   'Content-Type': 'application/json',
   'Authorization': `Bearer ${localStorage.getItem('token')}`}
+}
+
+export function formatDateDDMMMYYYY(timestamp) {
+  const date = new Date(timestamp);
+  const day = date.getDate().toString().padStart(2, '0');
+  const month = date.toLocaleString('default', { month: 'short' });
+  const year = date.getFullYear();
+  return `${day} ${month} ${year}`;
+}
+
+export function formatTimeHHMM(timestamp) {
+  const date = new Date(timestamp);
+  const hours = date.getHours().toString().padStart(2, '0');
+  const minutes = date.getMinutes().toString().padStart(2, '0');
+  return `${hours}:${minutes}`;
 }
   

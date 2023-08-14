@@ -1,19 +1,14 @@
-/*
- **Author: Santosh Kumar Dash
- **Author URL: http://santoshdash.epizy.com/
- **Github URL: https://github.com/quintuslabs/dashio-admin
- */
 
 import React, { Component } from "react";
-
+import { useDashboardContext } from "../DashboardContext";
 import PieChart from "./PieChart";
 
-class OrderSection extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-  render() {
+ function MaintenanceReqSection() {
+  const { dashboardData } = useDashboardContext();
+
+if(!dashboardData){
+  return <div>Loading...</div>
+}
     return (
       <div className="orders">
         <div className="row">
@@ -50,7 +45,7 @@ class OrderSection extends Component {
                             </a>
                           </div>
                         </td>
-                        <td> #5469 </td>
+                        <td>{dashboardData["Maintenance request 0"].requestId}</td>
                         <td>
                           <span className="name">Louis Stanley</span>{" "}
                         </td>
@@ -196,6 +191,6 @@ class OrderSection extends Component {
       </div>
     );
   }
-}
 
-export default OrderSection;
+
+export default MaintenanceReqSection;

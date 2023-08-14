@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { API_BASE_URL } from "../../Constants";
+import { API_BASE_URL, formatDateDDMMMYYYY, formatTimeHHMM } from "../../Constants";
 
 class TodoChat extends Component {
   constructor(props) {
@@ -238,17 +238,8 @@ class TodoChat extends Component {
             <div className="card-body" >
               <div ref={this.chatBoxRef} className="direct-chat-messages">
                 {messages.slice(0).reverse().map((message) => {
-                  const date = new Date(message.date);
-                  const formattedDate = `${date.getFullYear()}-${String(
-                    date.getMonth() + 1
-                  ).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
-                  const formattedTime = `${String(date.getHours()).padStart(
-                    2,
-                    "0"
-                  )}:${String(date.getMinutes()).padStart(2, "0")}:${String(
-                    date.getSeconds()
-                  ).padStart(2, "0")}`;
-
+                  const formattedTime = formatDateDDMMMYYYY(message.date);
+                  const formattedDate = formatTimeHHMM(message.date);
                   return (
                     message.content !== "" && (
                       <div
@@ -271,10 +262,10 @@ class TodoChat extends Component {
                           className="direct-chat-img"
                           src={
                             message.senderName === "Admin"
-                              ? "/docs/3.0/assets/img/user3-128x128.jpg"
-                              : "/docs/3.0/assets/img/user1-128x128.jpg"
+                              ? "https://t4.ftcdn.net/jpg/04/75/00/99/360_F_475009987_zwsk4c77x3cTpcI3W1C1LU4pOSyPKaqi.jpg"
+                              : "https://img.freepik.com/free-icon/user_318-159711.jpg"
                           }
-                          alt={message.senderName}
+                          alt={message.senderName.trim().charAt(0)}
                         />
                         <div className="direct-chat-text">
                           {message.contentType === "txt" ? (
