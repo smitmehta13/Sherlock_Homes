@@ -265,7 +265,7 @@ class TodoChat extends Component {
                               ? "https://t4.ftcdn.net/jpg/04/75/00/99/360_F_475009987_zwsk4c77x3cTpcI3W1C1LU4pOSyPKaqi.jpg"
                               : "https://img.freepik.com/free-icon/user_318-159711.jpg"
                           }
-                          alt={message.senderName.trim().charAt(0)}
+                          alt={message.senderName}
                         />
                         <div className="direct-chat-text">
                           {message.contentType === "txt" ? (
