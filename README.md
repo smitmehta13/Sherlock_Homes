@@ -3,11 +3,13 @@
 
 ## Overview
 
-Sherlock Homes is a property management application designed to help property managers and residents efficiently manage various aspects of their property, such as maintenance requests, payments, event RSVPs, and more. This README provides an overview of the project's structure, features, and how to set it up.
+Sherlock Homes is a property management application designed to help property managers and residents efficiently manage various aspects of their property, such as maintenance requests, payments, event RSVPs, etc. This README provides an overview of the project's structure, features, and how to set it up.
 
 ## Features
 
 - User Authentication and Login
+- Analytical dashboard
+- Event Management
 - Maintenance Request Management
 - Payment System
 - Live Chat
