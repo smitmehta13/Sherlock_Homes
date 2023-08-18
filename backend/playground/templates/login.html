@@ -1,0 +1,16 @@
+<!--Login page-->
+<title>{{ title }}   </title>
+<h1>Login</h1>
+{% for message in messages %}
+    <div style="color: red;">
+        {{ message.message }}
+    </div>
+{% endfor %}
+<form action="" method="post">
+    {% csrf_token %}
+    <label for="username">Username</label>
+    <input type="text" name="username" id="username">
+    <label for="password">Password</label>
+    <input type="password" name="password" id="password">
+    <input type="submit" value="Login">
+</form>
