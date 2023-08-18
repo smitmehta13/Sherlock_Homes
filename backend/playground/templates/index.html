@@ -5,5 +5,15 @@
         <li><a href="about">About</a></li>
         <li><a href="login">Login</a></li>
         <li><a href='register'>Contact</a></li>
+        {% if user.is_authenticated %}
+   <li><a href="logout">Logout</a></li> 
+   {% else %}
+    <li><a href="register">Register</a></li>
+{% endif %}
     </ul>
 </div>
+{% if user.is_authenticated %}
+    <h1>Welcome {{user.username}}</h1>
+{% else %}
+    <h1>Welcome Guest</h1>
+{% endif %}
