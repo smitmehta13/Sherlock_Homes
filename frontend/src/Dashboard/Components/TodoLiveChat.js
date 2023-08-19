@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { API_BASE_URL, formatDateDDMMMYYYY, formatTimeHHMM } from "../../Constants";
+import { API_BASE_URL, formatDateDDMMMYYYY, formatTimeHHMM, SHERLOCK_API_TODO_PATH } from "../../Constants";
 
 class TodoChat extends Component {
   constructor(props) {
@@ -8,6 +8,8 @@ class TodoChat extends Component {
     this.state = {
       messages: [],
       newMessage: "",
+      todosToShow: 5,
+      showLoadMore: true,
       todoList: [],
       newTodo: "",
     };
@@ -26,6 +28,7 @@ class TodoChat extends Component {
     this.ws.addEventListener("open", this.handleWebSocketOpen);
     this.ws.addEventListener("message", this.handleMessageReceived);
     this.fetchChatMessages();
+    this.fetchTodoList();
     this.scrollToBottom();
   }
 
@@ -46,12 +49,12 @@ class TodoChat extends Component {
     }
     this.scrollToBottom();
   };
-   handleKeyDown = (event) => {
+  handleKeyDown = (event) => {
     if (event.key === 'Enter') {
       this.sendChatMessage();
     }
   };
-  
+
 
   handleMessageReceived = (event) => {
     const data = JSON.parse(event.data);
@@ -65,7 +68,7 @@ class TodoChat extends Component {
         date: data.date,
       };
       this.setState((prevState) => ({
-        messages: [ message, ...prevState.messages],
+        messages: [message, ...prevState.messages],
       }));
       this.scrollToBottom();
     }
@@ -137,8 +140,7 @@ class TodoChat extends Component {
   addTodo = async () => {
     const { newTodo } = this.state;
     try {
-      const response = await axios.post(
-        "http://20.151.210.84:8080/api/todo",
+      const response = await axios.post(`${SHERLOCK_API_TODO_PATH}create/`,
         { title: newTodo, completed: false }
       );
       const todoItem = response.data;
@@ -160,7 +162,7 @@ class TodoChat extends Component {
     // Send the updated todo to the server
     try {
       await axios.put(
-        `http://20.151.210.84:8080/api/todo/${updatedTodoList[index].id}`,
+        `${SHERLOCK_API_TODO_PATH}${updatedTodoList[index].id}/update/`,
         { ...updatedTodoList[index] }
       );
     } catch (error) {
@@ -178,8 +180,39 @@ class TodoChat extends Component {
     }
   };
 
+  fetchTodoList = async () => {
+    try {
+      console.log(`${SHERLOCK_API_TODO_PATH}?format=json`);
+      const response = await axios.get(`${SHERLOCK_API_TODO_PATH}?format=json`);
+      const todoList = response.data;
+      this.setState({ todoList });
+    } catch (error) {
+      console.error("Error fetching todo list:", error);
+    }
+  };
+
+  handleLoadMore = () => {
+    this.setState((prevState) => ({
+      todosToShow: prevState.todosToShow + 5,
+    }));
+  };
+
+  handleDeleteTodo = async (index) => {
+    const { todoList } = this.state;
+    const updatedTodoList = [...todoList];
+    updatedTodoList.splice(index, 1);
+    this.setState({ todoList: updatedTodoList });
+
+    // Send the updated todo to the server
+    try {
+      await axios.delete(`${SHERLOCK_API_TODO_PATH}${updatedTodoList[index].id}/delete/`);
+    } catch (error) {
+      console.error("Error deleting todo item:", error);
+    }
+  };
+
   render() {
-    const { messages, newMessage, todoList, newTodo } = this.state;
+    const { messages, newMessage, todoList, newTodo, todosToShow, showLoadMore } = this.state;
 
     return (
       <div className="row">
@@ -191,21 +224,28 @@ class TodoChat extends Component {
                 <div className="todo-list">
                   <div className="tdl-holder">
                     <div className="tdl-content">
-                      <ul>
-                        {todoList.map((todo, index) => (
-                          <li key={index}>
-                            <label>
-                              <input
-                                type="checkbox"
-                                checked={todo.completed}
-                                onChange={() => this.handleTodoChange(index)}
-                              />
-                              <i className="check-box"></i>
-                              <span>{todo.title}</span>
-                            </label>
-                          </li>
-                        ))}
-                      </ul>
+                      <div>
+                        <ul>
+                          {todoList.reverse().slice(0, todosToShow).map((todo, index) => (
+                            <li key={index}>
+                              <label>
+                                <input
+                                  type="checkbox"
+                                  checked={todo.completed}
+                                  onChange={() => this.handleTodoChange(index)}
+                                />
+                                <i className="check-box"></i>
+                                <span>{todo.title}</span>
+                               {/*Delete button */}
+                               <span className="delete float-right">
+                                <i className="fa fa-trash" onClick={() => this.handleDeleteTodo(index)}>
+                                </i>
+                              </span>
+                              </label>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -287,7 +327,7 @@ class TodoChat extends Component {
             <div className="card-footer">
               <div className="input-group">
                 <input type="text" name="message" placeholder="Type Message ..." className="form-control" value={newMessage} onChange={this.handleChatMessageChange}
-                onKeyDown={this.handleKeyDown}
+                  onKeyDown={this.handleKeyDown}
                 >
                 </input>
                 <label htmlFor="imageInput">

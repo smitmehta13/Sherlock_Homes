@@ -13,23 +13,21 @@ function Login({ onLogin }) {
     e.preventDefault();
 
     try {
-      // Call the login API endpoint with the provided email and password
-      const response = await axios.post(`${API_LOGIN_PATH}`, { email, password });
+      // // Call the login API endpoint with the provided email and password
+      // const response = await axios.post(`${API_LOGIN_PATH}`, { email, password });
 
-      // Assuming the login is successful
-      // Generate a token or store user information in browser cookies or local storage
+      // localStorage.setItem('token', response.data.token);
+      localStorage.setItem('role', 0);
+      // console.log(response.data.account.role);
 
-      // Set the session token or user information in browser cookies or local storage
-      // Example using localStorage:
-      localStorage.setItem('token', response.data.token);
-      //localStorage.setItem('role', response.data.role);
-      console.log(response.data.account.role);
+      // // Call the onLogin function to update the login status in the parent component
+      // onLogin(response.data.account.role);
 
-      // Call the onLogin function to update the login status in the parent component
-      onLogin(response.data.account.role);
-
-      // Redirect to the desired page after login
+      // // Redirect to the desired page after login
+      // history.push('/');
+      //GO TO application WITHOUT LOGIN CHECK
       history.push('/');
+
     } catch (error) {
       console.error(error);
       setError('Invalid email or password');
