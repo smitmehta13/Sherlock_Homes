@@ -139,7 +139,7 @@ class TodoChat extends Component {
     try {
       const response = await axios.post(
         "http://20.151.210.84:8080/api/todo",
-        { text: newTodo, completed: false }
+        { title: newTodo, completed: false }
       );
       const todoItem = response.data;
       this.setState((prevState) => ({
@@ -201,7 +201,7 @@ class TodoChat extends Component {
                                 onChange={() => this.handleTodoChange(index)}
                               />
                               <i className="check-box"></i>
-                              <span>{todo.text}</span>
+                              <span>{todo.title}</span>
                             </label>
                           </li>
                         ))}
