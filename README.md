@@ -18,7 +18,7 @@ Sherlock Homes is a property management application designed to help property ma
 ## Technologies Used
 
 - Frontend: React
-- Backend: Python (Flask)
+- Backend: Python (Django)
 - Database: SQLite (for development)
 
 ## Getting Started
@@ -31,15 +31,15 @@ Sherlock Homes is a property management application designed to help property ma
 
 ### Frontend Setup
 
-1. Clone the repository: `git clone https://github.com/your-username/property-management-app.git`
-2. Navigate to the `frontend` directory: `cd property-management-app/frontend`
+1. Clone the repository: `git clone https://github.com/your-username/Sherlock_Homes.git`
+2. Navigate to the `frontend` directory: `cd Sherlock_Homes/frontend`
 3. Install dependencies: `npm install`
 4. Start the frontend server: `npm start`
 5. Open a web browser and go to `http://localhost:3000` to see the app.
 
 ### Backend Setup
 
-1. Navigate to the `backend` directory: `cd property-management-app/backend`
+1. Navigate to the `backend` directory: `cd Sherlock_Homes/backend`
 2. Create a virtual environment: `python3 -m venv venv`
 3. Activate the virtual environment:
    - On Windows: `venv\Scripts\activate`
