@@ -25,7 +25,8 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 
 
 function App() {
-  const [loggedIn, setLoggedIn] = useState(!!localStorage.getItem('loggedIn'));
+  // const [loggedIn, setLoggedIn] = useState(!!localStorage.getItem('loggedIn'));
+  const [loggedIn, setLoggedIn] = useState('true');
   const [role, setRole] = useState(localStorage.getItem('role') || '');
 
   const handleLogin = (userRole) => {

@@ -1,5 +1,9 @@
 // Constants.js
 
+// Sherlock API URLs
+export const SHERLOCK_API_BASE_URL = 'http://127.0.0.1:8000/';
+export const SHERLOCK_API_TODO_PATH = `${SHERLOCK_API_BASE_URL}api/todos/`;
+
 // API URLs
 export const API_BASE_URL = 'http://20.151.210.84:8080';
 export const API_LEASES_PATH = `/api/leases`;

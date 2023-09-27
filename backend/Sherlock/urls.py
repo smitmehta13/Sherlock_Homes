@@ -1,5 +1,5 @@
 """
-URL configuration for Property project.
+URL configuration for Sherlock project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/4.2/topics/http/urls/
@@ -15,8 +15,12 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path , include
+from django.shortcuts import render
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/todos/', include('todo.urls')),
+    path('api/users/', include('accounts.urls')),
+    path('api/', lambda request: render(request, 'links.html')),
 ]
