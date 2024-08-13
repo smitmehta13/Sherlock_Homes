@@ -16,7 +16,7 @@ class Dashboard extends Component {
         <div className="right-panel">
           <DashboardHeaderSection />
           <ChartSection />
-          <MaintenanceReqSection />
+          {/* <MaintenanceReqSection /> */}
           <TodoLiveChat />
         </div>
       </div>

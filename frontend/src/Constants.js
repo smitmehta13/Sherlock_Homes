@@ -1,19 +1,19 @@
 // Constants.js
 
 // Sherlock API URLs
-export const SHERLOCK_API_BASE_URL = 'http://127.0.0.1:8000/';
+export const SHERLOCK_API_BASE_URL = 'https://slhomenode.onrender.com/';
 export const SHERLOCK_API_TODO_PATH = `${SHERLOCK_API_BASE_URL}api/todos/`;
 
 // API URLs
-export const API_BASE_URL = 'http://20.151.210.84:8080';
+export const API_BASE_URL = 'https://slhomenode.onrender.com';
 export const API_LEASES_PATH = `/api/leases`;
-export const API_USERS_PATH = '/api/accounts';
+export const API_USERS_PATH = '/api/users';
 export const API_EVENTS_PATH = '/api/events';
 export const API_UNITS_PATH = '/api/units';
 export const API_RESIDENCES_PATH = '/api/residences';
 export const API_MAINTENANCE_PATH = '/api/maintenance-requests';
 export const API_PATH_TRANSACTIONS = `${API_BASE_URL}/api/transactions`;
-export const API_LOGIN_PATH = `${API_BASE_URL}/api/accounts/login`;
+export const API_LOGIN_PATH = `${API_BASE_URL}/api/users/login`;
 export const API_BOOKABLE_ITEMS = `${API_BASE_URL}/api/bookings/items`;
 export const API_NOTIFICATIONS_CREATE = `${API_BASE_URL}/api/notifications/create`;
 
@@ -25,7 +25,8 @@ export const API_LEASES_DELETE = (leaseId) => `${API_BASE_URL}${API_LEASES_PATH}
 
 //apis for users
 // api for get user by id
-export const API_USERS_ALL = `${API_BASE_URL}${API_USERS_PATH}/all`;
+export const API_USERS_ALL = `${API_BASE_URL}${API_USERS_PATH}/`;
+
 export const API_USERS_CREATE = `${API_BASE_URL}${API_USERS_PATH}/create`;
 export const API_USERS_UPDATE = (userId) => `${API_BASE_URL}${API_USERS_PATH}/${userId}`;
 export const API_USERS_DELETE = (userId) => `${API_BASE_URL}${API_USERS_PATH}/${userId}`;

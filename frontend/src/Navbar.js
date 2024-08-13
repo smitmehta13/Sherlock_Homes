@@ -80,7 +80,7 @@ function Navbar({ handleLogout }) {
               </li>
             )}
             <li className="nav-item">
-              <button className="btn btn-link nav-link" onClick={handleLogoutClick}>
+              <button className="btn btn-link nav-link" id='logout' onClick={handleLogoutClick}>
                 <i className="fas fa-sign-out-alt"></i> Logout
               </button>
             </li>

@@ -19,7 +19,7 @@ import axios from 'axios';
 function Event() {
   const [events, setEvents] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [id, setEventId] = useState('');
+  const [_id, setEventId] = useState('');
   const [eventName, setEventName] = useState('');
   const [eventDetails, setEventDetails] = useState('');
   const [eventBanner, setEventBanner] = useState(null);
@@ -29,7 +29,7 @@ function Event() {
   const [eventStatus, setEventStatus] = useState('');
   const [isAddingEvent, setIsAddingEvent] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
-  const eventsApi = new BaseApiHandler('/events');
+  // const eventsApi = new BaseApiHandler('/events');
   const [fee, setEventFee] = useState([]); // Add a state variable to hold the event feed
   const [showForm, setShowForm] = useState(false); // Add a state variable to handle form visibility
 
@@ -49,9 +49,10 @@ function Event() {
   };
 
   const fetchEvents = async () => {
-    const eventsData = await eventsApi.get();
+    const eventsData = await axios.get(API_EVENTS_ALL)
     if (eventsData) {
-      setEvents(eventsData);
+      setEvents(eventsData.data.data);
+      console.log(eventsData.data.data);
     }
   };
 
@@ -114,7 +115,7 @@ function Event() {
       const file = fileInput.files[0];
       const eventBannerData = await fileToBase64(file);
       updatedEvent = {
-        id,
+        _id,
         eventName,
         eventDetails,
         eventDateTime,
@@ -127,7 +128,7 @@ function Event() {
     } else {
       // Use the existing eventBanner if no new image is selected
       updatedEvent = {
-        id,
+        _id,
         eventName,
         eventDetails,
         eventDateTime,
@@ -152,7 +153,7 @@ function Event() {
       if (response.ok) {
         const eventData = await response.json();
         const updatedEvents = events.map((event) =>
-          event.id === selectedEvent.id ? eventData : event
+          event._id === selectedEvent._id ? eventData : event
         );
         setEvents(updatedEvents);
         resetEventForm();
@@ -177,7 +178,7 @@ function Event() {
 
         console.log(response);
         if (response.ok) {
-          const updatedEvents = events.filter((event) => event.id !== eventId);
+          const updatedEvents = events.filter((event) => event._id !== eventId);
           setEvents(updatedEvents);
         } else {
           console.error('Failed to delete event:', response.status);
@@ -196,7 +197,7 @@ function Event() {
   const handleEditEvent = (event) => {
     toggleForm();
     setSelectedEvent(event);
-    setEventId(event.id);
+    setEventId(event._id);
     setEventName(event.eventName);
     setEventDetails(event.eventDetails);
     setEventDateTime(event.eventDateTime);
@@ -307,8 +308,8 @@ function Event() {
                     </thead>
                     <tbody>
                       {sortedEvents.map((event) => (
-                        <tr key={event.id}>
-                          <td>{event.id}</td>
+                        <tr key={event._id}>
+                          <td>{event._id}</td>
                           <td>{event.eventName}</td>
                           <td>{event.eventDetails}</td>
                           <td>
@@ -329,17 +330,18 @@ function Event() {
                           <td>{event.eventLocation.split('--')[0]}</td>
                           <td>{event.capacity}</td>
                           <td>
-                            <span className={`badge ${event.eventStatus === 1 ? 'bg-secondary' : event.eventStatus === 2 ? 'bg-success' : event.eventStatus === 3 ? 'bg-warning' : event.eventStatus === 4 ? 'bg-danger' : 'bg-info'}`}>
-                              {event.eventStatus === 1
-                                ? 'UpComing'
-                                : event.eventStatus === 2
-                                  ? 'OnGoing'
-                                  : event.eventStatus === 3
-                                    ? 'Closed'
-                                    : event.eventStatus === 4
-                                      ? 'Cancelled'
-                                      : 'Unknown'}
-                            </span>
+                          <span className={`badge ${event.eventStatus === 'UpComing' ? 'bg-secondary' : event.eventStatus === 'OnGoing' ? 'bg-success' : event.eventStatus === 'Closed' ? 'bg-warning' : event.eventStatus === 'Cancelled' ? 'bg-danger' : 'bg-info'}`}>
+    {event.eventStatus === 'UpComing'
+        ? 'UpComing'
+        : event.eventStatus === 'OnGoing'
+        ? 'On Going'
+        : event.eventStatus === 'Closed'
+        ? 'Closed'
+        : event.eventStatus === 'Cancelled'
+        ? 'Cancelled'
+        : 'Unknown'}
+</span>
+
                           </td>
                           <td>
                             <i className="fas fa-edit"
@@ -347,7 +349,7 @@ function Event() {
                             ></i>
                             &nbsp;&nbsp;
                             <i className="fas fa-trash"
-                              onClick={() => deleteEvent(event.id)}
+                              onClick={() => deleteEvent(event._id)}
                             ></i>
                           </td>
                         </tr>

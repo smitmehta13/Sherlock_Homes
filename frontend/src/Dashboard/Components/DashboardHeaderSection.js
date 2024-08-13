@@ -14,21 +14,21 @@ function DashboardHeaderSection() {
     return (
       <div className="row">
         <DashboardHeaderCard
-          count={dashboardData.Users}
+          count={dashboardData.data["Total Users"]}
           title={"Members"}
           icon={"users"}
           color={"flat-color-1"}
         />
 
         <DashboardHeaderCard
-          count={dashboardData.Units}
+          count={dashboardData.data["Total Units"]}
           title={"Units"}
           icon={"house-user"}
           color={"flat-color-2"}
         />
 
         <DashboardHeaderCard
-          count={dashboardData.events}
+          count={dashboardData.data["Total Events"]}
           title={"Total Events"}
           icon={"gamepad"}
           color={"flat-color-3"}
