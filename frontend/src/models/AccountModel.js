@@ -11,7 +11,7 @@ export async function fetchUsers() {
   try {
     const response = await axios.get(API_USERS_ALL, myHeaders);
     const userData = response.data.map((user) => ({
-      id: user.id,
+      id: user._id,
       firstName: user.firstName,
       lastName: user.lastName,
       password: user.password,

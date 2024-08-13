@@ -14,19 +14,25 @@ function Login({ onLogin }) {
 
     try {
       // // Call the login API endpoint with the provided email and password
-      // const response = await axios.post(`${API_LOGIN_PATH}`, { email, password });
+      const response = await axios.post(`${API_LOGIN_PATH}`, { email, password });
 
-      // localStorage.setItem('token', response.data.token);
-      localStorage.setItem('role', 0);
-      // console.log(response.data.account.role);
-
-      // // Call the onLogin function to update the login status in the parent component
-      // onLogin(response.data.account.role);
-
-      // // Redirect to the desired page after login
-      // history.push('/');
-      //GO TO application WITHOUT LOGIN CHECK
-      history.push('/');
+      if (response.status == 200) {
+        await localStorage.setItem('token', response.data?.data.refreshToken);
+        if (await response.data?.data.user.isAdmin) {
+          localStorage.setItem('role', 0);
+        }
+        // console.log(response.data.account.role);
+  
+        // // Call the onLogin function to update the login status in the parent component
+        onLogin(0);
+  
+        // // Redirect to the desired page after login
+        // history.push('/');
+        //GO TO application WITHOUT LOGIN CHECK
+        history.push('/dashboard');
+      } else {
+        setError(response.data.message || 'Login failed');
+      }
 
     } catch (error) {
       console.error(error);
@@ -54,6 +60,7 @@ function Login({ onLogin }) {
                 <form onSubmit={handleLogin}>
                   <div className="input-group mb-3">
                     <input
+                    id='email'
                       type="email"
                       className="form-control"
                       placeholder="Email"
@@ -69,6 +76,7 @@ function Login({ onLogin }) {
                   </div>
                   <div className="input-group mb-3">
                     <input
+                    id='password'
                       type="password"
                       className="form-control"
                       placeholder="Password"
@@ -90,7 +98,7 @@ function Login({ onLogin }) {
                       </div>
                     </div>
                     <div className="col-4">
-                      <button type="submit" className="btn btn-primary btn-block">
+                      <button type="submit" className="btn btn-primary btn-block" id='loginButton'>
                         Sign In
                       </button>
                     </div>

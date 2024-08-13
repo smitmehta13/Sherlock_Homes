@@ -40,14 +40,14 @@ function AccountController() {
   // Assuming users is an array of objects
 const filteredUsers = users
 ? users.filter((user) => {
-    const { id, firstName, lastName, email } = user;
+    const { _id, firstName, lastName, email } = user;
     const lowerCaseQuery = searchQuery ? searchQuery.toLowerCase() : '';
     const lowerCaseFirstName = firstName?.toLowerCase() || '';
     const lowerCaseLastName = lastName?.toLowerCase() || '';
     const lowerCaseEmail = email?.toLowerCase() || '';
 
     return (
-      id.toString().includes(lowerCaseQuery) ||
+      _id.toString().includes(lowerCaseQuery) ||
       lowerCaseFirstName.includes(lowerCaseQuery) ||
       lowerCaseLastName.includes(lowerCaseQuery) ||
       lowerCaseEmail.includes(lowerCaseQuery)
